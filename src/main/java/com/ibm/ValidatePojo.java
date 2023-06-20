@@ -6,6 +6,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.ibm.model.Runner;
+
 @Mojo(name = "validate")
 public class ValidatePojo extends AbstractMojo {
 
@@ -18,5 +20,7 @@ public class ValidatePojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Hello from Validate Mojo");
+
+        Runner runner = new Runner();
     }
 }

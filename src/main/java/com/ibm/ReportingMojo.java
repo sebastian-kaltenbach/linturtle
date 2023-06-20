@@ -6,11 +6,15 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import com.ibm.model.ModelCollector;
 
 @Mojo(threadSafe = true, name = "report", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class ReportingMojo extends AbstractMojo {
+
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    MavenProject project;
 
     @Parameter(required = true, defaultValue = "${project.basedir}/src/main/resources", property = "name.source")
     private String sourceFolder;
