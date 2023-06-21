@@ -8,7 +8,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.ibm.model.ModelCollector;
+import com.ibm.model.BpmnReporter;
 
 @Mojo(threadSafe = true, name = "report", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class ReportingMojo extends AbstractMojo {
@@ -17,15 +17,25 @@ public class ReportingMojo extends AbstractMojo {
     MavenProject project;
 
     @Parameter(required = true, defaultValue = "${project.basedir}/src/main/resources", property = "name.source")
-    private String sourceFolder;
+    private String source;
 
     @Parameter(property = "resultFile", defaultValue = "target/generated-source/dummy/bpmn_validation.result.yaml")
     private String resultFile;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        ModelCollector collector = new ModelCollector(sourceFolder);
-        collector.collectModelsInSourceFolder();
-        getLog().info("Hello from Parser Mojo");
+        BpmnReporter reporter = new BpmnReporter(source).execute();
+
+        reporter.getModelCollection().forEach(e -> {
+            getLog().info("Analyzing model '" + e.getModel().getModelName() + "'");
+            getLog().info("");
+            getLog().info("Extraction of model objects");
+
+            getLog().info(reporter.prepareBpmnReport(e));
+
+            getLog().info("");
+        });
+
+        getLog().info("Hello from Reporter Mojo");
     }
 }
