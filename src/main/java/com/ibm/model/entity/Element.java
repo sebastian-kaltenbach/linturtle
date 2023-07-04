@@ -1,4 +1,4 @@
-package com.ibm.rule.bpmn;
+package com.ibm.model.entity;
 
 public enum Element {
     TASK,

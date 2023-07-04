@@ -1,4 +1,4 @@
-package com.ibm.model;
+package com.ibm;
 
 import org.apache.maven.plugin.logging.Log;
 

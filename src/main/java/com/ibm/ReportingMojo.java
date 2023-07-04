@@ -10,7 +10,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.ibm.model.BpmnReporter;
+import com.ibm.controller.RuleLoader;
+import com.ibm.controller.BpmnReporter;
 
 @Mojo(threadSafe = true, name = "report", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class ReportingMojo extends AbstractMojo {

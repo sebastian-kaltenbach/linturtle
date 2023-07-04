@@ -1,4 +1,4 @@
-package com.ibm.model;
+package com.ibm.controller;
 
 import java.io.File;
 import java.io.FileFilter;

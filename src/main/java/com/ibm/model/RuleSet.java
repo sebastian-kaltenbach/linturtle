@@ -1,6 +1,7 @@
-package com.ibm.rule.bpmn;
+package com.ibm.model;
 
 import java.util.List;
+
 import lombok.Data;
 
 @Data

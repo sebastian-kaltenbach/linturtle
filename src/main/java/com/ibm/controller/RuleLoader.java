@@ -1,4 +1,4 @@
-package com.ibm;
+package com.ibm.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.jboss.jandex.DotName;
 import org.jboss.jandex.Index;
 import org.jboss.jandex.Indexer;
 
-import com.ibm.rule.bpmn.RuleSet;
+import com.ibm.model.RuleSet;
 
 public class RuleLoader {
 
