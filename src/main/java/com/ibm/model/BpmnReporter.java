@@ -8,6 +8,9 @@ import java.util.stream.Stream;
 
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.Task;
+import org.camunda.bpm.model.xml.impl.type.ModelElementTypeImpl;
+import org.camunda.bpm.model.xml.type.ModelElementType;
 
 import lombok.Getter;
 
@@ -45,6 +48,7 @@ public class BpmnReporter {
     }
 
     public String prepareBpmnReport(BpmnModelInstance modelInstance) {
+        modelInstance.getModelElementsByType(Task.class).stream().forEach(e -> System.out.println(e.getName()));
         return modelInstance.getModel().getModelName();
     }
 }

@@ -23,6 +23,7 @@
    <maven.source.plugin.version>3.3.0</maven.source.plugin.version> 
    <maven.javadoc.plugin.version>3.5.0</maven.javadoc.plugin.version> 
    <assertj.version>3.24.2</assertj.version>
+   <version.jandex>3.1.2</version.jandex>
   </properties>
 
    <dependencyManagement>
@@ -76,6 +77,18 @@
     <dependency>
       <groupId>org.camunda.bpm.model</groupId>
       <artifactId>camunda-dmn-model</artifactId>
+    </dependency>
+
+    <!-- External Dependencies -->
+    <dependency>
+        <groupId>io.smallrye</groupId>
+        <artifactId>jandex</artifactId>
+        <version>${version.jandex}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.google.auto.service</groupId>
+        <artifactId>auto-service</artifactId>
+        <version>1.1.1</version>
     </dependency>
 
     <!-- Test Dependencies -->
@@ -138,5 +151,4 @@
             </plugin>
     </plugins>
   </build>
-
 </project>

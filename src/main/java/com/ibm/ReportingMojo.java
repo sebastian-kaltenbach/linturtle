@@ -1,5 +1,7 @@
 package com.ibm;
 
+import java.io.IOException;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -25,6 +27,13 @@ public class ReportingMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         BpmnReporter reporter = new BpmnReporter(source).execute();
+        RuleLoader loader = new RuleLoader(getLog());
+        getLog().info("Loader loaded...");
+        try {
+            loader.generateBasicRuleSet();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         reporter.getModelCollection().forEach(e -> {
             getLog().info("Analyzing model '" + e.getModel().getModelName() + "'");

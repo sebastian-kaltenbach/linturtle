@@ -6,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Rule {
-    public String id = "";
-    public String title = ""; 
-
-    public Severity severity = Severity.NONE;
-    public RuleSet ruleSet = null;
+    Element type();
+    String target();
+    Severity severity();
 }
