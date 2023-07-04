@@ -23,8 +23,6 @@ public class BasicRuleSet implements RuleSet{
     private List<String> loadBasicRuleNames() {
         List<String> ruleNames = new ArrayList<>();
 
-        
-
         return ruleNames;
     }
 

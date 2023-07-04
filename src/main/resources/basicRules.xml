@@ -1,0 +1,11 @@
+<rules>
+    <rule>
+        <name>allTasksAreNamed</name>
+        <severity>MUST</severity>
+        <target>
+            <type>Task</type>
+            <attribute>name</attribute>
+            <required>true</required>
+        </target>
+    </rule>
+</rules>
