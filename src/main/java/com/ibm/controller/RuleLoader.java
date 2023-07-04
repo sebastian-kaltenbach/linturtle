@@ -29,7 +29,7 @@ public class RuleLoader {
         Index index = indexer.complete();
 
 
-        DotName rule = DotName.createSimple("com.ibm.rule.bpmn.Rule");
+        DotName rule = DotName.createSimple("com.ibm.model.Rule");
         List<AnnotationInstance> annotations = index.getAnnotations(rule);
         
         annotations.forEach(e -> logger.info(e.target().kind().name()));

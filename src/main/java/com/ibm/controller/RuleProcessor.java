@@ -10,7 +10,7 @@ import javax.lang.model.element.TypeElement;
 
 import com.google.auto.service.AutoService;
 
-@SupportedAnnotationTypes("com.ibm.rule.bpmn.Rule")
+@SupportedAnnotationTypes("com.ibm.model.Rule")
 @AutoService(Processor.class)
 public class RuleProcessor extends AbstractProcessor{
 

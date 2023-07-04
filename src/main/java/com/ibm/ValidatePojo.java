@@ -11,11 +11,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.ibm.model.Runner;
-import com.ibm.rule.bpmn.Severity;
+import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigObject;
 import com.typesafe.config.ConfigValueFactory;
 
 @Mojo(name = "validate")
