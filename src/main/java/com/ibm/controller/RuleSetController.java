@@ -34,7 +34,7 @@ public class RuleSetController {
 
             try {
                 bpmnModelInstance.getModelElementsByType(camundaClassesProvider(ruleAnnotation.targetType())).forEach(e -> {
-                    if(! rule.check(((FlowElement) e).getName())) {
+                    if(! rule.check(e)) {
                         violations.add(new Violation(rule, bpmnModelInstance, ((BaseElement) e).getId()));
                     }
                 });
