@@ -1,10 +1,18 @@
 package com.ibm.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
+import com.ibm.model.rules.BaseRule;
 
-@Data
 public class RuleSet {
-    private List<Rule> rules;
+    private List<BaseRule> rules;
+
+    public RuleSet() {
+        rules = new ArrayList<>();
+    }
+
+    public List<BaseRule> getRules() {
+        return this.rules;
+    }
 }

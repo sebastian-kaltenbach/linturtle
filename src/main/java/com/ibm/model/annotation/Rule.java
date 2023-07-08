@@ -1,4 +1,4 @@
-package com.ibm.model;
+package com.ibm.model.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,9 +9,8 @@ import com.ibm.model.entity.Element;
 import com.ibm.model.entity.Severity;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Rule {
-    Element type();
-    String target();
+    Element targetType();
     Severity severity();
 }

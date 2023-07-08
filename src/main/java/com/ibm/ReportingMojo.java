@@ -10,8 +10,9 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.ibm.controller.RuleLoader;
-import com.ibm.controller.BpmnReporter;
+import com.ibm.controller.RuleSetController;
+import com.ibm.controller.BPMNController;
+import com.ibm.controller.RuleController;
 
 @Mojo(threadSafe = true, name = "report", defaultPhase = LifecyclePhase.GENERATE_RESOURCES)
 public class ReportingMojo extends AbstractMojo {
@@ -27,25 +28,12 @@ public class ReportingMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        BpmnReporter reporter = new BpmnReporter(source).execute();
-        RuleLoader loader = new RuleLoader(getLog());
-        getLog().info("Loader loaded...");
-        try {
-            loader.generateBasicRuleSet();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BPMNController bpmnController = (BPMNController) new BPMNController(source).prepare();
+        RuleController ruleController = (RuleController) new RuleController().prepare();
 
-        reporter.getModelCollection().forEach(e -> {
-            getLog().info("Analyzing model '" + e.getModel().getModelName() + "'");
-            getLog().info("");
-            getLog().info("Extraction of model objects");
-
-            getLog().info(reporter.prepareBpmnReport(e));
-
-            getLog().info("");
+        bpmnController.gBpmnModelInstances().forEach(model -> {
+            RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model).execute();
+            controller.getViolations().forEach(e -> getLog().info(e.toString()));
         });
-
-        getLog().info("Hello from Reporter Mojo");
     }
 }
