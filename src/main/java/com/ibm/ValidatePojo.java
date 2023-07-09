@@ -66,5 +66,9 @@ public class ValidatePojo extends AbstractMojo {
             ReportController reportController = new ReportController(config, getLog(), validationController.getViolationSet());
             reportController.execute();
         }
+
+
+
+        //throw new RuntimeException();
     }
 }

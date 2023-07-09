@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.ibm.model.MetaData;
 import com.ibm.model.Violation;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Format;
@@ -55,13 +56,15 @@ public class ReportController {
             violationSet.forEach((model, violations) -> {
                 String fileName = model.getModel().getModelName() + "." + format.toString().toLowerCase();
                 File file = new File(path + "/" + fileName);
+                MetaData metaData = new MetaData("Plugin", new Date(), violations.size());
+
                 try {
                     file.createNewFile();
                     if(format == Format.JSON) {
-                        parseViolationsToJsonString(violations, file.getAbsolutePath());
+                        parseViolationsToJsonString(metaData, violations, file.getAbsolutePath());
                     }
                     else if(format == Format.XML){
-                        parseViolationsToXMLString(violations, file.getAbsolutePath());
+                        parseViolationsToXMLString(metaData, violations, file.getAbsolutePath());
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -75,8 +78,12 @@ public class ReportController {
         log.info("ReportController executed!");
     }
 
-    private void parseViolationsToJsonString(List<Violation> violations, String path) {
+    private void parseViolationsToJsonString(MetaData metaData, List<Violation> violations, String path) {
         JSONObject rootObject = new JSONObject();
+        rootObject.put("name", metaData.getName());
+        rootObject.put("timeStamp", metaData.getTimeStamp().toString());
+        rootObject.put("incidents", metaData.getIncidents());
+
         JSONArray jsonArray = new JSONArray();
 
         violations.forEach(violation -> {
@@ -103,15 +110,22 @@ public class ReportController {
         }
     }
 
-    private void parseViolationsToXMLString(List<Violation> violations, String path) {
+    private void parseViolationsToXMLString(MetaData metaData, List<Violation> violations, String path) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             // root elements
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("violations");
+            Element nameElmnt = doc.createElement("name");
+            nameElmnt.setTextContent(metaData.getName());
+            Element timeStampElmnt = doc.createElement("timeStamp");
+            timeStampElmnt.setTextContent(metaData.getTimeStamp().toString());
+            Element incidentsElmnt = doc.createElement("incidents");
+            incidentsElmnt.setTextContent(String.valueOf(metaData.getIncidents()));
+            doc.appendChild(nameElmnt).appendChild(timeStampElmnt).appendChild(incidentsElmnt);
 
+            Element rootElement = doc.createElement("violations");
             violations.forEach(violation -> {
                 var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
                 Element violationElmnt = doc.createElement("violation");
