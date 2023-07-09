@@ -3,9 +3,7 @@ package com.ibm.controller;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import org.reflections.Reflections;
-
 import com.ibm.model.RuleSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.rules.BaseRule;
@@ -36,17 +34,12 @@ public class RuleController extends Controller {
 
         ruleClasses.forEach(ruleClass -> {
             try {
-                for(var annotation : ruleClass.getAnnotations()) {
-
-                    LOG.info(annotation.toString());
-                }
                 ruleSet.getRules().add((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
                 LOG.info("Found Rule: " + ruleClass.getSimpleName() + "  |  Added to RuleSet");
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 LOG.info(e.getMessage());
-            }
-            
+            }           
         });
     }
 }

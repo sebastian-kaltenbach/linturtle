@@ -11,6 +11,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.ibm.controller.ReportController;
+import com.ibm.controller.ValidationController;
 import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
@@ -27,6 +29,9 @@ public class ValidatePojo extends AbstractMojo {
     @Parameter(property = "plugin.skip", defaultValue = "false")
     private boolean skip;
 
+    @Parameter(property = "plugin.report", defaultValue = "true")
+    private boolean report;
+
     @Parameter(property = "plugin.output")
     private Map<String, String> output;
 
@@ -40,9 +45,7 @@ public class ValidatePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-
-        // ToDo Handling
-        Runner runner = new Runner(config, getLog());
+        ValidationController validationController = new ValidationController(sourceFolder, getLog());
 
         if (!failOn.isEmpty())
         {
@@ -55,6 +58,13 @@ public class ValidatePojo extends AbstractMojo {
         {
             getLog().warn("No errors will fail the build, reporting only. Adjust 'failOn' " +
                     "property to fail on requested severities:" + Arrays.toString(Severity.values()));
+        }
+
+        validationController.execute();
+
+        if (report) {
+            ReportController reportController = new ReportController(config, getLog(), validationController.getViolationSet());
+            reportController.execute();
         }
     }
 }

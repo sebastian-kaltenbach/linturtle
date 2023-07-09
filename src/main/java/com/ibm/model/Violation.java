@@ -4,6 +4,7 @@ import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import com.ibm.model.rules.BaseRule;
 import lombok.Data;
 
+@Data
 public class Violation {
     private BaseRule rule;
     private BpmnModelInstance bpmnModelInstance;

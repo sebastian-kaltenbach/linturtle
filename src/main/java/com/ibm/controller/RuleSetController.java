@@ -6,21 +6,23 @@ import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.BaseElement;
 import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.camunda.bpm.model.bpmn.instance.Task;
+import org.camunda.bpm.model.xml.type.ModelElementType;
 
+import com.ibm.model.RuleResult;
 import com.ibm.model.RuleSet;
 import com.ibm.model.Violation;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Element;
 
+import lombok.Getter;
+
 public class RuleSetController {
     private RuleSet ruleSet;
     private BpmnModelInstance bpmnModelInstance;
-    private List<Violation> violations;
-    private static String camundaPackage = "org.camunda.bpm.model.bpmn.instance.";
 
-    public List<Violation> getViolations() {
-        return this.violations;
-    }
+    @Getter
+    private List<Violation> violations;
+
 
     public RuleSetController(RuleSet ruleSet, BpmnModelInstance bpmnModelInstance) {
         this.ruleSet = ruleSet;
@@ -34,8 +36,9 @@ public class RuleSetController {
 
             try {
                 bpmnModelInstance.getModelElementsByType(camundaClassesProvider(ruleAnnotation.targetType())).forEach(e -> {
-                    if(! rule.check(e)) {
-                        violations.add(new Violation(rule, bpmnModelInstance, ((BaseElement) e).getId()));
+                    RuleResult result = rule.check(e);
+                    if(result.isValid()) {
+                        violations.add(new Violation(rule, bpmnModelInstance, result.getTargetIdentifier()));
                     }
                 });
             } catch(Exception e) {
@@ -50,7 +53,7 @@ public class RuleSetController {
             case TASK:
                 return Task.class;
             default:
-                return Task.class;
+                return ModelElementType.class;
         }
     }
 }

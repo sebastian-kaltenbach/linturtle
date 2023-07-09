@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.camunda.bpm.model.bpmn.instance.Task;
 
+import com.ibm.model.RuleResult;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Element;
 import com.ibm.model.entity.Severity;
@@ -18,8 +19,8 @@ public class TaskNameNonNullRule extends BaseRule {
     private static final Logger LOG = Logger.getLogger("TaskNameNonNullRule.class");
 
     @Override
-    public boolean check(Object OUT) {
+    public RuleResult check(Object OUT) {
         Task targetType = (Task) OUT;
-        return targetType.getName() == null || targetType.getName() == "" ?  false :  true;
+        return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
     }
 }
