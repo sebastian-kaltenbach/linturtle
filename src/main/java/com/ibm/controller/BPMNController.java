@@ -8,17 +8,19 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
 public class BPMNController {
 
-    private static final Logger LOG = Logger.getLogger("BPMNController.class");
+    private Log log;
     private String sourcePath;
     private List<BpmnModelInstance> bpmnModelInstances = new ArrayList<>();
 
-    public BPMNController(String sourcePath) {
+    public BPMNController(String sourcePath, Log log) {
         this.sourcePath = sourcePath;
+        this.log = log;
     }
 
     public BPMNController prepare() {
@@ -39,7 +41,7 @@ public class BPMNController {
     };
 
     private BpmnModelInstance transformBpmnInstanceFromFile(File file) {
-        LOG.info("File found: " + file.getName());
+        log.info("BPMN-Definition found: " + file.getName());
         return Objects.requireNonNull(Bpmn.readModelFromFile(file));
     }
 

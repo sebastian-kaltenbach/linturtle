@@ -2,10 +2,12 @@ package com.ibm.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.instance.BaseElement;
-import org.camunda.bpm.model.bpmn.instance.FlowElement;
+import org.camunda.bpm.model.bpmn.instance.ServiceTask;
 import org.camunda.bpm.model.bpmn.instance.Task;
+import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 
 import com.ibm.model.RuleResult;
@@ -17,6 +19,8 @@ import com.ibm.model.entity.Element;
 import lombok.Getter;
 
 public class RuleSetController {
+
+    private Log log;
     private RuleSet ruleSet;
     private BpmnModelInstance bpmnModelInstance;
 
@@ -24,7 +28,8 @@ public class RuleSetController {
     private List<Violation> violations;
 
 
-    public RuleSetController(RuleSet ruleSet, BpmnModelInstance bpmnModelInstance) {
+    public RuleSetController(RuleSet ruleSet, BpmnModelInstance bpmnModelInstance, Log log) {
+        this.log = log;
         this.ruleSet = ruleSet;
         this.bpmnModelInstance = bpmnModelInstance;
         violations = new ArrayList<Violation>();
@@ -52,6 +57,10 @@ public class RuleSetController {
         switch(targetType) {
             case TASK:
                 return Task.class;
+            case USERTASK:
+                return UserTask.class;
+            case SERVICETASK:
+                return ServiceTask.class;
             default:
                 return ModelElementType.class;
         }

@@ -19,14 +19,16 @@ public class ValidationController {
 
     public ValidationController(String source, Log log) {
         this.log = log;
-        this.bpmnController = new BPMNController(source).prepare();
-        this.ruleController = new RuleController().prepare();
+        this.bpmnController = new BPMNController(source, log).prepare();
+        this.ruleController = new RuleController(log).prepare();
         this.violationSet = new HashMap<>();
+        log.debug("ValidationController initialized.");
     }
 
     public void execute() {
+        log.debug("ValidationController executed.");
         bpmnController.gBpmnModelInstances().forEach(model -> {
-            RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model).execute();
+            RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model, log).execute();
             this.violationSet.put(model, controller.getViolations());
         });
     }
