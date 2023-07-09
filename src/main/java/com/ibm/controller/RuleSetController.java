@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.EndEvent;
+import org.camunda.bpm.model.bpmn.instance.Event;
 import org.camunda.bpm.model.bpmn.instance.ServiceTask;
+import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.bpmn.instance.Task;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.camunda.bpm.model.xml.type.ModelElementType;
@@ -42,7 +45,7 @@ public class RuleSetController {
             try {
                 bpmnModelInstance.getModelElementsByType(camundaClassesProvider(ruleAnnotation.targetType())).forEach(e -> {
                     RuleResult result = rule.check(e);
-                    if(result.isValid()) {
+                    if(!result.isValid()) {
                         violations.add(new Violation(rule, bpmnModelInstance, result.getTargetIdentifier()));
                     }
                 });
@@ -61,6 +64,12 @@ public class RuleSetController {
                 return UserTask.class;
             case SERVICETASK:
                 return ServiceTask.class;
+            case EVENT:
+                return Event.class;
+            case STARTEVENT:
+                return StartEvent.class;
+            case ENDEVENT:
+                return EndEvent.class;
             default:
                 return ModelElementType.class;
         }

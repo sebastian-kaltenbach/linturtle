@@ -35,7 +35,7 @@ public class ValidationController {
             RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model, log).execute();
             this.violationSet.put(model, controller.getViolations());
         });
-        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getSkippedRules());
+        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getSkippedRules(), this.violationSet);
     }
 
     public void executeReportController() {

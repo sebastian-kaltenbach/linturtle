@@ -40,7 +40,6 @@ public class ReportController {
     
     private Log log;
     private Config config;
-    private Map<BpmnModelInstance, List<Violation>> violationSet;
 
     public ReportController(Config config, Log log) {
         this.config = config;
@@ -173,7 +172,7 @@ public class ReportController {
         }
     }
 
-    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet) {
+    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, List<Violation>> violationSet) {
         StringBuilder sb = new StringBuilder();
 
         //  Active rules
@@ -218,7 +217,10 @@ public class ReportController {
         violationSet.forEach((model, violations) -> {
             violations.forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
-                log.info(model.getModel().getModelName() + " - " + violation.getRule().getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
+                log.info(model.getModel().getModelName() + " - " + 
+                violation.getRule().getClass().getSimpleName() + " - " + 
+                ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString() + " - " +
+                violation.getTargetId());
             });
         });
     }
