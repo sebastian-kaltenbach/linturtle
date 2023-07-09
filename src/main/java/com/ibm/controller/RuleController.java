@@ -29,8 +29,9 @@ public class RuleController {
         this.log = log;
     }
 
-    public RuleController prepare() {
+    public RuleController prepare(Set<String> skipRules) {
         handleIndexer();
+        setupSkippetRuleSet(skipRules);
         return this;
     }
 
@@ -47,5 +48,12 @@ public class RuleController {
             }    
             log.info("Basic RuleSet: " + ruleSet.getRules().size() + " added!");       
         });
+    }
+
+    private void setupSkippetRuleSet(Set<String> skipRules) {
+        skippedRules.setRules(this.ruleSet.getRules().stream().filter(rule -> skipRules.contains(rule.getClass().getSimpleName())).toList());
+        var deltaRules = ruleSet.getRules();
+        deltaRules.removeAll(skippedRules.getRules());
+        ruleSet.setRules(deltaRules);
     }
 }

@@ -3,6 +3,8 @@ package com.ibm.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
@@ -22,10 +24,10 @@ public class ValidationController {
     @Getter
     private Map<BpmnModelInstance, ViolationSet> violationSets;
 
-    public ValidationController(Config config, String source, Log log) {
+    public ValidationController(Config config, String source, Set<String> skipRules, Log log) {
         this.log = log;
         this.bpmnController = new BPMNController(source, log).prepare();
-        this.ruleController = new RuleController(log).prepare();
+        this.ruleController = new RuleController(log).prepare(skipRules);
         this.reportController = new ReportController(config, log);
         this.violationSets = new HashMap<>();
         log.debug("ValidationController initialized.");

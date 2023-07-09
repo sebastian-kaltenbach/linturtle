@@ -3,6 +3,7 @@ package com.ibm;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -11,13 +12,12 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.ibm.controller.ReportController;
 import com.ibm.controller.ValidationController;
 import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
-@Mojo(name = "validate")
+@Mojo(threadSafe = true, name = "validate")
 public class ValidatePojo extends AbstractMojo {
 
     @Parameter(property = "plugin.sourceFolder", defaultValue = "src/main/resources")
@@ -32,6 +32,9 @@ public class ValidatePojo extends AbstractMojo {
     @Parameter(property = "plugin.report", defaultValue = "true")
     private boolean report;
 
+    @Parameter(property = "plugin.skipRules")
+    private Set<String> skipRules;
+
     @Parameter(property = "plugin.output")
     private Map<String, String> output;
 
@@ -45,7 +48,7 @@ public class ValidatePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(config, sourceFolder, getLog());
+        ValidationController validationController = new ValidationController(config, sourceFolder, skipRules, getLog());
 
         if (!failOn.isEmpty())
         {
@@ -53,6 +56,13 @@ public class ValidatePojo extends AbstractMojo {
                     .stream()
                     .map(Enum::name)
                     .collect(Collectors.joining(", ")));
+            if(failOn.contains(Severity.MAY)) {
+                failOn.add(Severity.SHOULD);
+                failOn.add(Severity.MUST);
+            }
+            if(failOn.contains(Severity.SHOULD)) failOn.add(Severity.MUST);
+
+            
         }
         else
         {
@@ -67,7 +77,7 @@ public class ValidatePojo extends AbstractMojo {
         }
 
         if(validationController.checkViolationsForSeverity(failOn)){
-            throw new RuntimeException();
+            throw new MojoFailureException("Failing build due to errors with severity " + failOn.stream().map(Enum::name).collect(Collectors.joining(", ")));
         }
     }
 }
