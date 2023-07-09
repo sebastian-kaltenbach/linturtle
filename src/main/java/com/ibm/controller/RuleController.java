@@ -10,18 +10,22 @@ import com.ibm.model.RuleSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.rules.BaseRule;
 
+import lombok.Getter;
+
 public class RuleController {
 
     private static final Logger LOG = Logger.getLogger("RuleSetController.class");
     private Log log;
+
+    @Getter
     private RuleSet ruleSet;
 
-    public RuleSet getRuleSet() {
-        return this.ruleSet;
-    }
+    @Getter
+    private RuleSet skippedRules;
 
     public RuleController(Log log) {
         this.ruleSet = new RuleSet();
+        this.skippedRules = new RuleSet();
         this.log = log;
     }
 
@@ -36,7 +40,7 @@ public class RuleController {
         ruleClasses.forEach(ruleClass -> {
             try {
                 ruleSet.getRules().add((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
-                log.info("Found Rule: " + ruleClass.getSimpleName() + "  |  Added to RuleSet");
+                log.debug("Found Rule: " + ruleClass.getSimpleName() + "  |  Added to RuleSet");
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 log.warn(ruleClass.getClass().getSimpleName() + " could not be added to common rule set | " + e.getMessage());

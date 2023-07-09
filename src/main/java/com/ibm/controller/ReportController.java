@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.ibm.model.MetaData;
+import com.ibm.model.RuleSet;
 import com.ibm.model.Violation;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Format;
@@ -41,14 +42,13 @@ public class ReportController {
     private Config config;
     private Map<BpmnModelInstance, List<Violation>> violationSet;
 
-    public ReportController(Config config, Log log, Map<BpmnModelInstance, List<Violation>> violationSet) {
+    public ReportController(Config config, Log log) {
         this.config = config;
         this.log = log;
-        log.info("Size: " + violationSet.size());
-        this.violationSet = violationSet;
+        log.debug("ReportController initialized!");
     }
 
-    public void execute() {
+    public void execute(Map<BpmnModelInstance, List<Violation>> violationSet) {
         String path = this.config.getString("path");
         Format format = Format.valueOf(this.config.getString("format"));
         try {
@@ -75,7 +75,7 @@ public class ReportController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        log.info("ReportController executed!");
+        log.debug("ReportController executed!");
     }
 
     private void parseViolationsToJsonString(MetaData metaData, List<Violation> violations, String path) {
@@ -171,5 +171,55 @@ public class ReportController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet) {
+        StringBuilder sb = new StringBuilder();
+
+        //  Active rules
+        String header = "Rules (" + ruleSet.getRules().size() + ")";
+        log.info("");
+        log.info(header);
+        
+        for(int i =0; i < header.length(); i++) sb.append("-");
+        log.info(sb.toString());
+        
+        ruleSet.getRules().forEach(rule -> {
+            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
+            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
+        });
+
+        // Skipped Rules
+        log.info("");
+        header = "Skipped Rules (" + skippedRuleSet.getRules().size() + ")";
+        log.info("");
+        log.info(header);
+        sb = new StringBuilder();
+        for(int i =0; i < header.length(); i++) sb.append("-");
+        log.info(sb.toString());
+        
+        skippedRuleSet.getRules().forEach(rule -> {
+            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
+            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
+        });  
+        
+        //  Rule Violations
+
+        log.info("");
+        int violationCount = (int) violationSet.values().stream().map(e -> e.size()).reduce(0, Integer::sum);
+
+        header = "Rule violations (" + violationCount + ")";
+        log.info("");
+        log.info(header);
+        sb = new StringBuilder();
+        for(int i =0; i < header.length(); i++) sb.append("-");
+        log.info(sb.toString());
+
+        violationSet.forEach((model, violations) -> {
+            violations.forEach(violation -> {
+                Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
+                log.info(model.getModel().getModelName() + " - " + violation.getRule().getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
+            });
+        });
     }
 }

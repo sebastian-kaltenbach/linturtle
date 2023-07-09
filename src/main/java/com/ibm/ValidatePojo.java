@@ -45,7 +45,7 @@ public class ValidatePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(sourceFolder, getLog());
+        ValidationController validationController = new ValidationController(config, sourceFolder, getLog());
 
         if (!failOn.isEmpty())
         {
@@ -62,12 +62,9 @@ public class ValidatePojo extends AbstractMojo {
 
         validationController.execute();
 
-        if (report) {
-            ReportController reportController = new ReportController(config, getLog(), validationController.getViolationSet());
-            reportController.execute();
+        if (report) { 
+            validationController.executeReportController();
         }
-
-
 
         //throw new RuntimeException();
     }
