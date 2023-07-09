@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-public class BPMNController extends Controller {
+public class BPMNController {
 
     private static final Logger LOG = Logger.getLogger("BPMNController.class");
     private String sourcePath;
@@ -21,8 +21,7 @@ public class BPMNController extends Controller {
         this.sourcePath = sourcePath;
     }
 
-    @Override
-    public Controller prepare() {
+    public BPMNController prepare() {
         File dir = new File(this.sourcePath);
         bpmnModelInstances = Stream.of(dir.listFiles(bpmnFilefilter))
             .map(e -> transformBpmnInstanceFromFile(e)).toList();

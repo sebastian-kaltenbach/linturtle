@@ -19,8 +19,8 @@ public class ValidationController {
 
     public ValidationController(String source, Log log) {
         this.log = log;
-        this.bpmnController = (BPMNController) new BPMNController(source).prepare();
-        this.ruleController = (RuleController) new RuleController().prepare();
+        this.bpmnController = new BPMNController(source).prepare();
+        this.ruleController = new RuleController().prepare();
         this.violationSet = new HashMap<>();
     }
 

@@ -8,7 +8,7 @@ import com.ibm.model.RuleSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.rules.BaseRule;
 
-public class RuleController extends Controller {
+public class RuleController {
 
     private static final Logger LOG = Logger.getLogger("RuleSetController.class");
     
@@ -22,8 +22,7 @@ public class RuleController extends Controller {
         this.ruleSet = new RuleSet();
     }
 
-    @Override
-    public Controller prepare() {
+    public RuleController prepare() {
         handleIndexer();
         return this;
     }
