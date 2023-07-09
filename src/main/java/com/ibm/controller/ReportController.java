@@ -2,6 +2,7 @@ package com.ibm.controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,10 +10,24 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import com.ibm.model.Violation;
 import com.ibm.model.annotation.Rule;
@@ -43,12 +58,10 @@ public class ReportController {
                 try {
                     file.createNewFile();
                     if(format == Format.JSON) {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
-                        writer.write(parseViolationsToJsonString(violations));
-                        writer.close();
+                        parseViolationsToJsonString(violations, file.getAbsolutePath());
                     }
-                    else {
-
+                    else if(format == Format.XML){
+                        parseViolationsToXMLString(violations, file.getAbsolutePath());
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -62,8 +75,10 @@ public class ReportController {
         log.info("ReportController executed!");
     }
 
-    private String parseViolationsToJsonString(List<Violation> violations) {
+    private void parseViolationsToJsonString(List<Violation> violations, String path) {
+        JSONObject rootObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
+
         violations.forEach(violation -> {
             var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
 
@@ -75,6 +90,72 @@ public class ReportController {
 
             jsonArray.put(obj);
         });
-        return jsonArray.toString(4);
+        rootObject.put("violations", jsonArray);
+
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(path));
+            writer.write(rootObject.toString(4));
+            writer.close();
+        } catch (IOException | JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void parseViolationsToXMLString(List<Violation> violations, String path) {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("violations");
+
+            violations.forEach(violation -> {
+                var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
+                Element violationElmnt = doc.createElement("violation");
+
+                Element ruleElmnt = doc.createElement("rule");
+                ruleElmnt.setTextContent(violation.getRule().getClass().getSimpleName());
+                Element severityElmnt = doc.createElement("severity");
+                severityElmnt.setTextContent(rule.severity().toString());
+                Element targetTypeElmnt = doc.createElement("targetType");
+                targetTypeElmnt.setTextContent(rule.targetType().toString());
+                Element targetIdElmnt = doc.createElement("targetId");
+                targetIdElmnt.setTextContent(violation.getTargetId());
+
+                violationElmnt.appendChild(ruleElmnt);
+                violationElmnt.appendChild(severityElmnt);
+                violationElmnt.appendChild(targetTypeElmnt);
+                violationElmnt.appendChild(targetIdElmnt);
+
+                rootElement.appendChild(violationElmnt);
+            });
+            doc.appendChild(rootElement);
+
+            //  Print logic
+            try (FileOutputStream output =
+                     new FileOutputStream(path)) {
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // pretty print XML
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(output);
+
+            transformer.transform(source, result);
+
+            } catch (IOException | TransformerException e) {
+                e.printStackTrace();
+            }
+            
+        } catch (ParserConfigurationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
