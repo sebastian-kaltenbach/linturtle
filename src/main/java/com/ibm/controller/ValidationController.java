@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import com.ibm.model.Violation;
+
+import com.ibm.model.ViolationSet;
+import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 
 import lombok.Getter;
@@ -18,14 +20,14 @@ public class ValidationController {
     private ReportController reportController;
 
     @Getter
-    private Map<BpmnModelInstance, List<Violation>> violationSet;
+    private Map<BpmnModelInstance, ViolationSet> violationSets;
 
     public ValidationController(Config config, String source, Log log) {
         this.log = log;
         this.bpmnController = new BPMNController(source, log).prepare();
         this.ruleController = new RuleController(log).prepare();
         this.reportController = new ReportController(config, log);
-        this.violationSet = new HashMap<>();
+        this.violationSets = new HashMap<>();
         log.debug("ValidationController initialized.");
     }
 
@@ -33,12 +35,19 @@ public class ValidationController {
         log.debug("ValidationController executed.");
         bpmnController.gBpmnModelInstances().forEach(model -> {
             RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model, log).execute();
-            this.violationSet.put(model, controller.getViolations());
+            this.violationSets.put(model, controller.getViolationSet());
         });
-        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getSkippedRules(), this.violationSet);
+        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getSkippedRules(), this.violationSets);
     }
 
     public void executeReportController() {
-        reportController.execute(this.violationSet);
+        reportController.execute(this.violationSets);
+    }
+
+    public boolean checkViolationsForSeverity(List<Severity> failOn) {
+        for(var entry : this.violationSets.entrySet()) {   
+            if(!entry.getValue().getViolationsBySeverity(failOn).isEmpty()) return true;
+        }
+        return false;
     }
 }

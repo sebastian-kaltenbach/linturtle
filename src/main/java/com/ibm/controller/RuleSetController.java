@@ -1,12 +1,19 @@
 package com.ibm.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.BusinessRuleTask;
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.Event;
+import org.camunda.bpm.model.bpmn.instance.ExclusiveGateway;
+import org.camunda.bpm.model.bpmn.instance.Gateway;
+import org.camunda.bpm.model.bpmn.instance.ParallelGateway;
+import org.camunda.bpm.model.bpmn.instance.ScriptTask;
 import org.camunda.bpm.model.bpmn.instance.ServiceTask;
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
 import org.camunda.bpm.model.bpmn.instance.Task;
@@ -16,6 +23,7 @@ import org.camunda.bpm.model.xml.type.ModelElementType;
 import com.ibm.model.RuleResult;
 import com.ibm.model.RuleSet;
 import com.ibm.model.Violation;
+import com.ibm.model.ViolationSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Element;
 
@@ -28,14 +36,14 @@ public class RuleSetController {
     private BpmnModelInstance bpmnModelInstance;
 
     @Getter
-    private List<Violation> violations;
+    private ViolationSet violationSet;
 
 
     public RuleSetController(RuleSet ruleSet, BpmnModelInstance bpmnModelInstance, Log log) {
         this.log = log;
         this.ruleSet = ruleSet;
         this.bpmnModelInstance = bpmnModelInstance;
-        violations = new ArrayList<Violation>();
+        violationSet = new ViolationSet();
     }
 
     public RuleSetController execute() {
@@ -46,7 +54,7 @@ public class RuleSetController {
                 bpmnModelInstance.getModelElementsByType(camundaClassesProvider(ruleAnnotation.targetType())).forEach(e -> {
                     RuleResult result = rule.check(e);
                     if(!result.isValid()) {
-                        violations.add(new Violation(rule, bpmnModelInstance, result.getTargetIdentifier()));
+                        violationSet.getViolations().add(new Violation(rule, bpmnModelInstance, result.getTargetIdentifier()));
                     }
                 });
             } catch(Exception e) {
@@ -64,12 +72,22 @@ public class RuleSetController {
                 return UserTask.class;
             case SERVICETASK:
                 return ServiceTask.class;
+            case SCRIPTTASK:
+                return ScriptTask.class;
+            case BUSINESSRULETASK:
+                return BusinessRuleTask.class;
             case EVENT:
                 return Event.class;
             case STARTEVENT:
                 return StartEvent.class;
             case ENDEVENT:
                 return EndEvent.class;
+            case GATEWAY:
+                return Gateway.class;
+            case EXCLUSIVEGATEWAY:
+                return ExclusiveGateway.class;
+            case PARALLELGATEWAY:
+                return ParallelGateway.class;
             default:
                 return ModelElementType.class;
         }

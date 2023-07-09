@@ -32,8 +32,10 @@ import org.w3c.dom.Element;
 import com.ibm.model.MetaData;
 import com.ibm.model.RuleSet;
 import com.ibm.model.Violation;
+import com.ibm.model.ViolationSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Format;
+import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 
 public class ReportController {
@@ -47,23 +49,23 @@ public class ReportController {
         log.debug("ReportController initialized!");
     }
 
-    public void execute(Map<BpmnModelInstance, List<Violation>> violationSet) {
+    public void execute(Map<BpmnModelInstance, ViolationSet> violationSets) {
         String path = this.config.getString("path");
         Format format = Format.valueOf(this.config.getString("format"));
         try {
             Files.createDirectories(Paths.get(path));
-            violationSet.forEach((model, violations) -> {
+            violationSets.forEach((model, violationSet) -> {
                 String fileName = model.getModel().getModelName() + "." + format.toString().toLowerCase();
                 File file = new File(path + "/" + fileName);
-                MetaData metaData = new MetaData("Plugin", new Date(), violations.size());
+                MetaData metaData = new MetaData("Plugin", new Date(), violationSet.getViolations().size());
 
                 try {
                     file.createNewFile();
                     if(format == Format.JSON) {
-                        parseViolationsToJsonString(metaData, violations, file.getAbsolutePath());
+                        parseViolationsToJsonString(metaData, violationSet.getViolations(), file.getAbsolutePath());
                     }
                     else if(format == Format.XML){
-                        parseViolationsToXMLString(metaData, violations, file.getAbsolutePath());
+                        parseViolationsToXMLString(metaData, violationSet.getViolations(), file.getAbsolutePath());
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -172,7 +174,7 @@ public class ReportController {
         }
     }
 
-    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, List<Violation>> violationSet) {
+    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, ViolationSet> violationSets) {
         StringBuilder sb = new StringBuilder();
 
         //  Active rules
@@ -205,7 +207,7 @@ public class ReportController {
         //  Rule Violations
 
         log.info("");
-        int violationCount = (int) violationSet.values().stream().map(e -> e.size()).reduce(0, Integer::sum);
+        int violationCount = (int) violationSets.values().stream().map(e -> e.getViolations().size()).reduce(0, Integer::sum);
 
         header = "Rule violations (" + violationCount + ")";
         log.info("");
@@ -214,8 +216,8 @@ public class ReportController {
         for(int i =0; i < header.length(); i++) sb.append("-");
         log.info(sb.toString());
 
-        violationSet.forEach((model, violations) -> {
-            violations.forEach(violation -> {
+        violationSets.forEach((model, violations) -> {
+            violations.getViolations().forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
                 log.info(model.getModel().getModelName() + " - " + 
                 violation.getRule().getClass().getSimpleName() + " - " + 

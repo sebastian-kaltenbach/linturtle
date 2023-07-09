@@ -66,6 +66,8 @@ public class ValidatePojo extends AbstractMojo {
             validationController.executeReportController();
         }
 
-        //throw new RuntimeException();
+        if(validationController.checkViolationsForSeverity(failOn)){
+            throw new RuntimeException();
+        }
     }
 }
