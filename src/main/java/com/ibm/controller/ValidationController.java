@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.project.MavenProject;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
 import com.ibm.model.ViolationSet;
@@ -24,10 +25,10 @@ public class ValidationController {
     @Getter
     private Map<BpmnModelInstance, ViolationSet> violationSets;
 
-    public ValidationController(Config config, String source, Set<String> skipRules, Log log) {
+    public ValidationController(MavenProject project, Config config, String source, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
         this.bpmnController = new BPMNController(source, log).prepare();
-        this.ruleController = new RuleController(log).prepare(skipRules);
+        this.ruleController = new RuleController(log).prepare(project, skipRules, customRulePackage);
         this.reportController = new ReportController(config, log);
         this.violationSets = new HashMap<>();
         log.debug("ValidationController initialized.");
@@ -39,7 +40,7 @@ public class ValidationController {
             RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model, log).execute();
             this.violationSets.put(model, controller.getViolationSet());
         });
-        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getSkippedRules(), this.violationSets);
+        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRules(), this.violationSets);
     }
 
     public void executeReportController() {

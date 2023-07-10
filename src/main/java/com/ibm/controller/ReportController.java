@@ -35,7 +35,6 @@ import com.ibm.model.Violation;
 import com.ibm.model.ViolationSet;
 import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Format;
-import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 
 public class ReportController {
@@ -174,39 +173,22 @@ public class ReportController {
         }
     }
 
-    public void printResultToConsole(RuleSet ruleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, ViolationSet> violationSets) {
+    public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, ViolationSet> violationSets) {
         StringBuilder sb = new StringBuilder();
 
-        //  Active rules
+        //  Active Rules
         String header = "Rules (" + ruleSet.getRules().size() + ")";
-        log.info("");
-        log.info(header);
-        
-        for(int i =0; i < header.length(); i++) sb.append("-");
-        log.info(sb.toString());
-        
-        ruleSet.getRules().forEach(rule -> {
-            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
-        });
+        printRulesByRuleSet(header, ruleSet);
+
+        //  Custom Rules
+        header = "Custom Rules (" + customRuleSet.getRules().size() + ")";
+        printRulesByRuleSet(header, customRuleSet);
 
         // Skipped Rules
-        log.info("");
         header = "Skipped Rules (" + skippedRuleSet.getRules().size() + ")";
-        log.info("");
-        log.info(header);
-        sb = new StringBuilder();
-        for(int i =0; i < header.length(); i++) sb.append("-");
-        log.info(sb.toString());
-        
-        skippedRuleSet.getRules().forEach(rule -> {
-            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
-        });  
+        printRulesByRuleSet(header, skippedRuleSet);
         
         //  Rule Violations
-
-        log.info("");
         int violationCount = (int) violationSets.values().stream().map(e -> e.getViolations().size()).reduce(0, Integer::sum);
 
         header = "Rule violations (" + violationCount + ")";
@@ -224,6 +206,20 @@ public class ReportController {
                 ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString() + " - " +
                 violation.getTargetId());
             });
+        });
+    }
+
+    private void printRulesByRuleSet(String header, RuleSet ruleSet) {
+        StringBuilder sb = new StringBuilder();
+        log.info("");
+        log.info(header);
+        
+        for(int i =0; i < header.length(); i++) sb.append("-");
+        log.info(sb.toString());
+        
+        ruleSet.getRules().forEach(rule -> {
+            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
+            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
         });
     }
 }

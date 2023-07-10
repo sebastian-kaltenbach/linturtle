@@ -5,20 +5,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import com.ibm.controller.ValidationController;
+import com.ibm.model.annotation.Rule;
 import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
 @Mojo(threadSafe = true, name = "validate")
 public class ValidatePojo extends AbstractMojo {
+
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    private MavenProject project;
 
     @Parameter(property = "plugin.sourceFolder", defaultValue = "src/main/resources")
     private String sourceFolder;
@@ -38,6 +51,9 @@ public class ValidatePojo extends AbstractMojo {
     @Parameter(property = "plugin.output")
     private Map<String, String> output;
 
+    @Parameter(property = "plugin.customRulePackage")
+    private String customRulePackage;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -48,7 +64,7 @@ public class ValidatePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(config, sourceFolder, skipRules, getLog());
+        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipRules, customRulePackage, getLog());
 
         if (!failOn.isEmpty())
         {
@@ -72,9 +88,9 @@ public class ValidatePojo extends AbstractMojo {
 
         validationController.execute();
 
-        if (report) { 
+        if (report) {
             validationController.executeReportController();
-        }
+        }     
 
         if(validationController.checkViolationsForSeverity(failOn)){
             throw new MojoFailureException("Failing build due to errors with severity " + failOn.stream().map(Enum::name).collect(Collectors.joining(", ")));

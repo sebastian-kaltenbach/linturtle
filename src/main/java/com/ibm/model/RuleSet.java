@@ -13,4 +13,8 @@ public class RuleSet {
     public RuleSet() {
         rules = new ArrayList<>();
     }
+
+    public void addRule(BaseRule rule) {
+        this.rules.add(rule);
+    }
 }

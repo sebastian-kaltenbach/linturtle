@@ -1,7 +1,6 @@
 package com.ibm.model.rules.common;
 
 import org.camunda.bpm.model.bpmn.instance.EndEvent;
-import org.camunda.bpm.model.bpmn.instance.StartEvent;
 
 import com.ibm.model.RuleResult;
 import com.ibm.model.annotation.Rule;
