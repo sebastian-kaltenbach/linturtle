@@ -1,12 +1,12 @@
-package com.ibm.model.annotation;
+package de.dsheng.model.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.ibm.model.entity.Element;
-import com.ibm.model.entity.Severity;
+import de.dsheng.model.entity.Element;
+import de.dsheng.model.entity.Severity;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

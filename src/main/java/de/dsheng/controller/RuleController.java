@@ -1,4 +1,4 @@
-package com.ibm.controller;
+package de.dsheng.controller;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -14,10 +14,10 @@ import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
-import com.ibm.model.RuleSet;
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.rules.BaseRule;
 
+import de.dsheng.model.RuleSet;
+import de.dsheng.model.annotation.Rule;
+import de.dsheng.model.rules.BaseRule;
 import lombok.Getter;
 
 public class RuleController {

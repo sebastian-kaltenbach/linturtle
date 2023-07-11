@@ -1,12 +1,12 @@
-package com.ibm.model.rules.common;
+package de.dsheng.model.rules.common;
 
 import org.camunda.bpm.model.bpmn.instance.Gateway;
 
-import com.ibm.model.RuleResult;
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.entity.Element;
-import com.ibm.model.entity.Severity;
-import com.ibm.model.rules.BaseRule;
+import de.dsheng.model.RuleResult;
+import de.dsheng.model.annotation.Rule;
+import de.dsheng.model.entity.Element;
+import de.dsheng.model.entity.Severity;
+import de.dsheng.model.rules.BaseRule;
 
 @Rule(severity = Severity.MUST, targetType = Element.GATEWAY)
 public class GatewayNameNonNullRule extends BaseRule {

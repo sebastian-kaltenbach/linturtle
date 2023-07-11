@@ -1,4 +1,4 @@
-package com.ibm.controller;
+package de.dsheng.controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,13 +29,14 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.ibm.model.MetaData;
-import com.ibm.model.RuleSet;
-import com.ibm.model.Violation;
-import com.ibm.model.ViolationSet;
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.entity.Format;
 import com.typesafe.config.Config;
+
+import de.dsheng.model.MetaData;
+import de.dsheng.model.RuleSet;
+import de.dsheng.model.Violation;
+import de.dsheng.model.ViolationSet;
+import de.dsheng.model.annotation.Rule;
+import de.dsheng.model.entity.Format;
 
 public class ReportController {
     

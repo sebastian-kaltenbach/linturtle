@@ -1,4 +1,4 @@
-package com.ibm.controller;
+package de.dsheng.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,13 +20,12 @@ import org.camunda.bpm.model.bpmn.instance.Task;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 
-import com.ibm.model.RuleResult;
-import com.ibm.model.RuleSet;
-import com.ibm.model.Violation;
-import com.ibm.model.ViolationSet;
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.entity.Element;
-
+import de.dsheng.model.RuleResult;
+import de.dsheng.model.RuleSet;
+import de.dsheng.model.Violation;
+import de.dsheng.model.ViolationSet;
+import de.dsheng.model.annotation.Rule;
+import de.dsheng.model.entity.Element;
 import lombok.Getter;
 
 public class RuleSetController {

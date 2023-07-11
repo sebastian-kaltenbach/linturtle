@@ -1,4 +1,4 @@
-package com.ibm.model;
+package de.dsheng.model;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

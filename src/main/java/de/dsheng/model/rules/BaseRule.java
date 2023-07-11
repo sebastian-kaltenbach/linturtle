@@ -1,6 +1,6 @@
-package com.ibm.model.rules;
+package de.dsheng.model.rules;
 
-import com.ibm.model.RuleResult;
+import de.dsheng.model.RuleResult;
 
 public abstract class BaseRule {
     public abstract RuleResult check(Object OUT);

@@ -1,4 +1,4 @@
-package com.ibm.model.entity;
+package de.dsheng.model.entity;
 
 public enum Format {
     JSON,

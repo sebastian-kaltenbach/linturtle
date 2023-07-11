@@ -1,7 +1,8 @@
-package com.ibm.model;
+package de.dsheng.model;
 
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import com.ibm.model.rules.BaseRule;
+
+import de.dsheng.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

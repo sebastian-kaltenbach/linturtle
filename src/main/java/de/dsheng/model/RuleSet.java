@@ -1,9 +1,9 @@
-package com.ibm.model;
+package de.dsheng.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.model.rules.BaseRule;
+import de.dsheng.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

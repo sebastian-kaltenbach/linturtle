@@ -1,4 +1,4 @@
-package com.ibm.controller;
+package de.dsheng.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +9,10 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-import com.ibm.model.ViolationSet;
-import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 
+import de.dsheng.model.ViolationSet;
+import de.dsheng.model.entity.Severity;
 import lombok.Getter;
 
 public class ValidationController {

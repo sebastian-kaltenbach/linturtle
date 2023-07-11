@@ -1,19 +1,11 @@
-package com.ibm;
+package de.dsheng;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -21,14 +13,14 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.ibm.controller.ValidationController;
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.entity.Severity;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
+import de.dsheng.controller.ValidationController;
+import de.dsheng.model.entity.Severity;
+
 @Mojo(threadSafe = true, name = "validate")
-public class ValidatePojo extends AbstractMojo {
+public class LinturtlePojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;

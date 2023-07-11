@@ -1,11 +1,10 @@
-package com.ibm.model;
+package de.dsheng.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.model.annotation.Rule;
-import com.ibm.model.entity.Severity;
-
+import de.dsheng.model.annotation.Rule;
+import de.dsheng.model.entity.Severity;
 import lombok.Getter;
 
 public class ViolationSet {
