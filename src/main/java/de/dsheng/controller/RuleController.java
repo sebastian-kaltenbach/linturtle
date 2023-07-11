@@ -8,7 +8,6 @@ import java.net.URLClassLoader;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.logging.Log;
@@ -23,7 +22,7 @@ import lombok.Getter;
 public class RuleController {
 
     private Log log;
-    private final String BASIC_RULE_PACKAGE = "com.ibm.model.rules.common";
+    private final String BASIC_RULE_PACKAGE = "de.dsheng.model.rules.common";
 
     @Getter
     private RuleSet ruleSet;
