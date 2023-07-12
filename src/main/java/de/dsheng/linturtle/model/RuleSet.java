@@ -1,9 +1,9 @@
-package de.dsheng.model;
+package de.dsheng.linturtle.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dsheng.model.rules.BaseRule;
+import de.dsheng.linturtle.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

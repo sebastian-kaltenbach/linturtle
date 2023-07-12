@@ -1,4 +1,4 @@
-package de.dsheng.controller;
+package de.dsheng.linturtle.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
 import com.typesafe.config.Config;
 
-import de.dsheng.model.ViolationSet;
-import de.dsheng.model.entity.Severity;
+import de.dsheng.linturtle.model.ViolationSet;
+import de.dsheng.linturtle.model.entity.Severity;
 import lombok.Getter;
 
 public class ValidationController {

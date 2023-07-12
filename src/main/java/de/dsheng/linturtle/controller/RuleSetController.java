@@ -1,4 +1,4 @@
-package de.dsheng.controller;
+package de.dsheng.linturtle.controller;
 
 import org.apache.maven.plugin.logging.Log;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
@@ -15,12 +15,12 @@ import org.camunda.bpm.model.bpmn.instance.Task;
 import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.camunda.bpm.model.xml.type.ModelElementType;
 
-import de.dsheng.model.RuleResult;
-import de.dsheng.model.RuleSet;
-import de.dsheng.model.Violation;
-import de.dsheng.model.ViolationSet;
-import de.dsheng.model.annotation.Rule;
-import de.dsheng.model.entity.Element;
+import de.dsheng.linturtle.model.RuleResult;
+import de.dsheng.linturtle.model.RuleSet;
+import de.dsheng.linturtle.model.Violation;
+import de.dsheng.linturtle.model.ViolationSet;
+import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.entity.Element;
 import lombok.Getter;
 
 public class RuleSetController {

@@ -1,12 +1,12 @@
-package de.dsheng.model.rules.common;
+package de.dsheng.linturtle.model.rules.common;
 
 import org.camunda.bpm.model.bpmn.instance.Gateway;
 
-import de.dsheng.model.RuleResult;
-import de.dsheng.model.annotation.Rule;
-import de.dsheng.model.entity.Element;
-import de.dsheng.model.entity.Severity;
-import de.dsheng.model.rules.BaseRule;
+import de.dsheng.linturtle.model.RuleResult;
+import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.entity.Element;
+import de.dsheng.linturtle.model.entity.Severity;
+import de.dsheng.linturtle.model.rules.BaseRule;
 
 @Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Checks, if Gateways have a non-null name")
 public class GatewayNameNonNullRule extends BaseRule {

@@ -1,10 +1,10 @@
-package de.dsheng.model;
+package de.dsheng.linturtle.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dsheng.model.annotation.Rule;
-import de.dsheng.model.entity.Severity;
+import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.entity.Severity;
 import lombok.Getter;
 
 public class ViolationSet {

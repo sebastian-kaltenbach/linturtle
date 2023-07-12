@@ -1,4 +1,4 @@
-package de.dsheng.controller;
+package de.dsheng.linturtle.controller;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -14,15 +14,15 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
-import de.dsheng.model.RuleSet;
-import de.dsheng.model.annotation.Rule;
-import de.dsheng.model.rules.BaseRule;
+import de.dsheng.linturtle.model.RuleSet;
+import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.rules.BaseRule;
 import lombok.Getter;
 
 public class RuleController {
 
     private Log log;
-    private final String BASIC_RULE_PACKAGE = "de.dsheng.model.rules.common";
+    private final String BASIC_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common";
 
     @Getter
     private RuleSet commonRuleSet;

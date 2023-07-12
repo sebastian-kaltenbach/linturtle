@@ -1,4 +1,4 @@
-package de.dsheng.model;
+package de.dsheng.linturtle.model;
 
 import java.util.Date;
 

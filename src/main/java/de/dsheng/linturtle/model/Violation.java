@@ -1,8 +1,8 @@
-package de.dsheng.model;
+package de.dsheng.linturtle.model;
 
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 
-import de.dsheng.model.rules.BaseRule;
+import de.dsheng.linturtle.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package de.dsheng.controller;
+package de.dsheng.linturtle.controller;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -31,12 +31,12 @@ import org.w3c.dom.Element;
 
 import com.typesafe.config.Config;
 
-import de.dsheng.model.MetaData;
-import de.dsheng.model.RuleSet;
-import de.dsheng.model.Violation;
-import de.dsheng.model.ViolationSet;
-import de.dsheng.model.annotation.Rule;
-import de.dsheng.model.entity.Format;
+import de.dsheng.linturtle.model.MetaData;
+import de.dsheng.linturtle.model.RuleSet;
+import de.dsheng.linturtle.model.Violation;
+import de.dsheng.linturtle.model.ViolationSet;
+import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.entity.Format;
 
 public class ReportController {
     

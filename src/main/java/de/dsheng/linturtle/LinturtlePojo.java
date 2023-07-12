@@ -1,4 +1,4 @@
-package de.dsheng;
+package de.dsheng.linturtle;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +16,8 @@ import org.apache.maven.project.MavenProject;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
-import de.dsheng.controller.ValidationController;
-import de.dsheng.model.entity.Severity;
+import de.dsheng.linturtle.controller.ValidationController;
+import de.dsheng.linturtle.model.entity.Severity;
 
 @Mojo(threadSafe = true, name = "validate")
 public class LinturtlePojo extends AbstractMojo {

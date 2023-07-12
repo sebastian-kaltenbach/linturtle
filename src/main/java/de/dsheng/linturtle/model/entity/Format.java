@@ -1,4 +1,4 @@
-package de.dsheng.model.entity;
+package de.dsheng.linturtle.model.entity;
 
 public enum Format {
     JSON,
