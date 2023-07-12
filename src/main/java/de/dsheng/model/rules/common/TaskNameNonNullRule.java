@@ -1,7 +1,5 @@
 package de.dsheng.model.rules.common;
 
-import java.util.logging.Logger;
-
 import org.camunda.bpm.model.bpmn.instance.Task;
 
 import de.dsheng.model.RuleResult;
@@ -10,7 +8,7 @@ import de.dsheng.model.entity.Element;
 import de.dsheng.model.entity.Severity;
 import de.dsheng.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.TASK)
+@Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name")
 public class TaskNameNonNullRule extends BaseRule {
 
     public TaskNameNonNullRule() {

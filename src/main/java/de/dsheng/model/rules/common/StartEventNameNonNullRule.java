@@ -1,9 +1,6 @@
 package de.dsheng.model.rules.common;
 
-import java.util.logging.Logger;
-
 import org.camunda.bpm.model.bpmn.instance.StartEvent;
-import org.camunda.bpm.model.bpmn.instance.Task;
 
 import de.dsheng.model.RuleResult;
 import de.dsheng.model.annotation.Rule;
@@ -11,7 +8,7 @@ import de.dsheng.model.entity.Element;
 import de.dsheng.model.entity.Severity;
 import de.dsheng.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT)
+@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Checks, if Start Events have a non-null name")
 public class StartEventNameNonNullRule extends BaseRule {
 
     public StartEventNameNonNullRule() {

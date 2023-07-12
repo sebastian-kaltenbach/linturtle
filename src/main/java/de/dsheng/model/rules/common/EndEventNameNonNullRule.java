@@ -8,7 +8,7 @@ import de.dsheng.model.entity.Element;
 import de.dsheng.model.entity.Severity;
 import de.dsheng.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.ENDEVENT)
+@Rule(severity = Severity.MUST, targetType = Element.ENDEVENT, description = "Checks, if End Events have a non-null name")
 public class EndEventNameNonNullRule extends BaseRule {
 
     public EndEventNameNonNullRule() {

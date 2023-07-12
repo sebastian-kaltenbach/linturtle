@@ -13,4 +13,5 @@ import de.dsheng.model.entity.Severity;
 public @interface Rule {
     Element targetType();
     Severity severity();
+    String description();
 }

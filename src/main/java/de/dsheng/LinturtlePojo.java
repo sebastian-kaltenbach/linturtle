@@ -25,29 +25,32 @@ public class LinturtlePojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
 
-    @Parameter(property = "plugin.sourceFolder", defaultValue = "src/main/resources")
+    @Parameter(property = "linturtle.sourceFolder", defaultValue = "src/main/resources")
     private String sourceFolder;
 
-    @Parameter(property = "plugin.failOn")
+    @Parameter(property = "linturtle.failOn")
     private List<Severity> failOn;
     
-    @Parameter(property = "plugin.skip", defaultValue = "false")
+    @Parameter(property = "linturtle.skip", defaultValue = "false")
     private boolean skip;
 
-    @Parameter(property = "plugin.report", defaultValue = "true")
+    @Parameter(property = "linturtle.report", defaultValue = "true")
     private boolean report;
 
-    @Parameter(property = "plugin.skipRules")
+    @Parameter(property = "linturtle.skipRules")
     private Set<String> skipRules;
 
-    @Parameter(property = "plugin.output")
+    @Parameter(property = "linturtle.output")
     private Map<String, String> output;
 
-    @Parameter(property = "plugin.customRulePackage")
+    @Parameter(property = "linturtle.customRulePackage")
     private String customRulePackage;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        printHeader();
+        printConfigurationSetup();
 
         if (skip)
         {
@@ -55,37 +58,44 @@ public class LinturtlePojo extends AbstractMojo {
             return;
         }
 
-        Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipRules, customRulePackage, getLog());
-
         if (!failOn.isEmpty())
         {
-            getLog().info("Will fail build on errors of severity: " + failOn
-                    .stream()
-                    .map(Enum::name)
-                    .collect(Collectors.joining(", ")));
-            if(failOn.contains(Severity.MAY)) {
-                failOn.add(Severity.SHOULD);
-                failOn.add(Severity.MUST);
-            }
-            if(failOn.contains(Severity.SHOULD)) failOn.add(Severity.MUST);
+            if(failOn.contains(Severity.MAY)) failOn.add(Severity.SHOULD);
+            if(failOn.contains(Severity.SHOULD)) failOn.add(Severity.MUST); 
+        }
 
-            
-        }
-        else
-        {
-            getLog().warn("No errors will fail the build, reporting only. Adjust 'failOn' " +
-                    "property to fail on requested severities:" + Arrays.toString(Severity.values()));
-        }
+        Config config = ConfigValueFactory.fromMap(output).toConfig();
+        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipRules, customRulePackage, getLog());
 
         validationController.execute();
 
         if (report) {
-            validationController.executeReportController();
+            validationController.executeReport();
         }     
 
         if(validationController.checkViolationsForSeverity(failOn)){
             throw new MojoFailureException("Failing build due to errors with severity " + failOn.stream().map(Enum::name).collect(Collectors.joining(", ")));
         }
+    }
+    
+    private void printHeader() {
+        getLog().info("");
+        getLog().info("  _     _       _              _   _      ");
+        getLog().info(" | |   (_)_ __ | |_ _   _ _ __| |_| | ___ ");
+        getLog().info(" | |   | | '_ \\| __| | | | '__| __| |/ _ \\");
+        getLog().info(" | |___| | | | | |_| |_| | |  | |_| |  __/");
+        getLog().info(" |_____|_|_| |_|\\__|\\__,_|_|   \\__|_|\\___|");
+        getLog().info("                                          ");
+        getLog().info("");
+    }
+
+    private void printConfigurationSetup() {
+        getLog().info("");
+        getLog().info("Linturte is configured with the following parameters:");
+        getLog().info("\t- Skip Plugin execution: " + skip);
+        getLog().info("\t- Fail on severity: " + (!failOn.isEmpty() ? failOn.stream().map(Enum::name).collect(Collectors.joining(", ")) : 
+            "No errors will fail the build, reporting only. Adjust 'failOn' property to fail on requested severities:" + Arrays.toString(Severity.values())));
+        getLog().info("\t- Report Plugin validation result: " + report);
+        getLog().info("");
     }
 }

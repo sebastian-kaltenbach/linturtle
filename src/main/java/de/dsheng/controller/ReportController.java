@@ -176,23 +176,11 @@ public class ReportController {
 
     public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, ViolationSet> violationSets) {
         StringBuilder sb = new StringBuilder();
-
-        //  Active Rules
-        String header = "Rules (" + ruleSet.getRules().size() + ")";
-        printRulesByRuleSet(header, ruleSet);
-
-        //  Custom Rules
-        header = "Custom Rules (" + customRuleSet.getRules().size() + ")";
-        printRulesByRuleSet(header, customRuleSet);
-
-        // Skipped Rules
-        header = "Skipped Rules (" + skippedRuleSet.getRules().size() + ")";
-        printRulesByRuleSet(header, skippedRuleSet);
         
         //  Rule Violations
         int violationCount = (int) violationSets.values().stream().map(e -> e.getViolations().size()).reduce(0, Integer::sum);
 
-        header = "Rule violations (" + violationCount + ")";
+        String header = "Rule violations (" + violationCount + ")";
         log.info("");
         log.info(header);
         sb = new StringBuilder();
@@ -202,25 +190,11 @@ public class ReportController {
         violationSets.forEach((model, violations) -> {
             violations.getViolations().forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
-                log.info(model.getModel().getModelName() + " - " + 
+                log.info("\t- " + model.getModel().getModelName() + " - " + 
                 violation.getRule().getClass().getSimpleName() + " - " + 
                 ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString() + " - " +
                 violation.getTargetId());
             });
-        });
-    }
-
-    private void printRulesByRuleSet(String header, RuleSet ruleSet) {
-        StringBuilder sb = new StringBuilder();
-        log.info("");
-        log.info(header);
-        
-        for(int i =0; i < header.length(); i++) sb.append("-");
-        log.info(sb.toString());
-        
-        ruleSet.getRules().forEach(rule -> {
-            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            log.info(rule.getClass().getSimpleName() + " - " + ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString());
         });
     }
 }

@@ -25,52 +25,53 @@ public class RuleController {
     private final String BASIC_RULE_PACKAGE = "de.dsheng.model.rules.common";
 
     @Getter
-    private RuleSet ruleSet;
+    private RuleSet commonRuleSet;
 
     @Getter 
     private RuleSet customRuleSet;
 
     @Getter
-    private RuleSet skippedRules;
+    private RuleSet skippedRuleSet;
+
+    @Getter
+    private RuleSet activeRuleSet;
 
     public RuleController(Log log) {
-        this.ruleSet = new RuleSet();
-        this.skippedRules = new RuleSet();
+        this.commonRuleSet = new RuleSet();
+        this.skippedRuleSet = new RuleSet();
         this.customRuleSet = new RuleSet();
+        this.activeRuleSet = new RuleSet();
         this.log = log;
     }
 
     public RuleController prepare(MavenProject project, Set<String> skipRules, String customRulePackage) {
-        handleIndexer();
-        setupSkippetRuleSet(skipRules);
-        gatherCustomRules(project, customRulePackage);
+        loadCommonRulesToRuleSet();
+        loadSkippedRulesToRuleSet(skipRules);
+        loadCustomRulesToRuleSet(project, customRulePackage);
+        prepareActiveRuleSet();
+
+        printFoundRules();
         return this;
     }
 
-    private void handleIndexer() {
-        log.info("Lookup rules in package " + BASIC_RULE_PACKAGE);
+    private void loadCommonRulesToRuleSet() {
         Reflections reflections = new Reflections(BASIC_RULE_PACKAGE);
         Set<Class<?>> ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
         ruleClasses.forEach(ruleClass -> {
             try {
-                ruleSet.addRule((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
-                log.debug("Found Rule: " + ruleClass.getSimpleName() + "  |  Added to RuleSet");
+                this.commonRuleSet.addRule((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 log.warn(ruleClass.getSimpleName() + " could not be added to common rule set | " + e.getMessage());
-            }    
-            log.info("Rule: " + ruleClass.getSimpleName() + " added!");       
+            }        
         });
     }
 
-    private void setupSkippetRuleSet(Set<String> skipRules) {
-        skippedRules.setRules(this.ruleSet.getRules().stream().filter(rule -> skipRules.contains(rule.getClass().getSimpleName())).toList());
-        var deltaRules = ruleSet.getRules();
-        deltaRules.removeAll(skippedRules.getRules());
-        ruleSet.setRules(deltaRules);
+    private void loadSkippedRulesToRuleSet(Set<String> skipRules) {
+        skippedRuleSet.setRules(this.commonRuleSet.getRules().stream().filter(rule -> skipRules.contains(rule.getClass().getSimpleName())).toList());
     }
 
-    private void gatherCustomRules(MavenProject project, String customRulePackage) {
+    private void loadCustomRulesToRuleSet(MavenProject project, String customRulePackage) {
         try {
             project.getCompileClasspathElements().forEach(e -> {
                 URL url;
@@ -101,5 +102,40 @@ public class RuleController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private void prepareActiveRuleSet() {
+        activeRuleSet.addRules(this.commonRuleSet.getRules());
+        if(!this.customRuleSet.getRules().isEmpty()) activeRuleSet.addRules(this.customRuleSet.getRules());
+        var tmpRules = activeRuleSet.getRules();
+        tmpRules.removeAll(this.skippedRuleSet.getRules());
+        activeRuleSet.setRules(tmpRules);
+    }
+
+    private void printFoundRules() {
+        String header = "";
+        if(!this.activeRuleSet.getRules().isEmpty()) {
+            header = "Active Rules (" + this.activeRuleSet.getRules().size() + ")";
+            printRulesByRuleSet(header, this.activeRuleSet);
+        }
+        if(!this.skippedRuleSet.getRules().isEmpty()) {
+            header = "Skipped Rules (" + this.skippedRuleSet.getRules().size() + ")";
+            printRulesByRuleSet(header, this.skippedRuleSet);
+        }
+    }
+
+    private void printRulesByRuleSet(String header, RuleSet ruleSet) {
+        StringBuilder sb = new StringBuilder();
+        log.info("");
+        log.info(header);
+        
+        for(int i =0; i < header.length(); i++) sb.append("-");
+        log.info(sb.toString());
+        
+        ruleSet.getRules().forEach(rule -> {
+            Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
+            log.info("\t- " + rule.getClass().getSimpleName() + " | " + ruleAnnotation.severity().toString() +
+            " | " + ruleAnnotation.targetType().toString() + " | " + ruleAnnotation.description());
+        });
     }
 }

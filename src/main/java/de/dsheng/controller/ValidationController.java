@@ -36,14 +36,14 @@ public class ValidationController {
 
     public void execute() {
         log.debug("ValidationController executed.");
-        bpmnController.gBpmnModelInstances().forEach(model -> {
-            RuleSetController controller = new RuleSetController(ruleController.getRuleSet(), model, log).execute();
+        bpmnController.getBpmnModelInstances().forEach(model -> {
+            RuleSetController controller = new RuleSetController(ruleController.getActiveRuleSet(), model, log).execute();
             this.violationSets.put(model, controller.getViolationSet());
         });
-        reportController.printResultToConsole(ruleController.getRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRules(), this.violationSets);
+        reportController.printResultToConsole(ruleController.getActiveRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRuleSet(), this.violationSets);
     }
 
-    public void executeReportController() {
+    public void executeReport() {
         reportController.execute(this.violationSets);
     }
 

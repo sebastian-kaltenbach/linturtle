@@ -5,7 +5,6 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.apache.maven.plugin.logging.Log;
@@ -27,6 +26,7 @@ public class BPMNController {
         File dir = new File(this.sourcePath);
         bpmnModelInstances = Stream.of(dir.listFiles(bpmnFilefilter))
             .map(e -> transformBpmnInstanceFromFile(e)).toList();
+        printFoundBPMNFiles();
         return this;
     }
 
@@ -41,11 +41,20 @@ public class BPMNController {
     };
 
     private BpmnModelInstance transformBpmnInstanceFromFile(File file) {
-        log.info("BPMN-Definition found: " + file.getName());
         return Objects.requireNonNull(Bpmn.readModelFromFile(file));
     }
 
-    public List<BpmnModelInstance> gBpmnModelInstances() {
+    public List<BpmnModelInstance> getBpmnModelInstances() {
         return this.bpmnModelInstances;
+    }
+
+    private void printFoundBPMNFiles() {
+        log.info("");
+        log.info("Recognized BPMN files for further processing:");
+        File dir = new File(this.sourcePath);
+        Stream.of(dir.listFiles(bpmnFilefilter)).forEach(file -> {
+            log.info("\t- " + file.getName());
+        });
+        log.info("");
     }
 }

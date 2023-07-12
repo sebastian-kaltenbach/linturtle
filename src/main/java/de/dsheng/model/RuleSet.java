@@ -17,4 +17,8 @@ public class RuleSet {
     public void addRule(BaseRule rule) {
         this.rules.add(rule);
     }
+
+    public void addRules(List<BaseRule> rules) {
+        this.rules.addAll(rules);
+    }
 }

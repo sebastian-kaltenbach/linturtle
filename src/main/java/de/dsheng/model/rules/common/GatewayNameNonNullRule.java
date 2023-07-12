@@ -8,7 +8,7 @@ import de.dsheng.model.entity.Element;
 import de.dsheng.model.entity.Severity;
 import de.dsheng.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.GATEWAY)
+@Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Checks, if Gateways have a non-null name")
 public class GatewayNameNonNullRule extends BaseRule {
 
     public GatewayNameNonNullRule() {
