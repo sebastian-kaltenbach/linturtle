@@ -40,6 +40,9 @@ public class LinturtlePojo extends AbstractMojo {
     @Parameter(property = "linturtle.skipRules")
     private Set<String> skipRules;
 
+    @Parameter(property = "linturtle.skipBPMNs")
+    private Set<String> skipBPMNs;
+
     @Parameter(property = "linturtle.output")
     private Map<String, String> output;
 
@@ -65,7 +68,7 @@ public class LinturtlePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipRules, customRulePackage, getLog());
+        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipBPMNs, skipRules, customRulePackage, getLog());
 
         validationController.execute();
 

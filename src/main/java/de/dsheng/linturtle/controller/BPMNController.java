@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.maven.plugin.logging.Log;
@@ -16,9 +17,11 @@ public class BPMNController {
     private Log log;
     private String sourcePath;
     private List<BpmnModelInstance> bpmnModelInstances = new ArrayList<>();
+    private Set<String> skipBPMNs;
 
-    public BPMNController(String sourcePath, Log log) {
+    public BPMNController(String sourcePath, Set<String> skipBPMNs, Log log) {
         this.sourcePath = sourcePath;
+        this.skipBPMNs = skipBPMNs;
         this.log = log;
     }
 
@@ -33,7 +36,7 @@ public class BPMNController {
     private final FileFilter bpmnFilefilter = new FileFilter()
     {
         public boolean accept(File file) {
-            if (file.getName().endsWith(".bpmn")) {
+            if (file.getName().endsWith(".bpmn") && !skipBPMNs.contains(file.getName())) {
                 return true;
             }
             return false;

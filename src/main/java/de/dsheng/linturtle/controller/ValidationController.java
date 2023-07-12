@@ -25,9 +25,9 @@ public class ValidationController {
     @Getter
     private Map<BpmnModelInstance, ViolationSet> violationSets;
 
-    public ValidationController(MavenProject project, Config config, String source, Set<String> skipRules, String customRulePackage, Log log) {
+    public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
-        this.bpmnController = new BPMNController(source, log).prepare();
+        this.bpmnController = new BPMNController(source, skipBPMNs, log).prepare();
         this.ruleController = new RuleController(log).prepare(project, skipRules, customRulePackage);
         this.reportController = new ReportController(config, log);
         this.violationSets = new HashMap<>();
