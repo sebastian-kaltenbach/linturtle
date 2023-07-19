@@ -26,18 +26,6 @@
    <version.jandex>3.1.2</version.jandex>
   </properties>
 
-   <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.camunda.bpm</groupId>
-                <artifactId>camunda-bom</artifactId>
-                <version>${camunda.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
   <dependencies>
     <dependency>
         <groupId>org.reflections</groupId>
@@ -85,16 +73,6 @@
         <version>1.4.2</version>
     </dependency>
 
-    <!-- Camunda Dependencies -->
-    <dependency>
-      <groupId>org.camunda.bpm.model</groupId>
-      <artifactId>camunda-bpmn-model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.camunda.bpm.model</groupId>
-      <artifactId>camunda-dmn-model</artifactId>
-    </dependency>
-
     <!-- External Dependencies -->
     <dependency>
         <groupId>io.smallrye</groupId>
@@ -106,6 +84,17 @@
         <artifactId>auto-service</artifactId>
         <version>1.1.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
+    <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>4.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>4.0.0</version>
+     </dependency>
 
     <!-- Test Dependencies -->
     <dependency>
@@ -165,6 +154,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>jaxb2-maven-plugin</artifactId>
+    <version>3.1.0</version>
+    <executions>
+        <execution>
+            <id>xjc</id>
+            <goals>
+                <goal>xjc</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <sources>
+            <source>src/main/resources/xsd/</source>
+        </sources>
+        <outputDirectory>${basedir}/src/main/java</outputDirectory>
+        <clearOutputDir>false</clearOutputDir>
+    </configuration>
+</plugin>
     </plugins>
   </build>
 </project>

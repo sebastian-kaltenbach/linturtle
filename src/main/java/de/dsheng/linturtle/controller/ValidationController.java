@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import com.typesafe.config.Config;
 
@@ -23,7 +23,7 @@ public class ValidationController {
     private ReportController reportController;
 
     @Getter
-    private Map<BpmnModelInstance, ViolationSet> violationSets;
+    private Map<TProcess, ViolationSet> violationSets;
 
     public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;

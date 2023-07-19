@@ -9,14 +9,16 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.maven.plugin.logging.Log;
-import org.camunda.bpm.model.bpmn.Bpmn;
-import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.omg.spec.bpmn._20100524.model.TDefinitions;
+import org.omg.spec.bpmn._20100524.model.TProcess;
+
+import jakarta.xml.bind.JAXB;
 
 public class BPMNController {
 
     private Log log;
     private String sourcePath;
-    private List<BpmnModelInstance> bpmnModelInstances = new ArrayList<>();
+    private List<TDefinitions> bpmnDefinitions = new ArrayList<>();
     private Set<String> skipBPMNs;
 
     public BPMNController(String sourcePath, Set<String> skipBPMNs, Log log) {
@@ -27,8 +29,8 @@ public class BPMNController {
 
     public BPMNController prepare() {
         File dir = new File(this.sourcePath);
-        bpmnModelInstances = Stream.of(dir.listFiles(bpmnFilefilter))
-            .map(e -> transformBpmnInstanceFromFile(e)).toList();
+        bpmnDefinitions = Stream.of(dir.listFiles(bpmnFilefilter))
+            .map(e -> transformTDefinitionsFromFile(e)).toList();
         printFoundBPMNFiles();
         return this;
     }
@@ -43,12 +45,15 @@ public class BPMNController {
         }
     };
 
-    private BpmnModelInstance transformBpmnInstanceFromFile(File file) {
-        return Objects.requireNonNull(Bpmn.readModelFromFile(file));
+    private TDefinitions transformTDefinitionsFromFile(File file) {
+        return Objects.requireNonNull(JAXB.unmarshal(file, TDefinitions.class));
     }
 
-    public List<BpmnModelInstance> getBpmnModelInstances() {
-        return this.bpmnModelInstances;
+    public List<TProcess> getBpmnModelInstances() {
+        return this.bpmnDefinitions.stream()
+            .map(definition -> (TProcess)
+                definition.getRootElement().stream()
+                    .filter(rootElement -> rootElement.getName().getLocalPart().equals("process")).findFirst().get().getValue()).toList();
     }
 
     private void printFoundBPMNFiles() {

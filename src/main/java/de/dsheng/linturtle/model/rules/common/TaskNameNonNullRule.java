@@ -1,6 +1,6 @@
 package de.dsheng.linturtle.model.rules.common;
 
-import org.camunda.bpm.model.bpmn.instance.Task;
+import org.omg.spec.bpmn._20100524.model.TTask;
 
 import de.dsheng.linturtle.model.RuleResult;
 import de.dsheng.linturtle.model.annotation.Rule;
@@ -16,7 +16,7 @@ public class TaskNameNonNullRule extends BaseRule {
     
     @Override
     public RuleResult check(Object OUT) {
-        Task targetType = (Task) OUT;
+        TTask targetType = (TTask) OUT;
         return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
     }
 }

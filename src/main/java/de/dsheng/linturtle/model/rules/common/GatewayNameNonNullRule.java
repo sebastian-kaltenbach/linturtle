@@ -1,6 +1,6 @@
 package de.dsheng.linturtle.model.rules.common;
 
-import org.camunda.bpm.model.bpmn.instance.Gateway;
+import org.omg.spec.bpmn._20100524.model.TGateway;
 
 import de.dsheng.linturtle.model.RuleResult;
 import de.dsheng.linturtle.model.annotation.Rule;
@@ -16,7 +16,7 @@ public class GatewayNameNonNullRule extends BaseRule {
 
     @Override
     public RuleResult check(Object OUT) {
-        Gateway targetType = (Gateway) OUT;
+        TGateway targetType = (TGateway) OUT;
         return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
     }
 }

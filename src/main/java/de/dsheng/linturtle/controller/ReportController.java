@@ -22,10 +22,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.maven.plugin.logging.Log;
-import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.omg.spec.bpmn._20100524.model.TProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,13 +49,13 @@ public class ReportController {
         log.debug("ReportController initialized!");
     }
 
-    public void execute(Map<BpmnModelInstance, ViolationSet> violationSets) {
+    public void execute(Map<TProcess, ViolationSet> violationSets) {
         String path = this.config.getString("path");
         Format format = Format.valueOf(this.config.getString("format"));
         try {
             Files.createDirectories(Paths.get(path));
             violationSets.forEach((model, violationSet) -> {
-                String fileName = model.getModel().getModelName() + "." + format.toString().toLowerCase();
+                String fileName = model.getName() + "." + format.toString().toLowerCase();
                 File file = new File(path + "/" + fileName);
                 MetaData metaData = new MetaData("Plugin", new Date(), violationSet.getViolations().size());
 
@@ -174,7 +174,7 @@ public class ReportController {
         }
     }
 
-    public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<BpmnModelInstance, ViolationSet> violationSets) {
+    public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<TProcess, ViolationSet> violationSets) {
         StringBuilder sb = new StringBuilder();
         
         //  Rule Violations
@@ -190,7 +190,7 @@ public class ReportController {
         violationSets.forEach((model, violations) -> {
             violations.getViolations().forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
-                log.info("\t- " + model.getModel().getModelName() + " - " + 
+                log.info("\t- " + model.getName() + " - " + 
                 violation.getRule().getClass().getSimpleName() + " - " + 
                 ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString() + " - " +
                 violation.getTargetId());

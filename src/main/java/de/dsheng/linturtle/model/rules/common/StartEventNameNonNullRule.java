@@ -1,6 +1,6 @@
 package de.dsheng.linturtle.model.rules.common;
 
-import org.camunda.bpm.model.bpmn.instance.StartEvent;
+import org.omg.spec.bpmn._20100524.model.TStartEvent;
 
 import de.dsheng.linturtle.model.RuleResult;
 import de.dsheng.linturtle.model.annotation.Rule;
@@ -16,7 +16,7 @@ public class StartEventNameNonNullRule extends BaseRule {
 
     @Override
     public RuleResult check(Object OUT) {
-        StartEvent targetType = (StartEvent) OUT;
+        TStartEvent targetType = (TStartEvent) OUT;
         return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
     }
 }
