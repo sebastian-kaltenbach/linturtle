@@ -11,29 +11,32 @@ Unofficial maven plugin using Plugin for BPMN 2.0 specification validation
 ## Usage
 
 ```xml
-<plugin>
-    <groupId>com.ibm</groupId>
-    <artifactId>bpmn-linter-maven-plugin</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <configuration>
-        <failOn>SHOULD</failOn>
-        <sourceFolder>src/main/resources</sourceFolder>
-        <skipRules>
-            <skipRule>GatewayNameNonNullRule</skipRule>
-            <skipRule>EndEventNameNonNullRule</skipRule>
-        </skipRules>
-        <output>
-            <path>target/generated-sources/plugin</path>
-            <format>JSON</format>
-        </output>
-    </configuration>
-    <executions>
-        <execution>
-            <phase>compile</phase>
-            <goals>
-                <goal>validate</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
+    <plugin>
+        <groupId>de.dsheng</groupId>
+        <artifactId>linturtle</artifactId> 
+        <configuration>
+            <failOn>MUST</failOn>
+            <sourceFolder>src/main/resources</sourceFolder>
+            <skipRules>
+                <skipRule>GatewayNameNonNullRule</skipRule>
+                <skipRule>EndEventNameNonNullRule</skipRule>
+            </skipRules>
+            <skipBPMNs>
+                <skipBPMN>skip.bpmn</skipBPMN>
+            </skipBPMNs>
+            <customRulePackage>com.ibm.model.custom.rules</customRulePackage>
+            <output>
+                <path>target/generated-sources/linturtle</path>
+                <format>JSON</format>
+            </output>
+        </configuration>
+        <executions>
+            <execution>
+                <phase>compile</phase>
+                <goals>
+                    <goal>validate</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
 ```
