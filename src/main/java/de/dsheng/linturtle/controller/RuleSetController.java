@@ -8,7 +8,6 @@ import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.model.entity.Element;
 import lombok.Getter;
 
 public class RuleSetController {
