@@ -30,7 +30,7 @@ Unofficial maven plugin using Plugin for BPMN 2.0 specification validation
             <skipBPMN>skip.bpmn</skipBPMN>
         </skipBPMNs>
         <!-- Package for custom rules -->
-        <customRulePackage>com.ibm.model.custom.rules</customRulePackage>
+        <customRulePackage>de.linturtle.model.custom.rules</customRulePackage>
         <!-- Report export configuration -->
         <output>
             <!-- Target path for exporting evaluation report -->
