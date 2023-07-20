@@ -25,14 +25,14 @@ public class BPMNController {
         this.sourcePath = sourcePath;
         this.skipBPMNs = skipBPMNs;
         this.log = log;
+        prepare();
     }
 
-    public BPMNController prepare() {
+    private void prepare() {
         File dir = new File(this.sourcePath);
         bpmnDefinitions = Stream.of(dir.listFiles(bpmnFilefilter))
             .map(e -> transformTDefinitionsFromFile(e)).toList();
         printFoundBPMNFiles();
-        return this;
     }
 
     private final FileFilter bpmnFilefilter = new FileFilter()
