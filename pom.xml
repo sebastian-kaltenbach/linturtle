@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.dsheng</groupId>
-  <artifactId>linturtle</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>maven-plugin</packaging>
+    <groupId>de.dsheng</groupId>
+    <artifactId>linturtle</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>maven-plugin</packaging>
 
-  <name>linturtle-maven-plugin</name>
-  <description>Dummy Description</description>
+    <name>linturtle-maven-plugin</name>
+    <description>Linturtle provides a simple solution for testing existing bpmn processes (according to the BPMN 2.0 standard) against a common as well as individual ruleset.</description>
+    <developers>
+        <developer>
+            <name>Sebastian Kaltenbach</name>
+            <organization>IBM</organization>
+        </developer>
+    </developers>
 
   <properties>
    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,7 +32,7 @@
    <version.jandex>3.1.2</version.jandex>
   </properties>
 
-  <dependencies>
+    <dependencies>
     <dependency>
         <groupId>org.reflections</groupId>
         <artifactId>reflections</artifactId>
