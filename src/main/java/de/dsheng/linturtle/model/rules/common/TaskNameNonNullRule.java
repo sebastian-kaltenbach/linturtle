@@ -8,12 +8,11 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name")
+@Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name", id = 0)
 public class TaskNameNonNullRule extends BaseRule {
 
     public TaskNameNonNullRule() {
     }
-    
     @Override
     public RuleResult check(Object OUT) {
         TTask targetType = (TTask) OUT;
