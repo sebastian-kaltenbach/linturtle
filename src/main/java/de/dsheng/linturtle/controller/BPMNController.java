@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -12,7 +11,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.omg.spec.bpmn._20100524.model.TDefinitions;
 import org.omg.spec.bpmn._20100524.model.TProcess;
 
-import jakarta.xml.bind.JAXB;
+import de.dsheng.linturtle.utils.BpmnModelMapper;
 
 public class BPMNController {
 
@@ -31,7 +30,7 @@ public class BPMNController {
     private void prepare() {
         File dir = new File(this.sourcePath);
         bpmnDefinitions = Stream.of(dir.listFiles(bpmnFilefilter))
-            .map(e -> transformTDefinitionsFromFile(e)).toList();
+            .map(bpmnFile -> BpmnModelMapper.transformModelToObject(bpmnFile)).toList();
         printFoundBPMNFiles();
     }
 
@@ -45,15 +44,8 @@ public class BPMNController {
         }
     };
 
-    private TDefinitions transformTDefinitionsFromFile(File file) {
-        return Objects.requireNonNull(JAXB.unmarshal(file, TDefinitions.class));
-    }
-
     public List<TProcess> getBpmnModelInstances() {
-        return this.bpmnDefinitions.stream()
-            .map(definition -> (TProcess)
-                definition.getRootElement().stream()
-                    .filter(rootElement -> rootElement.getName().getLocalPart().equals("process")).findFirst().get().getValue()).toList();
+        return this.bpmnDefinitions.stream().map(definition -> BpmnModelMapper.transformDefinitionToProcess(definition)).toList();
     }
 
     private void printFoundBPMNFiles() {

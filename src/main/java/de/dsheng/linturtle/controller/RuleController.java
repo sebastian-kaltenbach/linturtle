@@ -1,7 +1,6 @@
 package de.dsheng.linturtle.controller;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -16,7 +15,7 @@ import org.reflections.Reflections;
 
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.model.rules.BaseRule;
+import de.dsheng.linturtle.utils.RuleMapper;
 import lombok.Getter;
 
 public class RuleController {
@@ -57,14 +56,7 @@ public class RuleController {
     private void loadCommonRulesToRuleSet() {
         Reflections reflections = new Reflections(BASIC_RULE_PACKAGE);
         Set<Class<?>> ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
-        ruleClasses.forEach(ruleClass -> {
-            try {
-                this.commonRuleSet.addRule((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | SecurityException | NoSuchMethodException e) {
-                log.warn(ruleClass.getSimpleName() + " could not be added to common rule set | " + e.getMessage());
-            }        
-        });
+        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToRule(ruleClass)));
     }
 
     private void loadSkippedRulesToRuleSet(Set<String> skipRules) {
@@ -84,23 +76,20 @@ public class RuleController {
                     File classFileDir = Paths.get(classPathDir.toString(), customRulePackage.replace(".", "/")).toFile();
 
                     Arrays.stream(classFileDir.listFiles()).forEach(classFile -> {
-                        Class<?> ruleClass;
                         try {
-                            ruleClass = loader.loadClass(customRulePackage + "." + classFile.getName().substring(0, classFile.getName().lastIndexOf(".")));
-                            this.customRuleSet.addRule((BaseRule) ruleClass.getDeclaredConstructor().newInstance());
-                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-                            // TODO Auto-generated catch block
-                            e1.printStackTrace();
-                        }        
+                            Class<?> clazz = loader.loadClass(customRulePackage + "." + classFile.getName().substring(0, classFile.getName().lastIndexOf(".")));
+                            this.customRuleSet.addRule(RuleMapper.transformClassToRule(clazz));
+
+                        } catch (ClassNotFoundException e1) {
+                            log.error(e1.getMessage(), e1);
+                        }     
                     });
                 } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    log.error(e1.getMessage(), e1);
                 }
             });        
         } catch (DependencyResolutionRequiredException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
