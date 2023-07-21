@@ -1,9 +1,7 @@
 package de.dsheng.linturtle.controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -38,7 +36,6 @@ import de.dsheng.linturtle.utils.JsonPrettyPrintUtils;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
-import jakarta.json.JsonWriter;
 
 public class ReportController {
     
@@ -70,13 +67,11 @@ public class ReportController {
                         parseViolationsToXMLString(metaData, violationSet.getViolations(), file.getAbsolutePath());
                     }
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
             });
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
         log.debug("ReportController executed!");
     }
@@ -145,27 +140,22 @@ public class ReportController {
             doc.appendChild(rootElement);
 
             //  Print logic
-            try (FileOutputStream output =
-                     new FileOutputStream(path)) {
+            try (FileOutputStream output = new FileOutputStream(path)) {
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
 
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
+                // pretty print XML
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            // pretty print XML
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(output);
 
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(output);
-
-            transformer.transform(source, result);
-
+                transformer.transform(source, result);
             } catch (IOException | TransformerException e) {
-                e.printStackTrace();
-            }
-            
+                log.error(e.getMessage(), e);
+            }         
         } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 

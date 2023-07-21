@@ -25,9 +25,11 @@ public class RuleSetController {
         this.ruleSet = ruleSet;
         this.bpmnProcess = bpmnProcess;
         violationSet = new ViolationSet();
+        log.debug("RuleSetController initialized.");
     }
 
     public RuleSetController execute() {
+        log.debug("RuleSetController executed");
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
 
