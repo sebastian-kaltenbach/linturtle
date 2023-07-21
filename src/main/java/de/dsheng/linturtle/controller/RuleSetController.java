@@ -43,7 +43,7 @@ public class RuleSetController {
                             }
                         });
             } catch(Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         });
         return this;
