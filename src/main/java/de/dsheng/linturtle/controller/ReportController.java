@@ -101,13 +101,9 @@ public class ReportController {
             jsonArrayBuilder.add(obj.build());
         });
         rootObjectBuilder.add("violations", jsonArrayBuilder.build());
-        try {
-            var jsonWriter = JsonPrettyPrintUtils.getPrettyJsonWriter(new FileWriter(path));
-            jsonWriter.writeObject(rootObjectBuilder.build());
-            jsonWriter.close();
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
+        var jsonWriter = JsonPrettyPrintUtils.getPrettyJsonWriter(path);
+        jsonWriter.writeObject(rootObjectBuilder.build());
+        jsonWriter.close();
     }
 
     private void parseViolationsToXMLString(MetaData metaData, List<Violation> violations, String path) {
