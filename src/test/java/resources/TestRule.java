@@ -7,7 +7,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Test Rule for Test purposes")
+@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Test Rule for Test purposes", id = 0)
 public class TestRule extends BaseRule {
 
     public TestRule() {}

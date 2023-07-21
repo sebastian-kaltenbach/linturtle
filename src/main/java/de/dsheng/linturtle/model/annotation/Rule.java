@@ -11,6 +11,7 @@ import de.dsheng.linturtle.model.entity.Severity;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Rule {
+    int id();
     Element targetType();
     Severity severity();
     String description();

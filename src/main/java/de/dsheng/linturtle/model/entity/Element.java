@@ -1,6 +1,7 @@
 package de.dsheng.linturtle.model.entity;
 
 public enum Element {
+    PROCESS,
     TASK,
     USERTASK,
     SERVICETASK,
@@ -8,6 +9,8 @@ public enum Element {
     BUSINESSRULETASK,
     EVENT,
     STARTEVENT,
+    INTERMEDIATECATCHEVENT,
+    INTERMEDIATETHROWEVENT,
     ENDEVENT,
     GATEWAY,
     EXCLUSIVEGATEWAY,

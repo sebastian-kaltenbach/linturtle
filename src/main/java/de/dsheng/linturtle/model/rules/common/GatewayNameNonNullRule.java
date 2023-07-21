@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Checks, if Gateways have a non-null name")
+@Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Checks, if Gateways have a non-null name", id = 0)
 public class GatewayNameNonNullRule extends BaseRule {
 
     public GatewayNameNonNullRule() {
@@ -16,7 +16,7 @@ public class GatewayNameNonNullRule extends BaseRule {
 
     @Override
     public RuleResult check(Object OUT) {
-        TGateway targetType = (TGateway) OUT;
-        return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
+        TGateway gateway = (TGateway) OUT;
+        return new RuleResult(gateway.getName() == null || gateway.getName() == "" ?  false :  true, gateway.getId());
     }
 }
