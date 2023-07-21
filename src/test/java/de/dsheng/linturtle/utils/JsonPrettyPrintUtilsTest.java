@@ -3,7 +3,6 @@ package de.dsheng.linturtle.utils;
 import java.io.IOException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import jakarta.json.JsonWriter;
 
 public class JsonPrettyPrintUtilsTest {
 
