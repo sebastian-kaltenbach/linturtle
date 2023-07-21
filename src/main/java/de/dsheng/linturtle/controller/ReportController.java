@@ -22,9 +22,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.maven.plugin.logging.Log;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.omg.spec.bpmn._20100524.model.TProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,6 +34,11 @@ import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Format;
+import de.dsheng.linturtle.utils.JsonPrettyPrintUtils;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.JsonWriter;
 
 public class ReportController {
     
@@ -80,34 +82,31 @@ public class ReportController {
     }
 
     private void parseViolationsToJsonString(MetaData metaData, List<Violation> violations, String path) {
-        JSONObject rootObject = new JSONObject();
-        rootObject.put("name", metaData.getName());
-        rootObject.put("timeStamp", metaData.getTimeStamp().toString());
-        rootObject.put("incidents", metaData.getIncidents());
+        JsonObjectBuilder rootObjectBuilder = Json.createObjectBuilder()
+        .add("name", metaData.getName())
+        .add("timeStamp", metaData.getTimeStamp().toString())
+        .add("incidents", metaData.getIncidents());
 
-        JSONArray jsonArray = new JSONArray();
+        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
         violations.forEach(violation -> {
             var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
 
-            JSONObject obj = new JSONObject();
-            obj.put("rule", violation.getRule().getClass().getSimpleName());
-            obj.put("severity", rule.severity().toString());
-            obj.put("targetType", rule.targetType().toString());
-            obj.put("targetId", violation.getTargetId());
+            JsonObjectBuilder obj = Json.createObjectBuilder()
+            .add("rule", violation.getRule().getClass().getSimpleName())
+            .add("severity", rule.severity().toString())
+            .add("targetType", rule.targetType().toString())
+            .add("targetId", violation.getTargetId());
 
-            jsonArray.put(obj);
+            jsonArrayBuilder.add(obj.build());
         });
-        rootObject.put("violations", jsonArray);
-
-        BufferedWriter writer;
+        rootObjectBuilder.add("violations", jsonArrayBuilder.build());
         try {
-            writer = new BufferedWriter(new FileWriter(path));
-            writer.write(rootObject.toString(4));
-            writer.close();
-        } catch (IOException | JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            var jsonWriter = JsonPrettyPrintUtils.getPrettyJsonWriter(new FileWriter(path));
+            jsonWriter.writeObject(rootObjectBuilder.build());
+            jsonWriter.close();
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
         }
     }
 
