@@ -6,6 +6,7 @@ import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
+import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(description = "Checks if intermediate throw event name is not null or empty", severity = Severity.MUST, targetType = Element.INTERMEDIATETHROWEVENT)
 public class IntermediateThrowEventNameNonNullOrEmpty extends BaseRule {
@@ -13,7 +14,7 @@ public class IntermediateThrowEventNameNonNullOrEmpty extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TIntermediateThrowEvent intermediateThrowEvent = (TIntermediateThrowEvent) OUT;
-        return new RuleResult(intermediateThrowEvent.getName() == null || intermediateThrowEvent.getName() == "" ?  false :  true, intermediateThrowEvent.getId());
+        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(intermediateThrowEvent.getName()) ?  false :  true, intermediateThrowEvent.getId());
     }
     
 }

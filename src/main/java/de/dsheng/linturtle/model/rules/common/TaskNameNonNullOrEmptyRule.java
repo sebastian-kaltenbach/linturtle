@@ -7,6 +7,7 @@ import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
+import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name")
 public class TaskNameNonNullOrEmptyRule extends BaseRule {
@@ -15,7 +16,7 @@ public class TaskNameNonNullOrEmptyRule extends BaseRule {
     }
     @Override
     public RuleResult check(Object OUT) {
-        TTask targetType = (TTask) OUT;
-        return new RuleResult(targetType.getName() == null || targetType.getName() == "" ?  false :  true, targetType.getId());
+        TTask task = (TTask) OUT;
+        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(task.getName()) ?  false :  true, task.getId());
     }
 }

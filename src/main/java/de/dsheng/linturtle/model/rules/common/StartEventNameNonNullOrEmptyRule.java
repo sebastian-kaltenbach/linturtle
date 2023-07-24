@@ -7,6 +7,7 @@ import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
+import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Checks, if Start Events have a non-null name")
 public class StartEventNameNonNullOrEmptyRule extends BaseRule {
@@ -17,6 +18,6 @@ public class StartEventNameNonNullOrEmptyRule extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TStartEvent startEvent = (TStartEvent) OUT;
-        return new RuleResult(startEvent.getName() == null || startEvent.getName() == "" ?  false :  true, startEvent.getId());
+        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(startEvent.getName()) ?  false :  true, startEvent.getId());
     }
 }
