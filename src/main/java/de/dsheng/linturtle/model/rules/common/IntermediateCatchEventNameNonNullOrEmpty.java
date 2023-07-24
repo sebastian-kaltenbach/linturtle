@@ -7,7 +7,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(description = "Checks if intermediate catch event name is not null or empty", id = 0, severity = Severity.MUST, targetType = Element.INTERMEDIATECATCHEVENT)
+@Rule(description = "Checks if intermediate catch event name is not null or empty", severity = Severity.MUST, targetType = Element.INTERMEDIATECATCHEVENT)
 public class IntermediateCatchEventNameNonNullOrEmpty extends BaseRule {
 
     @Override

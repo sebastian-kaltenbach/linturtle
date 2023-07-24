@@ -18,18 +18,18 @@ import lombok.Getter;
 public class ValidationController {
 
     private Log log;
-    private BPMNController bpmnController;
-    private RuleController ruleController;
-    private ReportController reportController;
+    private BPMNHandler bpmnController;
+    private RuleHandler ruleController;
+    private ReportHandler reportController;
 
     @Getter
     private Map<TProcess, ViolationSet> violationSets;
 
     public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
-        this.bpmnController = new BPMNController(source, skipBPMNs, log);
-        this.ruleController = new RuleController(log).prepare(project, skipRules, customRulePackage);
-        this.reportController = new ReportController(config, log);
+        this.bpmnController = new BPMNHandler(source, skipBPMNs, log);
+        this.ruleController = new RuleHandler(log).prepare(project, skipRules, customRulePackage);
+        this.reportController = new ReportHandler(config, log);
         this.violationSets = new HashMap<>();
         log.debug("ValidationController initialized.");
     }
@@ -37,7 +37,7 @@ public class ValidationController {
     public void execute() {
         log.debug("ValidationController executed.");
         bpmnController.getBpmnModelInstances().forEach(model -> {
-            RuleSetController controller = new RuleSetController(ruleController.getActiveRuleSet(), model, log).execute();
+            RuleSetHandler controller = new RuleSetHandler(ruleController.getActiveRuleSet(), model, log).execute();
             this.violationSets.put(model, controller.getViolationSet());
         });
         reportController.printResultToConsole(ruleController.getActiveRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRuleSet(), this.violationSets);

@@ -10,7 +10,7 @@ import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
 import lombok.Getter;
 
-public class RuleSetController {
+public class RuleSetHandler {
 
     private Log log;
     private RuleSet ruleSet;
@@ -20,7 +20,7 @@ public class RuleSetController {
     private ViolationSet violationSet;
 
 
-    public RuleSetController(RuleSet ruleSet, TProcess bpmnProcess, Log log) {
+    public RuleSetHandler(RuleSet ruleSet, TProcess bpmnProcess, Log log) {
         this.log = log;
         this.ruleSet = ruleSet;
         this.bpmnProcess = bpmnProcess;
@@ -28,7 +28,7 @@ public class RuleSetController {
         log.debug("RuleSetController initialized.");
     }
 
-    public RuleSetController execute() {
+    public RuleSetHandler execute() {
         log.debug("RuleSetController executed");
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
@@ -36,7 +36,7 @@ public class RuleSetController {
             try {
                 bpmnProcess.getFlowElement().stream()
                     .filter(flowElement -> flowElement.getName().getLocalPart().toLowerCase()
-                        .equals(ruleAnnotation.targetType().name().toLowerCase())).forEach(target -> {
+                        .contains(ruleAnnotation.targetType().name().toLowerCase())).forEach(target -> {
                             RuleResult result = rule.check(target.getValue());
                             if(!result.isValid()) {
                                 violationSet.getViolations().add(new Violation(rule, bpmnProcess, result.getTargetIdentifier()));

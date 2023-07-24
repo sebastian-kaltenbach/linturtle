@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(description = "Checks if process has a name", id = 1, severity = Severity.MUST, targetType = Element.PROCESS)
+@Rule(description = "Checks if process has a name", severity = Severity.MUST, targetType = Element.PROCESS)
 public class ProcessNameNonNullOrEmptyRule extends BaseRule {
 
     @Override

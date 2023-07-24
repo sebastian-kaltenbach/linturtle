@@ -8,10 +8,10 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.model.rules.BaseRule;
 
-@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Checks, if Start Events have a non-null name", id = 2)
-public class StartEventNameNonNullRule extends BaseRule {
+@Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Checks, if Start Events have a non-null name")
+public class StartEventNameNonNullOrEmptyRule extends BaseRule {
 
-    public StartEventNameNonNullRule() {
+    public StartEventNameNonNullOrEmptyRule() {
     }
 
     @Override

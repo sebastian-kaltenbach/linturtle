@@ -37,12 +37,12 @@ import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObjectBuilder;
 
-public class ReportController {
+public class ReportHandler {
     
     private Log log;
     private Config config;
 
-    public ReportController(Config config, Log log) {
+    public ReportHandler(Config config, Log log) {
         this.config = config;
         this.log = log;
         log.debug("ReportController initialized!");

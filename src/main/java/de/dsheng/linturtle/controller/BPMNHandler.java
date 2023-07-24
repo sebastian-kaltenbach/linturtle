@@ -13,14 +13,14 @@ import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import de.dsheng.linturtle.utils.BpmnModelMapper;
 
-public class BPMNController {
+public class BPMNHandler {
 
     private Log log;
     private String sourcePath;
     private List<TDefinitions> bpmnDefinitions = new ArrayList<>();
     private Set<String> skipBPMNs;
 
-    public BPMNController(String sourcePath, Set<String> skipBPMNs, Log log) {
+    public BPMNHandler(String sourcePath, Set<String> skipBPMNs, Log log) {
         this.sourcePath = sourcePath;
         this.skipBPMNs = skipBPMNs;
         this.log = log;

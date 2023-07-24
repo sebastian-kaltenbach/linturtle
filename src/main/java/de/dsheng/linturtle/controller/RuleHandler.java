@@ -18,7 +18,7 @@ import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.utils.RuleMapper;
 import lombok.Getter;
 
-public class RuleController {
+public class RuleHandler {
 
     private Log log;
     private final String BASIC_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common";
@@ -35,7 +35,7 @@ public class RuleController {
     @Getter
     private RuleSet activeRuleSet;
 
-    public RuleController(Log log) {
+    public RuleHandler(Log log) {
         this.commonRuleSet = new RuleSet();
         this.skippedRuleSet = new RuleSet();
         this.customRuleSet = new RuleSet();
@@ -43,7 +43,7 @@ public class RuleController {
         this.log = log;
     }
 
-    public RuleController prepare(MavenProject project, Set<String> skipRules, String customRulePackage) {
+    public RuleHandler prepare(MavenProject project, Set<String> skipRules, String customRulePackage) {
         loadCommonRulesToRuleSet();
         loadSkippedRulesToRuleSet(skipRules);
         loadCustomRulesToRuleSet(project, customRulePackage);
