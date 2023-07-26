@@ -17,7 +17,7 @@ public class IncomingGatewayNameNonNullOrEmptyRule extends BaseRule {
         TGateway gateway = (TGateway) OUT;
         RuleResult result = new RuleResult(true, gateway.getId());
         if(gateway.getIncoming().size() < gateway.getOutgoing().size()) {        
-            return result.valid(RuleCheckUtils.nonNullOrEmpty(gateway.getName()) ?  false :  true);
+            return result.valid(!RuleCheckUtils.nonNullOrEmpty(gateway.getName()) ?  false :  true);
         }
         return result;
     }

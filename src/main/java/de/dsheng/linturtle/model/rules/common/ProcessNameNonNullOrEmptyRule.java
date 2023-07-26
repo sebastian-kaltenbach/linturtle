@@ -15,6 +15,6 @@ public class ProcessNameNonNullOrEmptyRule extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         var process = (TProcess) OUT;
-        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(process.getName()) ?  false :  true, process.getId());
+        return new RuleResult(!RuleCheckUtils.nonNullOrEmpty(process.getName()) ?  false :  true, process.getId());
     }
 }

@@ -17,6 +17,6 @@ public class TaskNameNonNullOrEmptyRule extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TTask task = (TTask) OUT;
-        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(task.getName()) ?  false :  true, task.getId());
+        return new RuleResult(!RuleCheckUtils.nonNullOrEmpty(task.getName()) ?  false :  true, task.getId());
     }
 }

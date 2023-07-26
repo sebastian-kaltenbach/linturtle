@@ -18,6 +18,6 @@ public class EndEventNameNonNullOrEmptyRule extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TEndEvent endEvent = (TEndEvent) OUT;
-        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(endEvent.getName()), endEvent.getId());
+        return new RuleResult(!RuleCheckUtils.nonNullOrEmpty(endEvent.getName()), endEvent.getId());
     }
 }

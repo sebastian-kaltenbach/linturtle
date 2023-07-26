@@ -18,6 +18,6 @@ public class StartEventNameNonNullOrEmptyRule extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TStartEvent startEvent = (TStartEvent) OUT;
-        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(startEvent.getName()) ?  false :  true, startEvent.getId());
+        return new RuleResult(!RuleCheckUtils.nonNullOrEmpty(startEvent.getName()) ?  false :  true, startEvent.getId());
     }
 }

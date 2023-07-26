@@ -14,7 +14,7 @@ public class IntermediateCatchEventNameNonNullOrEmpty extends BaseRule {
     @Override
     public RuleResult check(Object OUT) {
         TIntermediateCatchEvent intermediateCatchEvent = (TIntermediateCatchEvent) OUT;
-        return new RuleResult(RuleCheckUtils.nonNullOrEmpty(intermediateCatchEvent.getName()) ?  false :  true, intermediateCatchEvent.getId());
+        return new RuleResult(!RuleCheckUtils.nonNullOrEmpty(intermediateCatchEvent.getName()) ?  false :  true, intermediateCatchEvent.getId());
     }
     
 }
