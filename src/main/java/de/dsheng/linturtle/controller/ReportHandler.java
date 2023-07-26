@@ -1,10 +1,12 @@
 package de.dsheng.linturtle.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +62,18 @@ public class ReportHandler {
 
                 try {
                     file.createNewFile();
-                    if(format == Format.JSON) {
-                        parseViolationsToJsonString(metaData, violationSet.getViolations(), file.getAbsolutePath());
-                    }
-                    else if(format == Format.XML){
-                        parseViolationsToXMLString(metaData, violationSet.getViolations(), file.getAbsolutePath());
+                    switch(format) {
+                        case JSON:
+                            exportViolationsToJsonFile(metaData, violationSet.getViolations(), file.getAbsolutePath());
+                            break;
+                        case XML:
+                            exportViolationsToXmlFile(metaData, violationSet.getViolations(), file.getAbsolutePath());
+                            break;
+                        case TXT:
+                            exportViolationsToTxtFile(metaData, violationSet.getViolations(), file.getAbsolutePath());
+                            break;
+                        default:
+                            break;
                     }
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
@@ -76,7 +85,7 @@ public class ReportHandler {
         log.debug("ReportController executed!");
     }
 
-    private void parseViolationsToJsonString(MetaData metaData, List<Violation> violations, String path) {
+    private void exportViolationsToJsonFile(MetaData metaData, List<Violation> violations, String path) {
         JsonObjectBuilder rootObjectBuilder = Json.createObjectBuilder()
         .add("name", metaData.getName())
         .add("timeStamp", metaData.getTimeStamp().toString())
@@ -101,7 +110,7 @@ public class ReportHandler {
         jsonWriter.close();
     }
 
-    private void parseViolationsToXMLString(MetaData metaData, List<Violation> violations, String path) {
+    private void exportViolationsToXmlFile(MetaData metaData, List<Violation> violations, String path) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -155,6 +164,21 @@ public class ReportHandler {
                 log.error(e.getMessage(), e);
             }         
         } catch (ParserConfigurationException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private void exportViolationsToTxtFile(MetaData metaData, List<Violation> violations, String path) {
+        try(FileOutputStream outputStream = new FileOutputStream(path)){
+            final List<String> contentList = new ArrayList<>();
+            violations.forEach(violation -> {
+                var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
+                contentList.add(violation.getRule().getClass().getSimpleName() + " - " + rule.severity() + " - " + 
+                    violation.getTargetId() + " - " + rule.description());
+            });
+            var content = String.join("\n", contentList);
+            outputStream.write(content.getBytes());
+        } catch(IOException e) {
             log.error(e.getMessage(), e);
         }
     }
