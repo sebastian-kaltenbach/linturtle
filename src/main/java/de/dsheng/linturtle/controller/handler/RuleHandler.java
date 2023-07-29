@@ -14,6 +14,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
+import de.dsheng.linturtle.model.ComplexRule;
+import de.dsheng.linturtle.model.ElementRule;
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.utils.RuleMapper;
@@ -61,7 +63,7 @@ public class RuleHandler {
     private void loadCommonRulesToRuleSet() {
         Reflections reflections = new Reflections(BASIC_GLOBAL_RULE_PACKAGE);
         Set<Class<?>> ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
-        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToGlobalRule(ruleClass)));        
+        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToComplexRule(ruleClass)));        
 
         reflections = new Reflections(BASIC_ELEMENT_RULE_PACKAGE);
         ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
@@ -87,7 +89,13 @@ public class RuleHandler {
                     Arrays.stream(classFileDir.listFiles()).forEach(classFile -> {
                         try {
                             Class<?> clazz = loader.loadClass(customRulePackage + "." + classFile.getName().substring(0, classFile.getName().lastIndexOf(".")));
-                            this.customRuleSet.addRule(RuleMapper.transformClassToElementRule(clazz));
+                            if(clazz.getSuperclass() == ComplexRule.class) {
+                                this.customRuleSet.addRule(RuleMapper.transformClassToComplexRule(clazz));                            
+                            }
+                            else {
+                                this.customRuleSet.addRule(RuleMapper.transformClassToElementRule(clazz));                            
+                            }
+                            
 
                         } catch (ClassNotFoundException e1) {
                             log.error(e1.getMessage(), e1);

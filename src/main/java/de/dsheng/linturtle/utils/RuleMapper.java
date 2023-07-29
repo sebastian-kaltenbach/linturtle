@@ -9,7 +9,7 @@ import de.dsheng.linturtle.model.ElementRule;
 
 public final class RuleMapper {
 
-    public static BaseRule transformClassToGlobalRule(Class<?> clazz) {
+    public static BaseRule transformClassToComplexRule(Class<?> clazz) {
         BaseRule ruleObject = null;
         try {
              ruleObject = (ComplexRule) clazz.getDeclaredConstructor().newInstance();
