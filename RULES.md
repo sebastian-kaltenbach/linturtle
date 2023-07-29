@@ -3,31 +3,31 @@
 ## Event
 Rule | Description
 --- | --- 
-StartEventIsConnectedRule | k
-StartEventNameNotNullOrEmptyRule | k
-IntermediateCatchEventIsConnectedRule | k
-IntermediateCatchEventNameNotNullOrEmpty | k
-IntermediateThrowEventIsConnectedRule | k
-IntermediateThrowEventNameNotNullOrEmpty | k
-EndEventIsConnectedRule | k
-EndEventNameNotNullOrEmptyRule | k
+StartEventIsConnectedRule | Provide connection for start event
+StartEventNameNotNullOrEmptyRule | Provide name for start event
+IntermediateCatchEventIsConnectedRule | Provide connection for intermediate catch event
+IntermediateCatchEventNameNotNullOrEmpty | Provide name for intermediate catch event
+IntermediateThrowEventIsConnectedRule | Provide connection for intermediate throw event
+IntermediateThrowEventNameNotNullOrEmpty | Provide name for intermediate throw event
+EndEventIsConnectedRule | Provide connection for end event
+EndEventNameNotNullOrEmptyRule | Provide name for end event
 
 ## Gateway
 Rule | Description
 --- | --- 
-GatewayIsConnectedRule | k
-IncomingGatewayNameNotNullOrEmptyRule | k
+GatewayIsConnectedRule | Provide connection for gateway
+IncomingGatewayNameNotNullOrEmptyRule | Provide name for gateway
 
 ## Task
 Rule | Description
 --- | --- 
-TaskIsConnectedRule | k
-TaskNameNotNullOrEmptyRule | k
-TaskOnlySingleIncomingAndOutgoingFlowRule | k
+TaskIsConnectedRule | Provide connection for task
+TaskNameNotNullOrEmptyRule | Provide name for task
+TaskOnlySingleIncomingAndOutgoingFlowRule | Provide only one input and output flow for task
 
 ## Complex
 Rule | Description
 --- | --- 
-ProcessNameNotNullOrEmptyRule | k
-ExclusiveGatewayOutgoingFlowsNameNonNullOrEmptyRule | k
-ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule | k
+ProcessNameNotNullOrEmptyRule | Provide name for process
+ExclusiveGatewayOutgoingFlowsNameNonNullOrEmptyRule | Provide name for exclusive gateway outgoing flows
+ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule | Provide name for parallel gateway outgoing flows
