@@ -2,7 +2,6 @@ package de.dsheng.linturtle.model;
 
 import org.omg.spec.bpmn._20100524.model.TProcess;
 
-import de.dsheng.linturtle.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

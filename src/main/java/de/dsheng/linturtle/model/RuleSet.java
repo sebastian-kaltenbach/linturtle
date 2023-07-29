@@ -3,7 +3,6 @@ package de.dsheng.linturtle.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dsheng.linturtle.model.rules.BaseRule;
 import lombok.Data;
 
 @Data

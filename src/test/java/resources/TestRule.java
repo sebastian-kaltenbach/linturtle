@@ -1,10 +1,11 @@
 package resources;
 
 import org.omg.spec.bpmn._20100524.model.TEndEvent;
+
+import de.dsheng.linturtle.model.ElementRule;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
-import de.dsheng.linturtle.model.rules.ElementRule;
 
 @Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Test Rule for Test purposes")
 public class TestRule extends ElementRule {

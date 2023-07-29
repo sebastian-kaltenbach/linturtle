@@ -11,6 +11,10 @@ import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import com.typesafe.config.Config;
 
+import de.dsheng.linturtle.controller.handler.BPMNHandler;
+import de.dsheng.linturtle.controller.handler.ReportHandler;
+import de.dsheng.linturtle.controller.handler.RuleHandler;
+import de.dsheng.linturtle.controller.handler.RuleSetHandler;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.entity.Severity;
 import lombok.Getter;

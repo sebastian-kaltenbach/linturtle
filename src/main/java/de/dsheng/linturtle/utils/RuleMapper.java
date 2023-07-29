@@ -3,9 +3,9 @@ package de.dsheng.linturtle.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-import de.dsheng.linturtle.model.rules.BaseRule;
-import de.dsheng.linturtle.model.rules.ElementRule;
-import de.dsheng.linturtle.model.rules.GlobalRule;
+import de.dsheng.linturtle.model.BaseRule;
+import de.dsheng.linturtle.model.ElementRule;
+import de.dsheng.linturtle.model.GlobalRule;
 
 public final class RuleMapper {
 
