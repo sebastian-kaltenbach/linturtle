@@ -9,11 +9,11 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name")
-public class TaskNameNonNullOrEmptyRule extends ElementRule {
+public class TaskNameNotNullOrEmptyRule extends ElementRule {
 
     @Override
-    public boolean check(Object OUT) {
-        TTask task = (TTask) OUT;
-        return RuleCheckUtils.nonNullOrEmpty(task.getName());
+    public boolean check(Object element) {
+        TTask task = (TTask) element;
+        return RuleCheckUtils.notNullOrEmpty(task.getName());
     }
 }

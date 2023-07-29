@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
@@ -21,8 +22,11 @@ import lombok.Getter;
 public class RuleHandler {
 
     private Log log;
-    private final String BASIC_GLOBAL_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.global";
+    private final String BASIC_GLOBAL_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.complex";
     private final String BASIC_ELEMENT_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.element";
+    private final int MAXRULENAMELENGTH = 55;
+    private final int MAXSEVERITYLENGTH = 6;
+    private final int MAXTARGETLENGTH = 25;
 
     @Getter
     private RuleSet commonRuleSet;
@@ -128,8 +132,10 @@ public class RuleHandler {
         
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            log.info("\t- " + rule.getClass().getSimpleName() + " | " + ruleAnnotation.severity().toString() +
-            " | " + ruleAnnotation.targetType().toString() + " | " + ruleAnnotation.description());
+            log.info("\t- " + StringUtils.rightPad(rule.getClass().getSimpleName(), MAXRULENAMELENGTH, " ") + 
+                " | " + StringUtils.rightPad(ruleAnnotation.severity().toString(), MAXSEVERITYLENGTH, " ") +
+                " | " + StringUtils.rightPad(ruleAnnotation.targetType().toString(), MAXTARGETLENGTH, " ") + 
+                " | " + ruleAnnotation.description());
         });
     }
 }

@@ -9,12 +9,12 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(description = "Checks if intermediate throw event name is not null or empty", severity = Severity.MUST, targetType = Element.INTERMEDIATETHROWEVENT)
-public class IntermediateThrowEventNameNonNullOrEmpty extends ElementRule {
+public class IntermediateThrowEventNameNotNullOrEmpty extends ElementRule {
 
     @Override
     public boolean check(Object element) {
         TIntermediateThrowEvent intermediateThrowEvent = (TIntermediateThrowEvent) element;
-        return RuleCheckUtils.nonNullOrEmpty(intermediateThrowEvent.getName());
+        return RuleCheckUtils.notNullOrEmpty(intermediateThrowEvent.getName());
     }
     
 }

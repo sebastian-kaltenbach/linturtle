@@ -20,6 +20,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
 import org.omg.spec.bpmn._20100524.model.TProcess;
 import org.w3c.dom.Document;
@@ -42,6 +43,10 @@ public class ReportHandler {
     
     private Log log;
     private Config config;
+    private final int MAXPROCESSNAMELENGTH = 25;
+    private final int MAXRULENAMELENGTH = 55;
+    private final int MAXSEVERITYLENGTH = 6;
+    private final int MAXTARGETLENGTH = 25;
 
     public ReportHandler(Config config, Log log) {
         this.config = config;
@@ -198,10 +203,11 @@ public class ReportHandler {
         violationSets.forEach((model, violations) -> {
             violations.getViolations().forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
-                log.info("\t- " + model.getName() + " - " + 
-                violation.getRule().getClass().getSimpleName() + " - " + 
-                ruleAnnotation.severity().toString() + " - " + ruleAnnotation.targetType().toString() + " - " +
-                violation.getTargetId());
+                log.info("\t- " + StringUtils.rightPad(model.getName(), MAXPROCESSNAMELENGTH, " ") + 
+                " | " + StringUtils.rightPad(violation.getRule().getClass().getSimpleName(), MAXRULENAMELENGTH, " ") + 
+                " | " + StringUtils.rightPad(ruleAnnotation.severity().toString(), MAXSEVERITYLENGTH, " ") + 
+                " | " + StringUtils.rightPad(ruleAnnotation.targetType().toString(), MAXTARGETLENGTH, " ") + 
+                " | " + violation.getTargetId());
             });
         });
     }

@@ -14,22 +14,22 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.ProcessUtils;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Check if exclusive gateway flows have a name", severity = Severity.MUST, targetType = Element.PROCESS)
-public class ExclusiveGatewayOutgoingFlowsNameNonNullOrEmpty extends ComplexRule {
+@Rule(description = "Check if parallel gateway flows have a name", severity = Severity.MUST, targetType = Element.PROCESS)
+public class ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule extends ComplexRule {
 
     @Override
     public Map<String, Boolean> check(TProcess process) {
         Map<String, Boolean> resultSet = new HashMap<>();
         List<String> flows = new ArrayList<>();
 
-        ProcessUtils.getAllOutgoingGateways(process, Element.EXCLUSIVEGATEWAY).stream()
-            .forEach(exclusiveGateway -> {
-                exclusiveGateway.getOutgoing().stream().forEach(flow -> {
+        ProcessUtils.getAllOutgoingGateways(process, Element.PARALLELGATEWAY).stream()
+            .forEach(parallelGateway -> {
+                parallelGateway.getOutgoing().stream().forEach(flow -> {
                     flows.add(flow.getLocalPart());
                 });
             });
         ProcessUtils.getAllSequenceFlowsByIdList(process, flows).stream().forEach(sequenceFlow -> {
-            resultSet.put(sequenceFlow.getId(), RuleCheckUtils.nonNullOrEmpty(sequenceFlow.getName()));
+            resultSet.put(sequenceFlow.getId(), RuleCheckUtils.notNullOrEmpty(sequenceFlow.getName()));
         });
         return resultSet;
     } 

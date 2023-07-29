@@ -9,11 +9,11 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(severity = Severity.MUST, targetType = Element.STARTEVENT, description = "Checks, if Start Events have a non-null name")
-public class StartEventNameNonNullOrEmptyRule extends ElementRule {
+public class StartEventNameNotNullOrEmptyRule extends ElementRule {
 
     @Override
     public boolean check(Object element) {
         TStartEvent startEvent = (TStartEvent) element;
-        return RuleCheckUtils.nonNullOrEmpty(startEvent.getName());
+        return RuleCheckUtils.notNullOrEmpty(startEvent.getName());
     }
 }

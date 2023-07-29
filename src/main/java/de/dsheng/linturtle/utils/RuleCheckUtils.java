@@ -9,8 +9,11 @@ public final class RuleCheckUtils {
     /*
      * String Tests 
      */
-    public static boolean nonNullOrEmpty(String stringToTest) {
-        return (stringToTest == null || stringToTest.isEmpty()) ? false : true;
+    public static boolean notNullOrEmpty(String stringToTest) {
+        if(stringToTest != null) {
+            return !stringToTest.isEmpty();
+        }
+        return false;
     }
 
     public static boolean endsWith(String stringToTest, String character) {
@@ -33,6 +36,10 @@ public final class RuleCheckUtils {
 
     public static boolean hasConnection(List<?> connections) {
         return connections.size() > 0;
+    }
+
+    public static boolean hasMultipleConnections(List<?> connections) {
+        return connections.size() > 1;
     }
 
     public static boolean isIncoming(List<?> incoming, List<?> outgoing) {

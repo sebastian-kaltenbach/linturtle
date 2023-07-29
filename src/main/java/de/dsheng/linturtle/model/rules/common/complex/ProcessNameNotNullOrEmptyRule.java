@@ -12,12 +12,12 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(description = "Checks if process has a name", severity = Severity.MUST, targetType = Element.PROCESS)
-public class ProcessNameNonNullOrEmptyRule extends ComplexRule {
+public class ProcessNameNotNullOrEmptyRule extends ComplexRule {
 
     @Override
     public Map<String, Boolean> check(TProcess process) {
         Map<String, Boolean> resultSet = new HashMap<>();
-        resultSet.put(process.getId(), RuleCheckUtils.nonNullOrEmpty(process.getName()));
+        resultSet.put(process.getId(), RuleCheckUtils.notNullOrEmpty(process.getName()));
         return resultSet;
     }
 }
