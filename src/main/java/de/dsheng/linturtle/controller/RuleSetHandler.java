@@ -8,6 +8,9 @@ import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.model.entity.Element;
+import de.dsheng.linturtle.model.rules.BaseRule;
+import de.dsheng.linturtle.utils.ProcessUtils;
 import lombok.Getter;
 
 public class RuleSetHandler {
@@ -33,19 +36,22 @@ public class RuleSetHandler {
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
 
-            try {
-                bpmnProcess.getFlowElement().stream()
-                    .filter(flowElement -> flowElement.getName().getLocalPart().toLowerCase()
-                        .contains(ruleAnnotation.targetType().name().toLowerCase())).forEach(target -> {
-                            RuleResult result = rule.check(target.getValue());
-                            if(!result.isValid()) {
-                                violationSet.getViolations().add(new Violation(rule, bpmnProcess, result.getTargetIdentifier()));
-                            }
-                        });
-            } catch(Exception e) {
-                log.error(e.getMessage(), e);
+            if(ruleAnnotation.targetType() == Element.PROCESS){
+                log.info(ruleAnnotation.toString());
+                this.handleRuleResult(rule, bpmnProcess, rule.check(bpmnProcess));  
             }
+            else {
+                ProcessUtils.getProcessElementsByElement(bpmnProcess, ruleAnnotation.targetType()).forEach(flowElement -> {
+                    this.handleRuleResult(rule, bpmnProcess, rule.check(flowElement.getValue()));       
+                });
+            }            
         });
         return this;
+    }
+
+    private void handleRuleResult(BaseRule rule, TProcess process, RuleResult result) {
+        if(!result.isValid()) {
+            violationSet.getViolations().add(new Violation(rule, process, result.getTargetIdentifier()));
+        }   
     }
 }

@@ -31,7 +31,11 @@ public final class RuleCheckUtils {
         return matcher.matches();
     }
 
-    public static boolean hasConnection(List<?> incoming) {
-        return incoming.size() > 0;
+    public static boolean hasConnection(List<?> connections) {
+        return connections.size() > 0;
+    }
+
+    public static boolean isIncoming(List<?> incoming, List<?> outgoing) {
+        return incoming.size() > outgoing.size();
     }
 }
