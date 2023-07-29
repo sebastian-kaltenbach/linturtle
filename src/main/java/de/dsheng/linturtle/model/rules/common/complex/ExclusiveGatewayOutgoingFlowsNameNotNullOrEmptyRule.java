@@ -14,17 +14,17 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.ProcessUtils;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Provide name for parallel gateway outgoing flows", severity = Severity.MUST, targetType = Element.PROCESS)
-public class ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule extends ComplexRule {
+@Rule(description = "Provide name for exclusive gateway outgoing flows", severity = Severity.MUST, targetType = Element.PROCESS)
+public class ExclusiveGatewayOutgoingFlowsNameNotNullOrEmptyRule extends ComplexRule {
 
     @Override
     public Map<String, Boolean> check(TProcess process) {
         Map<String, Boolean> resultSet = new HashMap<>();
         List<String> flows = new ArrayList<>();
 
-        ProcessUtils.getAllOutgoingGateways(process, Element.PARALLELGATEWAY).stream()
-            .forEach(parallelGateway -> {
-                parallelGateway.getOutgoing().stream().forEach(flow -> {
+        ProcessUtils.getAllOutgoingGateways(process, Element.EXCLUSIVEGATEWAY).stream()
+            .forEach(exclusiveGateway -> {
+                exclusiveGateway.getOutgoing().stream().forEach(flow -> {
                     flows.add(flow.getLocalPart());
                 });
             });

@@ -29,5 +29,5 @@ TaskOnlySingleIncomingAndOutgoingFlowRule | Provide only one input and output fl
 Rule | Description
 --- | --- 
 ProcessNameNotNullOrEmptyRule | Provide name for process
-ExclusiveGatewayOutgoingFlowsNameNonNullOrEmptyRule | Provide name for exclusive gateway outgoing flows
-ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule | Provide name for parallel gateway outgoing flows
+ExclusiveGatewayOutgoingFlowsNameNotNullOrEmptyRule | Provide name for exclusive gateway outgoing flows
+ParallelGatewayOutgoingFlowsNameNotNullOrEmptyRule | Provide name for parallel gateway outgoing flows
