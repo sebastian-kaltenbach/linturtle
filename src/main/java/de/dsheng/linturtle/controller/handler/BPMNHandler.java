@@ -8,16 +8,18 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.apache.maven.plugin.logging.Log;
-import org.omg.spec.bpmn._20100524.model.TDefinitions;
-import org.omg.spec.bpmn._20100524.model.TProcess;
 
+import de.dsheng.linturtle.model.BpmnProvider;
 import de.dsheng.linturtle.utils.BpmnModelMapper;
+import lombok.Getter;
 
 public class BPMNHandler {
 
     private Log log;
     private String sourcePath;
-    private List<TDefinitions> bpmnDefinitions = new ArrayList<>();
+
+    @Getter
+    private List<BpmnProvider> bpmnProviderCollection = new ArrayList<>();
     private Set<String> skipBPMNs;
 
     public BPMNHandler(String sourcePath, Set<String> skipBPMNs, Log log) {
@@ -29,8 +31,11 @@ public class BPMNHandler {
 
     private void prepare() {
         File dir = new File(this.sourcePath);
-        bpmnDefinitions = Stream.of(dir.listFiles(bpmnFilefilter))
-            .map(bpmnFile -> BpmnModelMapper.transformModelToObject(bpmnFile)).toList();
+        this.bpmnProviderCollection = Stream.of(dir.listFiles(bpmnFilefilter))
+            .map(bpmnFile -> new BpmnProvider(bpmnFile.getName(), BpmnModelMapper.transformModelToObject(bpmnFile))).toList();
+        
+        this.bpmnProviderCollection.stream().map(provider ->
+            provider.setProcess(BpmnModelMapper.transformDefinitionToProcess(provider.getDefinition()))).toList();
         printFoundBPMNFiles();
     }
 
@@ -43,10 +48,6 @@ public class BPMNHandler {
             return false;
         }
     };
-
-    public List<TProcess> getBpmnModelInstances() {
-        return this.bpmnDefinitions.stream().map(definition -> BpmnModelMapper.transformDefinitionToProcess(definition)).toList();
-    }
 
     private void printFoundBPMNFiles() {
         log.info("");

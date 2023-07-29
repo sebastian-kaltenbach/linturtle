@@ -1,23 +1,21 @@
 package de.dsheng.linturtle.model;
 
-import org.omg.spec.bpmn._20100524.model.TProcess;
-
 import lombok.Data;
 
 @Data
 public class Violation {
     private BaseRule rule;
-    private TProcess bpmnProcess;
+    private String bpmnProcessFileName;
     private String targetId;
 
-    public Violation(BaseRule rule, TProcess bpmnProcess, String targetId) {
+    public Violation(BaseRule rule, String bpmnProcessFileName, String targetId) {
         this.rule = rule;
-        this.bpmnProcess = bpmnProcess;
+        this.bpmnProcessFileName = bpmnProcessFileName;
         this.targetId = targetId;
     }
 
     @Override
     public String toString() {
-        return String.format("Violation(rule=%s, bpmnProcess=%s, targetID=%s)", rule.getClass().getSimpleName(), bpmnProcess.getName(), targetId);
+        return String.format("Violation(rule=%s, bpmnProcessFileName=%s, targetID=%s)", rule.getClass().getSimpleName(), bpmnProcessFileName, targetId);
     }
 }

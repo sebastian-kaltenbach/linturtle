@@ -22,7 +22,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
-import org.omg.spec.bpmn._20100524.model.TProcess;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,15 +53,15 @@ public class ReportHandler {
         log.debug("ReportController initialized!");
     }
 
-    public void execute(Map<TProcess, ViolationSet> violationSets) {
+    public void execute(Map<String, ViolationSet> violationSets) {
         String path = this.config.getString("path");
         Format format = Format.valueOf(this.config.getString("format"));
         try {
             Files.createDirectories(Paths.get(path));
-            violationSets.forEach((model, violationSet) -> {
-                String fileName = model.getName() + "." + format.toString().toLowerCase();
+            violationSets.forEach((bpmnProcessFileName, violationSet) -> {
+                String fileName = bpmnProcessFileName + "." + format.toString().toLowerCase();
                 File file = new File(path + "/" + fileName);
-                MetaData metaData = new MetaData("Plugin", new Date(), violationSet.getViolations().size());
+                MetaData metaData = new MetaData("Linturtle", new Date(), violationSet.getViolations().size());
 
                 try {
                     file.createNewFile();
@@ -175,10 +174,18 @@ public class ReportHandler {
     private void exportViolationsToTxtFile(MetaData metaData, List<Violation> violations, String path) {
         try(FileOutputStream outputStream = new FileOutputStream(path)){
             final List<String> contentList = new ArrayList<>();
+            contentList.add("Name: " + metaData.getName());
+            contentList.add("Timestamp: " + metaData.getTimeStamp());
+            contentList.add("Incidents: " + metaData.getIncidents());
+            contentList.add(StringUtils.repeat("-", 25));
+
             violations.forEach(violation -> {
                 var rule = (Rule) violation.getRule().getClass().getAnnotations()[0];
-                contentList.add(violation.getRule().getClass().getSimpleName() + " - " + rule.severity() + " - " + 
-                    violation.getTargetId() + " - " + rule.description());
+                contentList.add(
+                    StringUtils.rightPad(violation.getRule().getClass().getSimpleName(), MAXRULENAMELENGTH, " ") + 
+                    " | " + StringUtils.rightPad(rule.severity().toString(), MAXSEVERITYLENGTH, " ") + 
+                    " | " + StringUtils.rightPad(violation.getTargetId(), MAXTARGETLENGTH, " ") + 
+                    " | " + rule.description());
             });
             var content = String.join("\n", contentList);
             outputStream.write(content.getBytes());
@@ -187,7 +194,7 @@ public class ReportHandler {
         }
     }
 
-    public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<TProcess, ViolationSet> violationSets) {
+    public void printResultToConsole(RuleSet ruleSet, RuleSet customRuleSet, RuleSet skippedRuleSet, Map<String, ViolationSet> violationSets) {
         StringBuilder sb = new StringBuilder();
         
         //  Rule Violations
@@ -200,10 +207,10 @@ public class ReportHandler {
         for(int i =0; i < header.length(); i++) sb.append("-");
         log.info(sb.toString());
 
-        violationSets.forEach((model, violations) -> {
+        violationSets.forEach((bpmnProcessFileName, violations) -> {
             violations.getViolations().forEach(violation -> {
                 Rule ruleAnnotation = violation.getRule().getClass().getAnnotation(Rule.class);
-                log.info("\t- " + StringUtils.rightPad(model.getName(), MAXPROCESSNAMELENGTH, " ") + 
+                log.info("\t- " + StringUtils.rightPad(bpmnProcessFileName, MAXPROCESSNAMELENGTH, " ") + 
                 " | " + StringUtils.rightPad(violation.getRule().getClass().getSimpleName(), MAXRULENAMELENGTH, " ") + 
                 " | " + StringUtils.rightPad(ruleAnnotation.severity().toString(), MAXSEVERITYLENGTH, " ") + 
                 " | " + StringUtils.rightPad(ruleAnnotation.targetType().toString(), MAXTARGETLENGTH, " ") + 

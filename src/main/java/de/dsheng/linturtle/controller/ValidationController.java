@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import com.typesafe.config.Config;
 
@@ -27,7 +26,7 @@ public class ValidationController {
     private ReportHandler reportController;
 
     @Getter
-    private Map<TProcess, ViolationSet> violationSets;
+    private Map<String, ViolationSet> violationSets;
 
     public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
@@ -40,9 +39,9 @@ public class ValidationController {
 
     public void execute() {
         log.debug("ValidationController executed.");
-        bpmnController.getBpmnModelInstances().forEach(model -> {
-            RuleSetHandler controller = new RuleSetHandler(ruleController.getActiveRuleSet(), model, log).execute();
-            this.violationSets.put(model, controller.getViolationSet());
+        bpmnController.getBpmnProviderCollection().forEach(provider -> {
+            RuleSetHandler controller = new RuleSetHandler(ruleController.getActiveRuleSet(), provider, log).execute();
+            this.violationSets.put(provider.getFileName(), controller.getViolationSet());
         });
         reportController.printResultToConsole(ruleController.getActiveRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRuleSet(), this.violationSets);
     }

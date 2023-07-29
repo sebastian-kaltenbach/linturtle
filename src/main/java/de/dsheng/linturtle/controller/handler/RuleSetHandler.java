@@ -3,9 +3,9 @@ package de.dsheng.linturtle.controller.handler;
 import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
-import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import de.dsheng.linturtle.model.BaseRule;
+import de.dsheng.linturtle.model.BpmnProvider;
 import de.dsheng.linturtle.model.ComplexRule;
 import de.dsheng.linturtle.model.ElementRule;
 import de.dsheng.linturtle.model.RuleSet;
@@ -19,16 +19,16 @@ public class RuleSetHandler {
 
     private Log log;
     private RuleSet ruleSet;
-    private TProcess bpmnProcess;
+    private BpmnProvider provider;
 
     @Getter
     private ViolationSet violationSet;
 
 
-    public RuleSetHandler(RuleSet ruleSet, TProcess bpmnProcess, Log log) {
+    public RuleSetHandler(RuleSet ruleSet, BpmnProvider provider, Log log) {
         this.log = log;
         this.ruleSet = ruleSet;
-        this.bpmnProcess = bpmnProcess;
+        this.provider = provider;
         violationSet = new ViolationSet();
         log.debug("RuleSetController initialized.");
     }
@@ -40,21 +40,21 @@ public class RuleSetHandler {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
             if(rule instanceof ComplexRule) {
                 var globalRule = (ComplexRule) rule;
-                this.handleRuleResult(globalRule, bpmnProcess, globalRule.check(bpmnProcess));
+                this.handleRuleResult(globalRule, provider.getFileName(), globalRule.check(provider.getProcess()));
             } else {
                 var elementRule = (ElementRule) rule;
-                ProcessUtils.getProcessElementsByElement(bpmnProcess, ruleAnnotation.targetType()).forEach(flowElement -> {
-                    this.handleRuleResult(elementRule, bpmnProcess, Map.of(flowElement.getValue().getId(), elementRule.check(flowElement.getValue())));    
+                ProcessUtils.getProcessElementsByElement(provider.getProcess(), ruleAnnotation.targetType()).forEach(flowElement -> {
+                    this.handleRuleResult(elementRule, provider.getFileName(), Map.of(flowElement.getValue().getId(), elementRule.check(flowElement.getValue())));    
                 });
             }          
         });
         return this;
     }
 
-    private void handleRuleResult(BaseRule rule, TProcess process, Map<String, Boolean> result) {
+    private void handleRuleResult(BaseRule rule, String bpmnProcessFileName, Map<String, Boolean> result) {
         result.entrySet().stream().forEach((entry) -> {
             if(!entry.getValue().booleanValue()) {
-                violationSet.getViolations().add(new Violation(rule, process, entry.getKey()));
+                violationSet.getViolations().add(new Violation(rule, bpmnProcessFileName, entry.getKey()));
             }
         });
     }
