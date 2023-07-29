@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks if intermediate throw event name is not null or empty", severity = Severity.MUST, targetType = Element.INTERMEDIATETHROWEVENT)
+@Rule(description = "Provide name for intermediate throw event", severity = Severity.MUST, targetType = Element.INTERMEDIATETHROWEVENT)
 public class IntermediateThrowEventNameNotNullOrEmpty extends ElementRule {
 
     @Override

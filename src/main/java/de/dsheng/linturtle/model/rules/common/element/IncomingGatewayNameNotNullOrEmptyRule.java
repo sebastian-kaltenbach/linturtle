@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Checks, if Gateways have a non-null name")
+@Rule(severity = Severity.MUST, targetType = Element.GATEWAY, description = "Provide name for incoming gateway")
 public class IncomingGatewayNameNotNullOrEmptyRule extends ElementRule {
 
     @Override

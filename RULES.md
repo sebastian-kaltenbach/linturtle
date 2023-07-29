@@ -16,7 +16,7 @@ EndEventNameNotNullOrEmptyRule | Provide name for end event
 Rule | Description
 --- | --- 
 GatewayIsConnectedRule | Provide connection for gateway
-IncomingGatewayNameNotNullOrEmptyRule | Provide name for gateway
+IncomingGatewayNameNotNullOrEmptyRule | Provide name for incoming gateway
 
 ## Task
 Rule | Description

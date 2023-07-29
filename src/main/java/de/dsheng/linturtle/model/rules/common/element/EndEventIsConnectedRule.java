@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks, if Endevent is connected to the process", severity = Severity.MUST, targetType = Element.ENDEVENT)
+@Rule(description = "Provide connection for end event", severity = Severity.MUST, targetType = Element.ENDEVENT)
 public class EndEventIsConnectedRule extends ElementRule {
 
     @Override

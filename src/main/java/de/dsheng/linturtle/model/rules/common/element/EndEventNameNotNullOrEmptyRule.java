@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(severity = Severity.MUST, targetType = Element.ENDEVENT, description = "Checks, if End Events have a non-null name")
+@Rule(severity = Severity.MUST, targetType = Element.ENDEVENT, description = "Provide name for end event")
 public class EndEventNameNotNullOrEmptyRule extends ElementRule {
 
     @Override

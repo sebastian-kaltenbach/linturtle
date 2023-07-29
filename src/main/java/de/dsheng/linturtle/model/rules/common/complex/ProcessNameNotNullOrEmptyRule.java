@@ -11,7 +11,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks if process has a name", severity = Severity.MUST, targetType = Element.PROCESS)
+@Rule(description = "Provide name for process", severity = Severity.MUST, targetType = Element.PROCESS)
 public class ProcessNameNotNullOrEmptyRule extends ComplexRule {
 
     @Override

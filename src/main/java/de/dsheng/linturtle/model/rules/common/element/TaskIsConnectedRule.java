@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks, if Task is connected to the process", severity = Severity.MUST, targetType = Element.TASK)
+@Rule(description = "Provide connection for task", severity = Severity.MUST, targetType = Element.TASK)
 public class TaskIsConnectedRule extends ElementRule {
 
     @Override

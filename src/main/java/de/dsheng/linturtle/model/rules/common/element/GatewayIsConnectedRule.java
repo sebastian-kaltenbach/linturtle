@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks, if Gateway is connected to the process", severity = Severity.MUST, targetType = Element.GATEWAY)
+@Rule(description = "Provide connection for gateway", severity = Severity.MUST, targetType = Element.GATEWAY)
 public class GatewayIsConnectedRule extends ElementRule {
 
     @Override

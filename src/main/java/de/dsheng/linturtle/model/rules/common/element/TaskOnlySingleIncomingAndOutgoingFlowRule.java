@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Checks, if Tasks have a non-null name")
+@Rule(severity = Severity.MUST, targetType = Element.TASK, description = "Provide only one input and output flow for task")
 public class TaskOnlySingleIncomingAndOutgoingFlowRule extends ElementRule {
 
     @Override

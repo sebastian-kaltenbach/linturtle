@@ -8,7 +8,7 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Checks, if Startevent is connected to the process", severity = Severity.MUST, targetType = Element.STARTEVENT)
+@Rule(description = "Provide connection for start event", severity = Severity.MUST, targetType = Element.STARTEVENT)
 public class StartEventIsConnectedRule extends ElementRule {
 
     @Override

@@ -14,7 +14,7 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.ProcessUtils;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Check if exclusive gateway flows have a name", severity = Severity.MUST, targetType = Element.PROCESS)
+@Rule(description = "Provide name for exclusive gateway outgoing flows", severity = Severity.MUST, targetType = Element.PROCESS)
 public class ExclusiveGatewayOutgoingFlowsNameNonNullOrEmptyRule extends ComplexRule {
 
     @Override

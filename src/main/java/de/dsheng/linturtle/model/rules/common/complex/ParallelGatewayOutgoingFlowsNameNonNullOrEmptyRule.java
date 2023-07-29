@@ -14,7 +14,7 @@ import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.ProcessUtils;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(description = "Check if parallel gateway flows have a name", severity = Severity.MUST, targetType = Element.PROCESS)
+@Rule(description = "Provide name for parallel gateway outgoing flows", severity = Severity.MUST, targetType = Element.PROCESS)
 public class ParallelGatewayOutgoingFlowsNameNonNullOrEmptyRule extends ComplexRule {
 
     @Override
