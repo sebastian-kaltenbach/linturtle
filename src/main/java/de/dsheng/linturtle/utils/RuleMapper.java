@@ -4,15 +4,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 import de.dsheng.linturtle.model.BaseRule;
+import de.dsheng.linturtle.model.ComplexRule;
 import de.dsheng.linturtle.model.ElementRule;
-import de.dsheng.linturtle.model.GlobalRule;
 
 public final class RuleMapper {
 
     public static BaseRule transformClassToGlobalRule(Class<?> clazz) {
         BaseRule ruleObject = null;
         try {
-             ruleObject = (GlobalRule) clazz.getDeclaredConstructor().newInstance();
+             ruleObject = (ComplexRule) clazz.getDeclaredConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                 | NoSuchMethodException | SecurityException e) {
             e.printStackTrace();

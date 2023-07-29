@@ -8,12 +8,12 @@ import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
-@Rule(severity = Severity.MUST, targetType = Element.ENDEVENT, description = "Checks, if End Events have a non-null name")
-public class EndEventNameNonNullOrEmptyRule extends ElementRule {
+@Rule(description = "Checks, if Endevent is connected to the process", severity = Severity.MUST, targetType = Element.ENDEVENT)
+public class EndEventIsConnectedRule extends ElementRule {
 
     @Override
     public boolean check(Object element) {
         TEndEvent endEvent = (TEndEvent) element;
-        return RuleCheckUtils.nonNullOrEmpty(endEvent.getName());
-    }
+        return RuleCheckUtils.hasConnection(endEvent.getIncoming());
+    }    
 }

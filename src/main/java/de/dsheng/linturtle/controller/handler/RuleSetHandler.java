@@ -6,8 +6,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.omg.spec.bpmn._20100524.model.TProcess;
 
 import de.dsheng.linturtle.model.BaseRule;
+import de.dsheng.linturtle.model.ComplexRule;
 import de.dsheng.linturtle.model.ElementRule;
-import de.dsheng.linturtle.model.GlobalRule;
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
@@ -38,8 +38,8 @@ public class RuleSetHandler {
 
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            if(rule instanceof GlobalRule) {
-                var globalRule = (GlobalRule) rule;
+            if(rule instanceof ComplexRule) {
+                var globalRule = (ComplexRule) rule;
                 this.handleRuleResult(globalRule, bpmnProcess, globalRule.check(bpmnProcess));
             } else {
                 var elementRule = (ElementRule) rule;

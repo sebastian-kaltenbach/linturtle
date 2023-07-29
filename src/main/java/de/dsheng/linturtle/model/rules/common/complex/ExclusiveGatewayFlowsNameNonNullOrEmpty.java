@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.model.rules.common.global;
+package de.dsheng.linturtle.model.rules.common.complex;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.omg.spec.bpmn._20100524.model.TProcess;
 
-import de.dsheng.linturtle.model.GlobalRule;
+import de.dsheng.linturtle.model.ComplexRule;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
@@ -15,7 +15,7 @@ import de.dsheng.linturtle.utils.ProcessUtils;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(description = "Check if exclusive gateway flows have a name", severity = Severity.MUST, targetType = Element.PROCESS)
-public class ExclusiveGatewayFlowsNameNonNullOrEmpty extends GlobalRule {
+public class ExclusiveGatewayFlowsNameNonNullOrEmpty extends ComplexRule {
 
     @Override
     public Map<String, Boolean> check(TProcess process) {
