@@ -5,12 +5,10 @@ import java.util.Map;
 import org.apache.maven.plugin.logging.Log;
 import org.omg.spec.bpmn._20100524.model.TProcess;
 
-import de.dsheng.linturtle.model.RuleResult;
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.rules.BaseRule;
 import de.dsheng.linturtle.model.rules.ElementRule;
 import de.dsheng.linturtle.model.rules.GlobalRule;
