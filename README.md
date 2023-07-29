@@ -35,7 +35,7 @@ Unofficial maven plugin using Plugin for BPMN 2.0 specification validation
         <output>
             <!-- Target path for exporting evaluation report -->
             <path>target/generated-sources/linturtle</path>
-            <!-- Report format: Selection between JSON | XML -->
+            <!-- Report format: Selection between JSON | XML | TXT -->
             <format>JSON</format>
         </output>
     </configuration>
