@@ -21,7 +21,8 @@ import lombok.Getter;
 public class RuleHandler {
 
     private Log log;
-    private final String BASIC_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common";
+    private final String BASIC_GLOBAL_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.global";
+    private final String BASIC_ELEMENT_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.element";
 
     @Getter
     private RuleSet commonRuleSet;
@@ -54,9 +55,13 @@ public class RuleHandler {
     }
 
     private void loadCommonRulesToRuleSet() {
-        Reflections reflections = new Reflections(BASIC_RULE_PACKAGE);
+        Reflections reflections = new Reflections(BASIC_GLOBAL_RULE_PACKAGE);
         Set<Class<?>> ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
-        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToRule(ruleClass)));
+        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToGlobalRule(ruleClass)));        
+
+        reflections = new Reflections(BASIC_ELEMENT_RULE_PACKAGE);
+        ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
+        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToElementRule(ruleClass)));
     }
 
     private void loadSkippedRulesToRuleSet(Set<String> skipRules) {
@@ -78,7 +83,7 @@ public class RuleHandler {
                     Arrays.stream(classFileDir.listFiles()).forEach(classFile -> {
                         try {
                             Class<?> clazz = loader.loadClass(customRulePackage + "." + classFile.getName().substring(0, classFile.getName().lastIndexOf(".")));
-                            this.customRuleSet.addRule(RuleMapper.transformClassToRule(clazz));
+                            this.customRuleSet.addRule(RuleMapper.transformClassToElementRule(clazz));
 
                         } catch (ClassNotFoundException e1) {
                             log.error(e1.getMessage(), e1);

@@ -11,7 +11,7 @@ public class RuleMapperTest {
         Class<?> cut = null;
 
         //  act & assert
-        Assertions.assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> RuleMapper.transformClassToRule(cut));
+        Assertions.assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> RuleMapper.transformClassToElementRule(cut));
     }
 
     @Test
@@ -19,7 +19,7 @@ public class RuleMapperTest {
         Class<?> cut = String.class;
 
         //  act & assert
-        Assertions.assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> RuleMapper.transformClassToRule(cut));
+        Assertions.assertThatExceptionOfType(ClassCastException.class).isThrownBy(() -> RuleMapper.transformClassToElementRule(cut));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class RuleMapperTest {
         Class<?> cut = TestRule.class;
         
         //  act
-        var result = RuleMapper.transformClassToRule(cut);
+        var result = RuleMapper.transformClassToElementRule(cut);
 
         //  assert
         Assertions.assertThat(result.getClass()).isEqualTo(new TestRule().getClass());
