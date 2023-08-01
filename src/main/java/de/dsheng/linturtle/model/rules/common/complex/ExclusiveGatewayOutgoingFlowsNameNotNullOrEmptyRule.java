@@ -11,7 +11,7 @@ import de.dsheng.linturtle.model.ComplexRule;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.model.entity.Element;
 import de.dsheng.linturtle.model.entity.Severity;
-import de.dsheng.linturtle.utils.ProcessUtils;
+import de.dsheng.linturtle.utils.BpmnExtractor;
 import de.dsheng.linturtle.utils.RuleCheckUtils;
 
 @Rule(description = "Provide name for exclusive gateway outgoing flows", severity = Severity.MUST, targetType = Element.PROCESS)
@@ -22,13 +22,13 @@ public class ExclusiveGatewayOutgoingFlowsNameNotNullOrEmptyRule extends Complex
         Map<String, Boolean> resultSet = new HashMap<>();
         List<String> flows = new ArrayList<>();
 
-        ProcessUtils.getAllOutgoingGateways(process, Element.EXCLUSIVEGATEWAY).stream()
+        BpmnExtractor.getAllOutgoingGateways(process, Element.EXCLUSIVEGATEWAY).stream()
             .forEach(exclusiveGateway -> {
                 exclusiveGateway.getOutgoing().stream().forEach(flow -> {
                     flows.add(flow.getLocalPart());
                 });
             });
-        ProcessUtils.getAllSequenceFlowsByIdList(process, flows).stream().forEach(sequenceFlow -> {
+        BpmnExtractor.getAllSequenceFlowsByIdList(process, flows).stream().forEach(sequenceFlow -> {
             resultSet.put(sequenceFlow.getId(), RuleCheckUtils.notNullOrEmpty(sequenceFlow.getName()));
         });
         return resultSet;

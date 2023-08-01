@@ -10,7 +10,7 @@ import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
 import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.utils.ProcessUtils;
+import de.dsheng.linturtle.utils.BpmnExtractor;
 import lombok.Getter;
 
 public class RuleSetHandler {
@@ -38,7 +38,7 @@ public class RuleSetHandler {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
 
             var elementRule = (BaseRule) rule;
-            ProcessUtils.getProcessElementsByElement(provider.getProcess(), ruleAnnotation.targetType()).forEach(flowElement -> {
+            BpmnExtractor.getProcessElementsByElement(provider.getProcess(), ruleAnnotation.targetType()).forEach(flowElement -> {
                 this.handleRuleResult(elementRule, provider.getFileName(), Map.of(flowElement.getValue().getId(), elementRule.check(flowElement.getValue())));    
             });
                       
