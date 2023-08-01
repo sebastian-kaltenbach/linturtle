@@ -1,5 +1,6 @@
 package de.dsheng.linturtle.utils;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.omg.spec.bpmn._20100524.model.TFlowElement;
@@ -10,7 +11,14 @@ import org.omg.spec.bpmn._20100524.model.TSequenceFlow;
 import de.dsheng.linturtle.model.entity.Element;
 import jakarta.xml.bind.JAXBElement;
 
-public final class ProcessUtils {
+public final class BpmnExtractor {
+
+    public static Collection<?> extractBpmnElementByTargetElement(TProcess process, Element element) {
+        return process.getFlowElement().stream().filter(flowElement -> 
+            flowElement.getName().getLocalPart().toLowerCase().contains(element.toString().toLowerCase()))
+            .map(finalElement -> element.Reference().cast(finalElement.getValue()))
+            .toList();
+    }
 
     public static List<JAXBElement<? extends TFlowElement>> getProcessElementsByElement(TProcess process, Element element) {
         return process.getFlowElement().stream().filter(flowElement -> 
