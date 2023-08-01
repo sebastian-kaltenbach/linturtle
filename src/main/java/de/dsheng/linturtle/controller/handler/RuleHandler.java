@@ -14,8 +14,6 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
-import de.dsheng.linturtle.model.ComplexRule;
-import de.dsheng.linturtle.model.ElementRule;
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.annotation.Rule;
 import de.dsheng.linturtle.utils.RuleMapper;
@@ -24,8 +22,7 @@ import lombok.Getter;
 public class RuleHandler {
 
     private Log log;
-    private final String BASIC_GLOBAL_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.complex";
-    private final String BASIC_ELEMENT_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common.element";
+    private final String BASIC_RULE_PACKAGE = "de.dsheng.linturtle.model.rules.common";
     private final int MAXRULENAMELENGTH = 55;
     private final int MAXSEVERITYLENGTH = 6;
     private final int MAXTARGETLENGTH = 25;
@@ -61,13 +58,9 @@ public class RuleHandler {
     }
 
     private void loadCommonRulesToRuleSet() {
-        Reflections reflections = new Reflections(BASIC_GLOBAL_RULE_PACKAGE);
+        Reflections reflections = new Reflections(BASIC_RULE_PACKAGE);
         Set<Class<?>> ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
-        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToComplexRule(ruleClass)));        
-
-        reflections = new Reflections(BASIC_ELEMENT_RULE_PACKAGE);
-        ruleClasses = reflections.getTypesAnnotatedWith(Rule.class);
-        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToElementRule(ruleClass)));
+        ruleClasses.forEach(ruleClass -> this.commonRuleSet.addRule(RuleMapper.transformClassToRule(ruleClass)));        
     }
 
     private void loadSkippedRulesToRuleSet(Set<String> skipRules) {
@@ -89,14 +82,7 @@ public class RuleHandler {
                     Arrays.stream(classFileDir.listFiles()).forEach(classFile -> {
                         try {
                             Class<?> clazz = loader.loadClass(customRulePackage + "." + classFile.getName().substring(0, classFile.getName().lastIndexOf(".")));
-                            if(clazz.getSuperclass() == ComplexRule.class) {
-                                this.customRuleSet.addRule(RuleMapper.transformClassToComplexRule(clazz));                            
-                            }
-                            else {
-                                this.customRuleSet.addRule(RuleMapper.transformClassToElementRule(clazz));                            
-                            }
-                            
-
+                            this.customRuleSet.addRule(RuleMapper.transformClassToRule(clazz));                                              
                         } catch (ClassNotFoundException e1) {
                             log.error(e1.getMessage(), e1);
                         }     

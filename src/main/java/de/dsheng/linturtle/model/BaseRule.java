@@ -1,4 +1,5 @@
 package de.dsheng.linturtle.model;
 
-public interface BaseRule {
+public abstract class BaseRule {
+    public abstract boolean check(Object element);
 }

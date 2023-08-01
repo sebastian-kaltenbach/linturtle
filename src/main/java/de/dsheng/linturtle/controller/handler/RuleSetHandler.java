@@ -6,8 +6,6 @@ import org.apache.maven.plugin.logging.Log;
 
 import de.dsheng.linturtle.model.BaseRule;
 import de.dsheng.linturtle.model.BpmnProvider;
-import de.dsheng.linturtle.model.ComplexRule;
-import de.dsheng.linturtle.model.ElementRule;
 import de.dsheng.linturtle.model.RuleSet;
 import de.dsheng.linturtle.model.Violation;
 import de.dsheng.linturtle.model.ViolationSet;
@@ -38,15 +36,12 @@ public class RuleSetHandler {
 
         ruleSet.getRules().forEach(rule -> {
             Rule ruleAnnotation = rule.getClass().getAnnotation(Rule.class);
-            if(rule instanceof ComplexRule) {
-                var globalRule = (ComplexRule) rule;
-                this.handleRuleResult(globalRule, provider.getFileName(), globalRule.check(provider.getProcess()));
-            } else {
-                var elementRule = (ElementRule) rule;
-                ProcessUtils.getProcessElementsByElement(provider.getProcess(), ruleAnnotation.targetType()).forEach(flowElement -> {
-                    this.handleRuleResult(elementRule, provider.getFileName(), Map.of(flowElement.getValue().getId(), elementRule.check(flowElement.getValue())));    
-                });
-            }          
+
+            var elementRule = (BaseRule) rule;
+            ProcessUtils.getProcessElementsByElement(provider.getProcess(), ruleAnnotation.targetType()).forEach(flowElement -> {
+                this.handleRuleResult(elementRule, provider.getFileName(), Map.of(flowElement.getValue().getId(), elementRule.check(flowElement.getValue())));    
+            });
+                      
         });
         return this;
     }
