@@ -31,3 +31,15 @@ Rule | Description
 ProcessNameNotNullOrEmptyRule | Provide name for process
 ExclusiveGatewayOutgoingFlowsNameNotNullOrEmptyRule | Provide name for exclusive gateway outgoing flows
 ParallelGatewayOutgoingFlowsNameNotNullOrEmptyRule | Provide name for parallel gateway outgoing flows
+
+---
+
+# Checkers
+
+Checker | Description
+--- | ---
+ElementConnectionChecker | Checks, if elements consist of required connections.
+ElementNameConventionChecker | Checks, if elements consist of correct name conventions.
+TaskConnectionConnectionLimitationChecker | Checks, if tasks only have a single incoming and outgoing connection.
+OugoingGatewaySequenceFlowsNameChecker | Checks, if post gateways sequence flows contain a name declaration.
+EventBasedGatewayOnlyEventsChecker | Checks, if event-based gateways only end into event elements (outgoing).
