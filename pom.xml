@@ -92,11 +92,6 @@
         <artifactId>jandex</artifactId>
         <version>${version.jandex}</version>
     </dependency>
-    <dependency>
-        <groupId>com.google.auto.service</groupId>
-        <artifactId>auto-service</artifactId>
-        <version>1.1.1</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
     <dependency>
         <groupId>jakarta.xml.bind</groupId>
@@ -104,10 +99,11 @@
         <version>4.0.0</version>
     </dependency>
     <dependency>
-        <groupId>org.glassfish.jaxb</groupId>
-        <artifactId>jaxb-runtime</artifactId>
-        <version>4.0.0</version>
-     </dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>4.0.3</version>
+        <scope>runtime</scope>
+    </dependency>
 
     <!-- Test Dependencies -->
     <dependency>
