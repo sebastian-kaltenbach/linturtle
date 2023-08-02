@@ -1,0 +1,11 @@
+<rules>
+    <rule>
+        <name>RuleName</name>
+        <elementConventions>
+            <elementConvention>
+                <name>ServiceTask</name>
+                <description>Description of the specific rule execution.</description>
+            </elementConvention>
+        </elementConventions>
+    </rule>
+</rules>
