@@ -14,9 +14,9 @@ import jakarta.xml.bind.JAXBElement;
 public final class BpmnExtractor {
 
     public static Collection<?> extractBpmnElementByTargetElement(TProcess process, Element element) {
-        return process.getFlowElement().stream().filter(flowElement -> 
-            flowElement.getName().getLocalPart().toLowerCase().contains(element.toString().toLowerCase()))
-            .map(finalElement -> element.Clazz().cast(finalElement.getValue()))
+        return process.getFlowElement().stream()
+            .map(jaxbElement -> jaxbElement.getValue())
+            .filter(flowElement -> element.Clazz().isInstance(flowElement))
             .toList();
     }
 

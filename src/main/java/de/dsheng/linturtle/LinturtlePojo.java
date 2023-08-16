@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -16,6 +18,7 @@ import org.apache.maven.project.MavenProject;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
+import de.dsheng.linturtle.config.XmlConfigReader;
 import de.dsheng.linturtle.controller.ValidationController;
 import de.dsheng.linturtle.model.entity.Severity;
 
@@ -24,6 +27,9 @@ public class LinturtlePojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject project;
+
+    @Parameter(property = "linturtle.configFile", defaultValue = "target/classes/linturtle/example.xml")
+    private String configFile;
 
     @Parameter(property = "linturtle.sourceFolder", defaultValue = "src/main/resources")
     private String sourceFolder;
@@ -67,18 +73,30 @@ public class LinturtlePojo extends AbstractMojo {
             if(failOn.contains(Severity.SHOULD)) failOn.add(Severity.MUST); 
         }
 
+        /*
+         * Read Config-File
+         */
+        var configReader = new XmlConfigReader(getLog());
+        try {
+
+            var linturtleConfig = configReader.read(configFile, getClass().getClassLoader());
+        } catch (ParserConfigurationException e) {
+            getLog().error(e.getMessage(), e);
+            return;
+        }
+
         Config config = ConfigValueFactory.fromMap(output).toConfig();
         ValidationController validationController = new ValidationController(project, config, sourceFolder, skipBPMNs, skipRules, customRulePackage, getLog());
 
         validationController.execute();
 
-        if (report) {
+        /*if (report) {
             validationController.executeReport();
         }     
 
         if(validationController.checkViolationsForSeverity(failOn)){
             throw new MojoFailureException("Failing build due to errors with severity " + failOn.stream().map(Enum::name).collect(Collectors.joining(", ")));
-        }
+        }*/
     }
     
     private void printHeader() {
