@@ -14,8 +14,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.reflections.Reflections;
 
-import de.dsheng.linturtle.model.RuleSet;
-import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.domain.model.RuleSet;
+import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.utils.RuleMapper;
 import lombok.Getter;
 

@@ -18,9 +18,9 @@ import org.apache.maven.project.MavenProject;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
-import de.dsheng.linturtle.config.XmlConfigReader;
+import de.dsheng.linturtle.adapter.project.XmlConfigReader;
 import de.dsheng.linturtle.controller.ValidationController;
-import de.dsheng.linturtle.model.entity.Severity;
+import de.dsheng.linturtle.domain.model.entity.Severity;
 
 @Mojo(threadSafe = true, name = "validate")
 public class LinturtlePojo extends AbstractMojo {

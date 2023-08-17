@@ -4,12 +4,12 @@ import java.util.Map;
 
 import org.apache.maven.plugin.logging.Log;
 
-import de.dsheng.linturtle.model.BaseRule;
-import de.dsheng.linturtle.model.BpmnProvider;
-import de.dsheng.linturtle.model.RuleSet;
-import de.dsheng.linturtle.model.Violation;
-import de.dsheng.linturtle.model.ViolationSet;
-import de.dsheng.linturtle.model.annotation.Rule;
+import de.dsheng.linturtle.domain.model.BaseRule;
+import de.dsheng.linturtle.domain.model.BpmnProvider;
+import de.dsheng.linturtle.domain.model.RuleSet;
+import de.dsheng.linturtle.domain.model.Violation;
+import de.dsheng.linturtle.domain.model.ViolationSet;
+import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.utils.BpmnExtractor;
 import lombok.Getter;
 

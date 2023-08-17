@@ -3,7 +3,7 @@ package de.dsheng.linturtle.utils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
-import de.dsheng.linturtle.model.BaseRule;
+import de.dsheng.linturtle.domain.model.BaseRule;
 
 public final class RuleMapper {
 

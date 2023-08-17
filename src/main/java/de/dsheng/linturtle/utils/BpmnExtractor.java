@@ -3,12 +3,12 @@ package de.dsheng.linturtle.utils;
 import java.util.Collection;
 import java.util.List;
 
-import org.omg.spec.bpmn._20100524.model.TFlowElement;
-import org.omg.spec.bpmn._20100524.model.TGateway;
-import org.omg.spec.bpmn._20100524.model.TProcess;
-import org.omg.spec.bpmn._20100524.model.TSequenceFlow;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TFlowElement;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TGateway;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TSequenceFlow;
 
-import de.dsheng.linturtle.model.entity.Element;
+import de.dsheng.linturtle.domain.model.entity.Element;
 import jakarta.xml.bind.JAXBElement;
 
 public final class BpmnExtractor {

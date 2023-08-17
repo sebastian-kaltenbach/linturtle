@@ -2,8 +2,8 @@ package de.dsheng.linturtle.utils;
 
 import java.io.File;
 import java.util.Objects;
-import org.omg.spec.bpmn._20100524.model.TDefinitions;
-import org.omg.spec.bpmn._20100524.model.TProcess;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TDefinitions;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
 import jakarta.xml.bind.JAXB;
 
 public final class BpmnModelMapper {

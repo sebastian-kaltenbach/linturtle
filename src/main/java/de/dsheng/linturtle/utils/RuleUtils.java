@@ -1,7 +1,7 @@
 package de.dsheng.linturtle.utils;
 
-import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.model.entity.Element;
+import de.dsheng.linturtle.domain.model.annotation.Rule;
+import de.dsheng.linturtle.domain.model.entity.Element;
 
 public final class RuleUtils {
     

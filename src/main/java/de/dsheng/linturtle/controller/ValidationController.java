@@ -1,6 +1,5 @@
 package de.dsheng.linturtle.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,19 +9,18 @@ import org.apache.maven.project.MavenProject;
 
 import com.typesafe.config.Config;
 
-import de.dsheng.linturtle.controller.handler.BPMNHandler;
+import de.dsheng.linturtle.adapter.linturtle.BPMNCollector;
 import de.dsheng.linturtle.controller.handler.ReportHandler;
 import de.dsheng.linturtle.controller.handler.RuleHandler;
-import de.dsheng.linturtle.controller.handler.RuleSetHandler;
-import de.dsheng.linturtle.model.ViolationSet;
-import de.dsheng.linturtle.model.checker.TaskNamingConventionChecker;
-import de.dsheng.linturtle.model.entity.Severity;
+import de.dsheng.linturtle.domain.model.ViolationSet;
+import de.dsheng.linturtle.domain.model.checker.TaskNamingConventionChecker;
+import de.dsheng.linturtle.domain.model.entity.Severity;
 import lombok.Getter;
 
 public class ValidationController {
 
     private Log log;
-    private BPMNHandler bpmnController;
+    private BPMNCollector bpmnController;
     private RuleHandler ruleController;
     private ReportHandler reportController;
 
@@ -31,7 +29,7 @@ public class ValidationController {
 
     public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
-        this.bpmnController = new BPMNHandler(source, skipBPMNs, log);
+        this.bpmnController = new BPMNCollector(source, skipBPMNs, log);
         /*this.ruleController = new RuleHandler(log).prepare(project, skipRules, customRulePackage);
         this.reportController = new ReportHandler(config, log);
         this.violationSets = new HashMap<>();*/

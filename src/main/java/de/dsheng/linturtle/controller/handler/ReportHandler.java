@@ -27,12 +27,12 @@ import org.w3c.dom.Element;
 
 import com.typesafe.config.Config;
 
-import de.dsheng.linturtle.model.MetaData;
-import de.dsheng.linturtle.model.RuleSet;
-import de.dsheng.linturtle.model.Violation;
-import de.dsheng.linturtle.model.ViolationSet;
-import de.dsheng.linturtle.model.annotation.Rule;
-import de.dsheng.linturtle.model.entity.Format;
+import de.dsheng.linturtle.domain.model.MetaData;
+import de.dsheng.linturtle.domain.model.RuleSet;
+import de.dsheng.linturtle.domain.model.Violation;
+import de.dsheng.linturtle.domain.model.ViolationSet;
+import de.dsheng.linturtle.domain.model.annotation.Rule;
+import de.dsheng.linturtle.domain.model.entity.Format;
 import de.dsheng.linturtle.utils.JsonPrettyPrintUtils;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;

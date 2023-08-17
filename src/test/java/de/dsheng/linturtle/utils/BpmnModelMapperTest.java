@@ -5,8 +5,8 @@ import java.util.NoSuchElementException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.omg.spec.bpmn._20100524.model.TDefinitions;
-import org.omg.spec.bpmn._20100524.model.TProcess;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TDefinitions;
+import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
 
 import jakarta.xml.bind.DataBindingException;
 
