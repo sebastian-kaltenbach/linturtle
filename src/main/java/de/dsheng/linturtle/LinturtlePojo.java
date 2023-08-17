@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.dsheng.linturtle.adapter.BPMNCollector;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -18,7 +19,7 @@ import org.apache.maven.project.MavenProject;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
-import de.dsheng.linturtle.adapter.project.XmlConfigReader;
+import de.dsheng.linturtle.adapter.XmlConfigReader;
 import de.dsheng.linturtle.controller.ValidationController;
 import de.dsheng.linturtle.domain.model.entity.Severity;
 
@@ -67,22 +68,21 @@ public class LinturtlePojo extends AbstractMojo {
             return;
         }
 
+        //  Step 1 | Gather Bpmn Models of project
+        var bpmnCollector = new BPMNCollector(getLog());
+        var bpmnModelCollection = bpmnCollector.collect(this.sourceFolder);
+
+        // Step 2 | Gather config file of project
+        var configReader = new XmlConfigReader(getLog());
+        var configFile = configReader.collect(this.configFile);
+
+        // Step 3 |
+
+
         if (!failOn.isEmpty())
         {
             if(failOn.contains(Severity.MAY)) failOn.add(Severity.SHOULD);
             if(failOn.contains(Severity.SHOULD)) failOn.add(Severity.MUST); 
-        }
-
-        /*
-         * Read Config-File
-         */
-        var configReader = new XmlConfigReader(getLog());
-        try {
-
-            var linturtleConfig = configReader.read(configFile, getClass().getClassLoader());
-        } catch (ParserConfigurationException e) {
-            getLog().error(e.getMessage(), e);
-            return;
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();

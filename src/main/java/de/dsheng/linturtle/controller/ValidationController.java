@@ -9,7 +9,7 @@ import org.apache.maven.project.MavenProject;
 
 import com.typesafe.config.Config;
 
-import de.dsheng.linturtle.adapter.linturtle.BPMNCollector;
+import de.dsheng.linturtle.adapter.BPMNCollector;
 import de.dsheng.linturtle.controller.handler.ReportHandler;
 import de.dsheng.linturtle.controller.handler.RuleHandler;
 import de.dsheng.linturtle.domain.model.ViolationSet;
@@ -29,7 +29,7 @@ public class ValidationController {
 
     public ValidationController(MavenProject project, Config config, String source, Set<String> skipBPMNs, Set<String> skipRules, String customRulePackage, Log log) {
         this.log = log;
-        this.bpmnController = new BPMNCollector(source, skipBPMNs, log);
+        //this.bpmnController = new BPMNCollector(source, skipBPMNs, log);
         /*this.ruleController = new RuleHandler(log).prepare(project, skipRules, customRulePackage);
         this.reportController = new ReportHandler(config, log);
         this.violationSets = new HashMap<>();*/
@@ -38,12 +38,12 @@ public class ValidationController {
 
     public void execute() {
         log.debug("ValidationController executed.");
-        bpmnController.getBpmnProviderCollection().forEach(provider -> {
+        /*pmnController.getBpmnProviderCollection().forEach(provider -> {
             var checker = new TaskNamingConventionChecker(log);
             checker.check(provider.getProcess());
             //RuleSetHandler controller = new RuleSetHandler(ruleController.getActiveRuleSet(), provider, log).execute();
             //this.violationSets.put(provider.getFileName(), controller.getViolationSet());
-        });
+        });*/
         //reportController.printResultToConsole(ruleController.getActiveRuleSet(), ruleController.getCustomRuleSet(), ruleController.getSkippedRuleSet(), this.violationSets);
     }
 

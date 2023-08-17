@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.adapter.project;
+package de.dsheng.linturtle.domain.model.config;
 
 import java.util.Collection;
 
@@ -8,18 +8,18 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "rule")
-public class XmlRule {
+public class TXmlRule {
 
     private String id;
     private String name;
     private String description;
-    private Collection<XmlElementConvention> elementConventions;
+    private Collection<TXmlElementConvention> elementConventions;
 
-    public XmlRule() {
+    public TXmlRule() {
     }
 
-    public XmlRule(String id, String name, String description,
-            final Collection<XmlElementConvention> elementConventions) {
+    public TXmlRule(String id, String name, String description,
+                    final Collection<TXmlElementConvention> elementConventions) {
         super();
         this.id = id;
         this.name = name;
@@ -56,11 +56,11 @@ public class XmlRule {
 
     @XmlElementWrapper(name = "elementConventions")
     @XmlElement(name = "elementConvention")
-    public Collection<XmlElementConvention> getElementConventions() {
+    public Collection<TXmlElementConvention> getElementConventions() {
         return elementConventions;
     }
 
-    public void setElementConventions(Collection<XmlElementConvention> elementConventions) {
+    public void setElementConventions(Collection<TXmlElementConvention> elementConventions) {
         this.elementConventions = elementConventions;
     }
 }

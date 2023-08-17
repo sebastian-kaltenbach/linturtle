@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.adapter.project;
+package de.dsheng.linturtle.domain.model.config;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -6,18 +6,18 @@ import jakarta.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "elementConvention")
 @XmlType(propOrder = { "name", "description", "pattern" })
-public class XmlElementConvention {
+public class TXmlElementConvention {
 
     private String name;
     private String description;
     private String pattern;
 
-    public XmlElementConvention() {
+    public TXmlElementConvention() {
     }
 
-    public XmlElementConvention(final String name,
-            final String description,
-            final String pattern) {
+    public TXmlElementConvention(final String name,
+                                 final String description,
+                                 final String pattern) {
         super();
         this.name = name;
         this.description = description;
