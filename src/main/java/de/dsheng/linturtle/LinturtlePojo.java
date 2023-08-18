@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.dsheng.linturtle.adapter.BPMNCollector;
+import de.dsheng.linturtle.domain.service.CheckerSetup;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -74,9 +75,13 @@ public class LinturtlePojo extends AbstractMojo {
 
         // Step 2 | Gather config file of project
         var configReader = new XmlConfigReader(getLog());
-        var configFile = configReader.collect(this.configFile);
+        var ruleSet = configReader.collect(this.configFile);
 
-        // Step 3 |
+        // Step 3 | Match Rules with available Checkers
+        var checkerSetup = new CheckerSetup(getLog());
+        var checkerCollection = checkerSetup.mapping(ruleSet);
+
+        // Step 4 |
 
 
         if (!failOn.isEmpty())

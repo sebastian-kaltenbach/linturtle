@@ -10,18 +10,18 @@ public class TXmlElementConvention {
 
     private String name;
     private String description;
-    private String pattern;
+    private TXmlOperation operation;
 
     public TXmlElementConvention() {
     }
 
     public TXmlElementConvention(final String name,
                                  final String description,
-                                 final String pattern) {
+                                 final TXmlOperation operation) {
         super();
         this.name = name;
         this.description = description;
-        this.pattern = pattern;
+        this.operation = operation;
     }
 
     @XmlElement(name = "name", required = true)
@@ -42,12 +42,12 @@ public class TXmlElementConvention {
         this.description = description;
     }
 
-    @XmlElement(name = "pattern", required = true)
-    public String getPattern() {
-        return pattern;
+    @XmlElement(name = "operation", required = true)
+    public TXmlOperation getPattern() {
+        return operation;
     }
 
-    public void setPattern(final String pattern) {
-        this.pattern = pattern;
+    public void setPattern(final TXmlOperation operation) {
+        this.operation = operation;
     }
 }
