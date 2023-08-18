@@ -11,10 +11,6 @@ import de.dsheng.linturtle.domain.service.port.BpmnProcessing;
 import de.dsheng.linturtle.domain.service.port.BpmnProvisioning;
 import org.apache.maven.plugin.logging.Log;
 
-import de.dsheng.linturtle.domain.model.BpmnProvider;
-import de.dsheng.linturtle.utils.BpmnModelMapper;
-import lombok.Getter;
-
 public class BPMNCollector implements BpmnProvisioning {
 
     private final Log log;

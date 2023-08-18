@@ -20,7 +20,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigValueFactory;
 
 import de.dsheng.linturtle.adapter.XmlConfigReader;
-import de.dsheng.linturtle.controller.ValidationController;
+//import de.dsheng.linturtle.controller.ValidationController;
 import de.dsheng.linturtle.domain.model.entity.Severity;
 
 @Mojo(threadSafe = true, name = "validate")
@@ -86,9 +86,9 @@ public class LinturtlePojo extends AbstractMojo {
         }
 
         Config config = ConfigValueFactory.fromMap(output).toConfig();
-        ValidationController validationController = new ValidationController(project, config, sourceFolder, skipBPMNs, skipRules, customRulePackage, getLog());
+        //ValidationController validationController = new ValidationController(project, config, sourceFolder, skipBPMNs, skipRules, customRulePackage, getLog());
 
-        validationController.execute();
+        //validationController.execute();
 
         /*if (report) {
             validationController.executeReport();

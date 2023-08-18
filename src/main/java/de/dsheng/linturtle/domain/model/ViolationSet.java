@@ -17,8 +17,9 @@ public class ViolationSet {
     }
 
     public List<Violation> getViolationsBySeverity(List<Severity> failOn) {
-        return this.violations.stream().filter(violation -> failOn.contains(violation.getRule().getClass()
-            .getAnnotation(Rule.class).severity())).toList();
+        return new ArrayList<>();
+//        return this.violations.stream().filter(violation -> failOn.contains(violation.getRule().getClass()
+//            .getAnnotation(Rule.class).severity())).toList();
     }
 
     public void addViolationToSet(Violation violation) {
