@@ -1,8 +1,11 @@
 package de.dsheng.linturtle.utils;
 
 import java.io.IOException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import de.dsheng.linturtle.application.utils.JsonPrettyPrintUtils;
 
 public class JsonPrettyPrintUtilsTest {
 

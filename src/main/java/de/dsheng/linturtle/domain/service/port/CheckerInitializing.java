@@ -1,10 +1,9 @@
 package de.dsheng.linturtle.domain.service.port;
 
-import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.annotation.RuleSet;
+import de.dsheng.linturtle.domain.model.checker.BaseChecker;
 
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * .
@@ -17,5 +16,5 @@ public interface CheckerInitializing {
      * @param rulSet
      * @return
      */
-    public abstract Map<String, Collection<Rule>> mapping(RuleSet rulSet);
+    public abstract Collection<BaseChecker>  mapping(RuleSet rulSet);
 }

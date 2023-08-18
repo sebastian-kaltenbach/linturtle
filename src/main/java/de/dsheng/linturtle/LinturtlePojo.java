@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.dsheng.linturtle.adapter.BPMNCollector;
+import de.dsheng.linturtle.domain.service.BpmnValidator;
 import de.dsheng.linturtle.domain.service.CheckerSetup;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -81,7 +82,11 @@ public class LinturtlePojo extends AbstractMojo {
         var checkerSetup = new CheckerSetup(getLog());
         var checkerCollection = checkerSetup.mapping(ruleSet);
 
-        // Step 4 |
+        // Step 4 | Validating Rules per Checker
+        var bpmnValidator = new BpmnValidator(getLog());
+        var checkerIssues = bpmnValidator.validate(bpmnModelCollection, checkerCollection);
+
+        // Step 5 |
 
 
         if (!failOn.isEmpty())
