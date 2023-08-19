@@ -8,6 +8,7 @@ import de.dsheng.linturtle.domain.service.mapping.ConfigMapper;
 import de.dsheng.linturtle.domain.service.port.BpmnProcessing;
 import de.dsheng.linturtle.domain.service.port.ConfigProcessing;
 import jakarta.xml.bind.JAXB;
+import org.apache.maven.plugin.logging.Log;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -17,6 +18,12 @@ import java.util.Objects;
  * .
  */
 public class ConfigReader implements ConfigProcessing {
+
+    private Log log;
+
+    public ConfigReader(Log log) {
+        this.log = log;
+    }
 
     @Override
     public RuleSet transform(File configFile) {

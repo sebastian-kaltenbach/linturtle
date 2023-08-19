@@ -18,7 +18,7 @@ public class TXmlRule {
     public TXmlRule() {
     }
 
-    public TXmlRule(String id, String name, String description,
+    public TXmlRule(final String id, final String name, final String description,
                     final Collection<TXmlElementConvention> elementConventions) {
         super();
         this.id = id;
@@ -55,7 +55,7 @@ public class TXmlRule {
     }
 
     @XmlElementWrapper(name = "elementConventions")
-    @XmlElement(name = "elementConvention")
+    @XmlElement(name = "elementConvention", type = TXmlElementConvention.class)
     public Collection<TXmlElementConvention> getElementConventions() {
         return elementConventions;
     }

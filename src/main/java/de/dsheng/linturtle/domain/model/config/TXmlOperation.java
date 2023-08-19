@@ -1,7 +1,9 @@
 package de.dsheng.linturtle.domain.model.config;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlValue;
 
 @XmlRootElement(name = "operation")
 public class TXmlOperation {
@@ -9,10 +11,10 @@ public class TXmlOperation {
     private String value;
 
     public TXmlOperation() {
-
     }
 
     public TXmlOperation(final String type, final String value) {
+        super();
         this.type = type;
         this.value = value;
     }
@@ -26,7 +28,7 @@ public class TXmlOperation {
         this.type = type;
     }
 
-    @XmlAttribute(name = "value", required = true)
+    @XmlValue
     public String getValue() {
         return value;
     }

@@ -17,7 +17,7 @@ public class XmlConfigReader implements ConfigProvisioning {
 
     public XmlConfigReader(Log log) {
         this.log = log;
-        this.processingService = new ConfigReader();
+        this.processingService = new ConfigReader(log);
     }
 
     @Override

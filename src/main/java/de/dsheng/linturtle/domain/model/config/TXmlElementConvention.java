@@ -1,27 +1,29 @@
 package de.dsheng.linturtle.domain.model.config;
 
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.*;
+
+import java.util.Collection;
+
+import java.util.Collections;
 
 @XmlRootElement(name = "elementConvention")
-@XmlType(propOrder = { "name", "description", "pattern" })
+@XmlType(propOrder = { "name", "description", "operations" })
 public class TXmlElementConvention {
 
     private String name;
     private String description;
-    private TXmlOperation operation;
+    private Collection<TXmlOperation> operations;
 
     public TXmlElementConvention() {
     }
 
     public TXmlElementConvention(final String name,
                                  final String description,
-                                 final TXmlOperation operation) {
+                                 final Collection<TXmlOperation> operations) {
         super();
         this.name = name;
         this.description = description;
-        this.operation = operation;
+        this.operations = operations;
     }
 
     @XmlElement(name = "name", required = true)
@@ -42,12 +44,13 @@ public class TXmlElementConvention {
         this.description = description;
     }
 
-    @XmlElement(name = "operation", required = true)
-    public TXmlOperation getPattern() {
-        return operation;
+    @XmlElementWrapper(name = "operations")
+    @XmlElement(name = "operation")
+    public Collection<TXmlOperation> getOperations() {
+        return operations;
     }
 
-    public void setPattern(final TXmlOperation operation) {
-        this.operation = operation;
+    public void setOperations(final Collection<TXmlOperation> operations) {
+        this.operations = operations;
     }
 }

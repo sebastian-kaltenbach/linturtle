@@ -11,9 +11,19 @@ public abstract class BaseChecker {
 
     Rule rule;
 
+    /**
+     * .
+     * @param rule
+     */
     public BaseChecker(Rule rule) {
         this.rule = rule;
     }
 
+    /**
+     * .
+     * @param process
+     * @return
+     */
     public abstract Collection<Violation> check(TProcess process);
+
 }
