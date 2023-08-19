@@ -18,7 +18,9 @@ public class CheckerSetup implements CheckerInitializing {
     private final Collection<String> checkers = List.of(
             "NamingConventionChecker",
             "OutgoingGatewayHasNamedFlowsChecker",
-            "TaskOnlyHasSingleFlowsChecker"
+            "TaskOnlyHasSingleFlowsChecker",
+            "ElementConnectedChecker",
+            "OverlapChecker"
     );
 
     public CheckerSetup(Log log) {
