@@ -20,7 +20,8 @@ public class CheckerSetup implements CheckerInitializing {
             "OutgoingGatewayHasNamedFlowsChecker",
             "TaskOnlyHasSingleFlowsChecker",
             "ElementConnectedChecker",
-            "OverlapChecker"
+            "OverlapChecker",
+            "EventBasedGatewaysLeadIntoEventsChecker"
     );
 
     public CheckerSetup(Log log) {
@@ -41,7 +42,7 @@ public class CheckerSetup implements CheckerInitializing {
                     log.error(e.getMessage(), e);
                     throw new RuntimeException(e);
                 }
-                log.info(String.format("Rule was added to checker [%s]", rule.name()));
+                log.info(String.format("Checker [%s] was initialized.", rule.name()));
             }
             else {
                 var errorMsg = String.format("Checker of config file in rule [%s] is not recognized.", rule.name());
