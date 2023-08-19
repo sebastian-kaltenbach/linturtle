@@ -9,6 +9,7 @@ import de.dsheng.linturtle.domain.service.BpmnValidator;
 import de.dsheng.linturtle.domain.service.CheckerSetup;
 import de.dsheng.linturtle.domain.service.ViolationExtractor;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -48,7 +49,7 @@ public class LinturtlePojo extends AbstractMojo {
     private Map<String, String> export;
 
     @Override
-    public void execute() {
+    public void execute() throws MojoFailureException {
 
         printHeader();
         printConfigurationSetup();
@@ -91,14 +92,10 @@ public class LinturtlePojo extends AbstractMojo {
 
         // Step 7 | Fail build if config is set
         if(failOnViolation) {
-
+            var totalViolations = violationSetCollection.stream().map(violationSet -> violationSet.violations().size())
+                    .reduce(0, Integer::sum);
+            if(totalViolations > 0) throw new MojoFailureException(String.format("Build failed because of a total of %d violation(s).", totalViolations));
         }
-
-        /*
-
-        if(validationController.checkViolationsForSeverity(failOn)){
-            throw new MojoFailureException("Failing build due to errors with severity " + failOn.stream().map(Enum::name).collect(Collectors.joining(", ")));
-        }*/
     }
     
     private void printHeader() {
