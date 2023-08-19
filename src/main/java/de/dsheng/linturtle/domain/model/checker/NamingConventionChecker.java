@@ -2,8 +2,6 @@ package de.dsheng.linturtle.domain.model.checker;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import de.dsheng.linturtle.application.utils.AttributeUtils;
@@ -16,11 +14,11 @@ import de.dsheng.linturtle.domain.model.Violation;
 
 import de.dsheng.linturtle.domain.model.entity.Element;
 
-public class TaskNamingConventionChecker extends BaseChecker {
+public class NamingConventionChecker extends BaseChecker {
 
     private Log log;
 
-    public TaskNamingConventionChecker(Rule rule, Log log) {
+    public NamingConventionChecker(Rule rule, Log log) {
         super(rule);
         this.log = log;
     }
@@ -35,7 +33,7 @@ public class TaskNamingConventionChecker extends BaseChecker {
                 log.info(String.format("Target element found with id %s and name %s.", targetElement.getId(), targetElement.getName()));
                 elementConvention.operations().forEach(operation -> {
                     if(!AttributeUtils.isNullOrBlank(targetElement.getName())) {
-                        var result = performCheckBasedOnOperation(operation, targetElement.getName());
+                        var result = AttributeUtils.performCheckBasedOnOperation(operation, targetElement.getName());
                         log.info(String.format("Operation of type [%s] with value [%s] provided result [%s].", operation.type(), operation.value(), result));
                         if(!result){
                             violations.add(new Violation(rule.name(), elementConvention, operation, targetElement.getId()));
@@ -49,16 +47,5 @@ public class TaskNamingConventionChecker extends BaseChecker {
             });
         });
         return violations;
-    }
-
-    private boolean performCheckBasedOnOperation(Operation operation, String name) {
-        return switch (operation.type().toLowerCase()) {
-            case "startswith" -> name.startsWith(operation.value());
-            case "endswith" -> name.endsWith(operation.value());
-            case "contains" -> name.contains(operation.value());
-            case "pattern" -> Pattern.compile(operation.value()).matcher(name).matches();
-            default ->
-                    throw new IllegalArgumentException(String.format("Operation does not have qualified type [%s]", operation.type()));
-        };
     }
 }

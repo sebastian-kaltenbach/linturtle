@@ -9,6 +9,6 @@ public record ElementConvention(
         String name,
         @NonNull
         String description,
-        @NonNull
+
         Collection<Operation> operations) {
 }

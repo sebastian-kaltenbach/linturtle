@@ -15,7 +15,11 @@ import java.util.*;
 public class CheckerSetup implements CheckerInitializing {
 
     private Log log;
-    private final Collection<String> checkers = List.of("TaskNamingConventionChecker");
+    private final Collection<String> checkers = List.of(
+            "NamingConventionChecker",
+            "OutgoingGatewayHasNamedFlowsChecker",
+            "TaskOnlyHasSingleFlowsChecker"
+    );
 
     public CheckerSetup(Log log) {
         this.log = log;

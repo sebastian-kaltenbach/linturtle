@@ -10,7 +10,6 @@ public record Violation(
         String ruleName,
         @NonNull
         ElementConvention elementConvention,
-        @NonNull
         Operation operation,
         @NonNull
         String targetId
