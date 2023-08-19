@@ -7,7 +7,7 @@ import java.util.Set;
 import de.dsheng.linturtle.adapter.BPMNCollector;
 import de.dsheng.linturtle.domain.service.BpmnValidator;
 import de.dsheng.linturtle.domain.service.CheckerSetup;
-import de.dsheng.linturtle.domain.service.ViolationExtractor;
+import de.dsheng.linturtle.adapter.ViolationExtractor;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;

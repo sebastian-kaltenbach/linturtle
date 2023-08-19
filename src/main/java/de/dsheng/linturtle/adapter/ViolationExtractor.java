@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.domain.service;
+package de.dsheng.linturtle.adapter;
 
 import com.typesafe.config.Config;
 import de.dsheng.linturtle.application.utils.JsonPrettyPrintUtils;
