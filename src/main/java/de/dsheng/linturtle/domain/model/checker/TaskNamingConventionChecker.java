@@ -36,26 +36,18 @@ public class TaskNamingConventionChecker extends BaseChecker {
                 elementConvention.operations().forEach(operation -> {
                     if(!AttributeUtils.isNullOrBlank(targetElement.getName())) {
                         var result = performCheckBasedOnOperation(operation, targetElement.getName());
-                        log.info(String.format("Operation of type [%s] with value [%s] provided result [%s].", operation.type(), operation.value(), String.valueOf(result)));
+                        log.info(String.format("Operation of type [%s] with value [%s] provided result [%s].", operation.type(), operation.value(), result));
+                        if(!result){
+                            violations.add(new Violation(rule.name(), elementConvention, operation, targetElement.getId()));
+                        }
                     }
                     else {
                         log.info(String.format("Target element with id [%s] does not have a valid attribute name.", targetElement.getId()));
+                        violations.add(new Violation(rule.name(), elementConvention, operation, targetElement.getId()));
                     }
                 });
             });
         });
-
-        /*ViolationSet violationes = new ViolationSet();
-        rules.getRules().stream().forEach(rule -> {
-            BpmnExtractor.extractBpmnElementByTargetElement(process, rule.getClass().getAnnotation(Rule.class).targetType())
-            .stream().forEach(element -> {
-               var result = rule.check(element); 
-               if(result) {
-                violationes.addViolationToSet(new Violation(rule, "", null));
-               }
-            });
-        });*/
-
         return violations;
     }
 

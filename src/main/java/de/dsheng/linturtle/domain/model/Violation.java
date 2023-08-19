@@ -1,21 +1,18 @@
 package de.dsheng.linturtle.domain.model;
 
-import lombok.Data;
+import de.dsheng.linturtle.domain.model.annotation.ElementConvention;
+import de.dsheng.linturtle.domain.model.annotation.Operation;
+import de.dsheng.linturtle.domain.model.annotation.Rule;
+import lombok.NonNull;
 
-@Data
-public class Violation {
-//    private BaseRule rule;
-//    private String bpmnProcessFileName;
-//    private String targetId;
-//
-//    public Violation(BaseRule rule, String bpmnProcessFileName, String targetId) {
-//        this.rule = rule;
-//        this.bpmnProcessFileName = bpmnProcessFileName;
-//        this.targetId = targetId;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return String.format("Violation(rule=%s, bpmnProcessFileName=%s, targetID=%s)", rule.getClass().getSimpleName(), bpmnProcessFileName, targetId);
-//    }
+public record Violation(
+        @NonNull
+        String ruleName,
+        @NonNull
+        ElementConvention elementConvention,
+        @NonNull
+        Operation operation,
+        @NonNull
+        String targetId
+) {
 }

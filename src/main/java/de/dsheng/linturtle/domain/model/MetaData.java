@@ -4,12 +4,12 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
-@Data
-@AllArgsConstructor
-public class MetaData {
-    
-    private String name;
-    private Date timeStamp;
-    private int incidents;
+public record MetaData(
+        @NonNull
+        String name,
+        @NonNull
+        Date timestamp,
+        int violations) {
 }

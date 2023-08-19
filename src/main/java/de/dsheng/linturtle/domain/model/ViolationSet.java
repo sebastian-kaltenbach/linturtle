@@ -1,28 +1,13 @@
 package de.dsheng.linturtle.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.NonNull;
 
-import de.dsheng.linturtle.domain.model.annotation.Rule;
-import de.dsheng.linturtle.domain.model.entity.Severity;
-import lombok.Getter;
+import java.util.Collection;
 
-public class ViolationSet {
-
-    @Getter
-    private List<Violation> violations;
-
-    public ViolationSet() {
-        this.violations = new ArrayList<>();
-    }
-
-    public List<Violation> getViolationsBySeverity(List<Severity> failOn) {
-        return new ArrayList<>();
-//        return this.violations.stream().filter(violation -> failOn.contains(violation.getRule().getClass()
-//            .getAnnotation(Rule.class).severity())).toList();
-    }
-
-    public void addViolationToSet(Violation violation) {
-        this.violations.add(violation);
-    }
+public record ViolationSet(
+        @NonNull
+        String processName,
+        @NonNull
+        Collection<Violation> violations
+) {
 }
