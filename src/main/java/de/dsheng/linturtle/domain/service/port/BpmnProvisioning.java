@@ -6,5 +6,5 @@ import java.util.Collection;
 
 @FunctionalInterface
 public interface BpmnProvisioning {
-    public abstract Collection<TProcess> collect(String path);
+    public abstract Collection<TProcess> collect(String path, Collection<String> skippedModels);
 }

@@ -22,7 +22,8 @@ public class BPMNCollector implements BpmnProvisioning {
         this.processingService = new BpmnReader();
     }
     @Override
-    public Collection<TProcess> collect(String path) {
+    public Collection<TProcess> collect(String path, Collection<String> skippedModels) {
+        this.skippedModels = skippedModels;
         File dir = new File(path);
         final Collection<TProcess> processCollection = new ArrayList<>();
         Stream.of(Objects.requireNonNull(dir.listFiles(bpmnFilefilter))).forEach(bpmnFile -> {
@@ -32,10 +33,7 @@ public class BPMNCollector implements BpmnProvisioning {
         return processCollection;
     }
 
-    private final FileFilter bpmnFilefilter = new FileFilter()
-    {
-        public boolean accept(File file) {
-            return file.getName().endsWith(".bpmn");
-        }
-    };
+    private Collection<String> skippedModels;
+
+    private final FileFilter bpmnFilefilter = file -> file.getName().endsWith(".bpmn") && !skippedModels.contains(file.getName());
 }

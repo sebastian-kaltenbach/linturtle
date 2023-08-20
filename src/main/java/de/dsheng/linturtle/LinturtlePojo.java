@@ -42,8 +42,8 @@ public class LinturtlePojo extends AbstractMojo {
     @Parameter(property = "linturtle.failOnViolation", defaultValue = "true")
     private boolean failOnViolation;
 
-    @Parameter(property = "linturtle.skipBPMNs")
-    private Set<String> skipBPMNs;
+    @Parameter(property = "linturtle.skipModels")
+    private Set<String> skippedModels;
 
     @Parameter(property = "linturtle.export")
     private Map<String, String> export;
@@ -62,7 +62,7 @@ public class LinturtlePojo extends AbstractMojo {
 
         //  Step 1 | Gather Bpmn Models of project
         var bpmnCollector = new BPMNCollector(getLog());
-        var bpmnModelCollection = bpmnCollector.collect(this.sourceFolder);
+        var bpmnModelCollection = bpmnCollector.collect(this.sourceFolder, this.skippedModels);
 
         // Step 2 | Gather config file of project
         var configReader = new XmlConfigReader(getLog());
