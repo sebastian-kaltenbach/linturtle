@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.dsheng.linturtle.adapter.BPMNCollector;
+import de.dsheng.linturtle.application.utils.ViolationSourceUtils;
 import de.dsheng.linturtle.domain.service.BpmnValidator;
 import de.dsheng.linturtle.domain.service.CheckerSetup;
 import de.dsheng.linturtle.adapter.export.ViolationExtractor;
@@ -74,17 +75,18 @@ public class LinturtlePojo extends AbstractMojo {
 
         // Step 4 | Validating Rules per Checker
         var bpmnValidator = new BpmnValidator(getLog());
-        var violationSetCollection = bpmnValidator.validate(bpmnModelCollection, checkerCollection);
+        var bpmnViolationSourceCollection = bpmnValidator.validate(bpmnModelCollection, checkerCollection);
+        getLog().info(bpmnViolationSourceCollection.toString());
 
         // Step 5 | Reporting result to Console
         var violationExtractor = new ViolationExtractor(getLog());
-        violationExtractor.log(violationSetCollection);
+        violationExtractor.log(bpmnViolationSourceCollection);
 
         // Step 6 | Export report if required
         if (report) {
             Config config = ConfigValueFactory.fromMap(export).toConfig();
             try {
-                violationExtractor.export(config, violationSetCollection);
+                violationExtractor.export(config, bpmnViolationSourceCollection);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -92,8 +94,7 @@ public class LinturtlePojo extends AbstractMojo {
 
         // Step 7 | Fail build if config is set
         if(failOnViolation) {
-            var totalViolations = violationSetCollection.stream().map(violationSet -> violationSet.violations().size())
-                    .reduce(0, Integer::sum);
+            var totalViolations = ViolationSourceUtils.extractTotalViolationCount(bpmnViolationSourceCollection);
             if(totalViolations > 0) throw new MojoFailureException(String.format("Build failed because of a total of %d violation(s).", totalViolations));
         }
     }

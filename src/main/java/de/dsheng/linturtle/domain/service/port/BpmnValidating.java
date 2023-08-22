@@ -1,5 +1,6 @@
 package de.dsheng.linturtle.domain.service.port;
 
+import de.dsheng.linturtle.domain.model.BpmnViolationSource;
 import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.checker.BaseChecker;
 import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
@@ -19,5 +20,5 @@ public interface BpmnValidating {
      * @param checkerCollection
      * @return
      */
-    public abstract Collection<?> validate(Collection<TProcess> bpmnModelCollection, Collection<BaseChecker> checkerCollection);
+    public abstract Collection<BpmnViolationSource> validate(Collection<TProcess> bpmnModelCollection, Collection<BaseChecker> checkerCollection);
 }
