@@ -15,6 +15,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BpmnValidator implements BpmnValidating {
 
@@ -35,23 +37,25 @@ public class BpmnValidator implements BpmnValidating {
         final Collection<BpmnViolationSource> bpmnViolationSourceCollection = new ArrayList<>();
         bpmnModelCollection.forEach(bpmnModel -> {
             log.info(String.format("Check model [%s] for issues", bpmnModel.getName()));
+            AtomicInteger globalTestCounter = new AtomicInteger();
+            Collection<CheckerViolationSource> checkerViolationSourceCollection = new ArrayList<>();
 
             Instant bpmnViolationSourceStartTime = Instant.now();
-            Collection<CheckerViolationSource> checkerViolationSourceCollection = new ArrayList<>();
 
             checkerCollection.forEach(checker -> {
                 Instant checkerViolationSourceStartTime = Instant.now();
-                var violations = checker.check(bpmnModel);
+                var violationSource = checker.check(bpmnModel);
                 Instant checkerViolationSourceEndTime = Instant.now();
                 var checkerDiffTime = Duration.between(checkerViolationSourceStartTime, checkerViolationSourceEndTime).toMillis();
-                if(!violations.isEmpty()) {
-                    checkerViolationSourceCollection.add(new CheckerViolationSource(checkerDiffTime, violations));
+                globalTestCounter.updateAndGet(v -> v + violationSource.count());
+                if(!violationSource.violationCollection().isEmpty()) {
+                    checkerViolationSourceCollection.add(new CheckerViolationSource(checkerDiffTime, violationSource.violationCollection()));
                 }
             });
             Instant bpmnViolationSourceEndTime = Instant.now();
             var bpmnDiffTime = Duration.between(bpmnViolationSourceStartTime, bpmnViolationSourceEndTime).toMillis();
             if(!checkerViolationSourceCollection.isEmpty()) {
-                bpmnViolationSourceCollection.add(new BpmnViolationSource(bpmnModel.getName(), bpmnDiffTime, checkerViolationSourceCollection));
+                bpmnViolationSourceCollection.add(new BpmnViolationSource(bpmnModel.getName(), globalTestCounter.get(), bpmnDiffTime, checkerViolationSourceCollection));
             }
         });
         return bpmnViolationSourceCollection;

@@ -27,7 +27,7 @@ public class XmlExporter {
         bpmnViolationSourceCollection.forEach(bpmnViolationSource -> {
             File file = new File(String.format("%s/%s.xml", path, bpmnViolationSource.processName()));
             MetaData metaData = new MetaData("Linturtle", new Date(),
-                    ViolationSourceUtils.extractViolationCuntByBpmnViolationSource(bpmnViolationSource));
+                    ViolationSourceUtils.extractViolationCountByBpmnViolationSource(bpmnViolationSource));
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             try {
                 DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

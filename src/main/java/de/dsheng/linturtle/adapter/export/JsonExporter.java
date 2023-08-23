@@ -19,7 +19,7 @@ public class JsonExporter {
         bpmnViolationSourceCollection.forEach(bpmnViolationSource -> {
             File file = new File(String.format("%s/%s.json", path, bpmnViolationSource.processName()));
             MetaData metaData = new MetaData("Linturtle", new Date(),
-                    ViolationSourceUtils.extractViolationCuntByBpmnViolationSource(bpmnViolationSource));
+                    ViolationSourceUtils.extractViolationCountByBpmnViolationSource(bpmnViolationSource));
 
             JsonObjectBuilder rootObjectBuilder = Json.createObjectBuilder()
                     .add("name", metaData.name())

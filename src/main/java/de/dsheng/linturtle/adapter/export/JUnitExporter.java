@@ -51,23 +51,25 @@ public class JUnitExporter {
             Element rootElement = doc.createElement("testsuites");
             rootElement.setAttribute("id", "Provide ID");
             rootElement.setAttribute("name", String.format("%s (%s)", metaData.name(), new SimpleDateFormat("dd/MM/yy hh:mm:ss").format(metaData.timestamp())));
-            rootElement.setAttribute("tests", "No. of Tests");
+            rootElement.setAttribute("tests", String.valueOf(ViolationSourceUtils.extractTotalTestCount(bpmnViolationSourceCollection)));
             rootElement.setAttribute("failures", String.valueOf(metaData.violations()));
-            rootElement.setAttribute("time", "Test time");
+            rootElement.setAttribute("time", ViolationSourceUtils.representTotalTestTimeInMs(bpmnViolationSourceCollection));
 
             bpmnViolationSourceCollection.forEach(bpmnViolationSource -> {
                 // TestSuite
                 Element testSuiteElmnt = doc.createElement("testsuite");
                 testSuiteElmnt.setAttribute("id", bpmnViolationSource.processName());
                 testSuiteElmnt.setAttribute("name", "Provide Description");
-                testSuiteElmnt.setAttribute("time", String.valueOf(bpmnViolationSource.time()));
+                testSuiteElmnt.setAttribute("time", ViolationSourceUtils.representTestTimeInMs(bpmnViolationSource.time()));
+                testSuiteElmnt.setAttribute("tests", String.valueOf(bpmnViolationSource.testCount()));
+                testSuiteElmnt.setAttribute("failures", String.valueOf(ViolationSourceUtils.extractViolationCountByBpmnViolationSource(bpmnViolationSource)));
 
                 bpmnViolationSource.checkerViolationSourceCollection().forEach(checkerViolationSource -> {
                     // TestCase
                     Element testCaseElmnt = doc.createElement("testcase");
                     testCaseElmnt.setAttribute("id", "Provide ID");
                     testCaseElmnt.setAttribute("name", "name");
-                    testCaseElmnt.setAttribute("time", String.valueOf(checkerViolationSource.time()));
+                    testCaseElmnt.setAttribute("time", ViolationSourceUtils.representTestTimeInMs(checkerViolationSource.time()));
 
                     checkerViolationSource.violationCollection().forEach(violation -> {
                         // Failure

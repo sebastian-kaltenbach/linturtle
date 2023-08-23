@@ -19,7 +19,7 @@ public class TxtExporter {
         bpmnViolationSourceCollection.forEach(bpmnViolationSource -> {
             File file = new File(String.format("%s/%s.txt", path, bpmnViolationSource.processName()));
             MetaData metaData = new MetaData("Linturtle", new Date(),
-                    ViolationSourceUtils.extractViolationCuntByBpmnViolationSource(bpmnViolationSource));
+                    ViolationSourceUtils.extractViolationCountByBpmnViolationSource(bpmnViolationSource));
 
             try(FileOutputStream outputStream = new FileOutputStream(file.getAbsolutePath())){
                 final Collection<String> contentList = new ArrayList<>();

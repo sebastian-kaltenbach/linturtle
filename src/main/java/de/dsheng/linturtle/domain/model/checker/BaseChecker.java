@@ -2,6 +2,7 @@ package de.dsheng.linturtle.domain.model.checker;
 
 import java.util.Collection;
 
+import de.dsheng.linturtle.domain.model.ViolationSource;
 import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
 
@@ -24,6 +25,6 @@ public abstract class BaseChecker {
      * @param process
      * @return
      */
-    public abstract Collection<Violation> check(TProcess process);
+    public abstract ViolationSource check(TProcess process);
 
 }

@@ -3,6 +3,7 @@ package de.dsheng.linturtle.domain.model.checker;
 import de.dsheng.linturtle.application.utils.AttributeUtils;
 import de.dsheng.linturtle.application.utils.BpmnExtractor;
 import de.dsheng.linturtle.domain.model.Violation;
+import de.dsheng.linturtle.domain.model.ViolationSource;
 import de.dsheng.linturtle.domain.model.annotation.Operation;
 import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.entity.Element;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class OverlapChecker extends BaseChecker {
 
@@ -26,12 +29,15 @@ public class OverlapChecker extends BaseChecker {
     }
 
     @Override
-    public Collection<Violation> check(TProcess process) {
-        final Collection<Violation> violations = new ArrayList<>();
+    public ViolationSource check(TProcess process) {
+        final Collection<Violation> violationCollection = new ArrayList<>();
+        AtomicInteger testCount = new AtomicInteger();
+
         rule.elementConventions().forEach(elementConvention -> {
             log.info("Check convention with name SequenceFlow.");
             final Collection<Pair<String, Pair<String, String>>> sequenceFlowCollection = new ArrayList<>();
             var targetElements = BpmnExtractor.extractBpmnElementByTargetElement(process, Element.SEQUENCEFLOW);
+            testCount.updateAndGet(v -> v + targetElements.size());
 
             targetElements.stream().map(flowElement -> (TSequenceFlow) flowElement).forEach(sequenceFlow -> {
                 log.info(String.format("Target element found with id %s and name %s.", sequenceFlow.getId(), sequenceFlow.getName()));
@@ -44,12 +50,12 @@ public class OverlapChecker extends BaseChecker {
                     var result = tupleValuesAreEqual(sequenceFlow, sequenceFlowDummy);
                     if(result) {
                         var operation = new Operation("check", "-");
-                        violations.add(new Violation(rule.name(), elementConvention, operation, sequenceFlow.getValue0()));
+                        violationCollection.add(new Violation(rule.name(), elementConvention, operation, sequenceFlow.getValue0()));
                     }
                 });
             });
         });
-        return violations;
+        return new ViolationSource(testCount.get(), violationCollection);
     }
 
     /**
