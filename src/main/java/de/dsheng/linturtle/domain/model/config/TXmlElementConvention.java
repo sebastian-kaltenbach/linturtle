@@ -35,7 +35,7 @@ public class TXmlElementConvention {
         this.name = name;
     }
 
-    @XmlElement(name = "description")
+    @XmlElement(name = "description", required = true)
     public String getDescription() {
         return description;
     }

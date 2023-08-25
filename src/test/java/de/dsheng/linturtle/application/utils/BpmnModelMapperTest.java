@@ -1,12 +1,13 @@
-package de.dsheng.linturtle.utils;
+package de.dsheng.linturtle.application.utils;
 
 import java.io.File;
 import java.util.NoSuchElementException;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatObject;
+
 import org.junit.jupiter.api.Test;
 
-import de.dsheng.linturtle.application.utils.BpmnModelMapper;
 import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TDefinitions;
 import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
 
@@ -19,7 +20,7 @@ public class BpmnModelMapperTest {
         File fut = null;
         
         //  act & assert
-        Assertions.assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> BpmnModelMapper.transformModelToObject(fut));
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> BpmnModelMapper.transformModelToObject(fut));
     }
 
     @Test
@@ -27,7 +28,7 @@ public class BpmnModelMapperTest {
         File fut = new File("src/test/java/resources/emptyProcess.bpmn");
         
        //  act & assert
-        Assertions.assertThatExceptionOfType(DataBindingException.class).isThrownBy(() -> BpmnModelMapper.transformModelToObject(fut));
+        assertThatExceptionOfType(DataBindingException.class).isThrownBy(() -> BpmnModelMapper.transformModelToObject(fut));
     }
 
     @Test
@@ -38,7 +39,7 @@ public class BpmnModelMapperTest {
         var result = BpmnModelMapper.transformModelToObject(fut);
 
         //  assert
-        Assertions.assertThatObject(result.getClass()).isEqualTo(TDefinitions.class);
+        assertThatObject(result.getClass()).isEqualTo(TDefinitions.class);
     }
 
     @Test
@@ -46,7 +47,7 @@ public class BpmnModelMapperTest {
         TDefinitions definition = null;
 
        //  act & assert
-        Assertions.assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> BpmnModelMapper.transformDefinitionToProcess(definition));
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(() -> BpmnModelMapper.transformDefinitionToProcess(definition));
     }
 
     @Test
@@ -54,7 +55,7 @@ public class BpmnModelMapperTest {
         TDefinitions definition = new TDefinitions();
 
        //  act & assert
-        Assertions.assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> BpmnModelMapper.transformDefinitionToProcess(definition));
+        assertThatExceptionOfType(NoSuchElementException.class).isThrownBy(() -> BpmnModelMapper.transformDefinitionToProcess(definition));
     }
 
     @Test
@@ -66,6 +67,6 @@ public class BpmnModelMapperTest {
         var result = BpmnModelMapper.transformDefinitionToProcess(definition);
 
         //  assert
-        Assertions.assertThatObject(result.getClass()).isEqualTo(TProcess.class);
+        assertThatObject(result.getClass()).isEqualTo(TProcess.class);
     }
 }

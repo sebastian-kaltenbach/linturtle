@@ -18,7 +18,7 @@ public class TXmlRuleSet {
         this.rules = rules;
     }
 
-    @XmlElement(name = "rule", type = TXmlRule.class)
+    @XmlElement(name = "rule", required = true, type = TXmlRule.class)
     public Collection<TXmlRule> getRules() {
         return rules;
     }

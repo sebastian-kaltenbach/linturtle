@@ -8,7 +8,7 @@ public record Rule(
         @NonNull
         String name,
         @NonNull
-        String ruleDescription,
+        String description,
         @NonNull
         Collection<ElementConvention> elementConventions) {
 }

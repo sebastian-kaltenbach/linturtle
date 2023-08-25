@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.utils;
+package de.dsheng.linturtle.application.utils;
 
 import java.io.IOException;
 

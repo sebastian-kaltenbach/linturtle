@@ -45,7 +45,7 @@ public class TXmlRule {
         this.name = name;
     }
 
-    @XmlElement(name = "description")
+    @XmlElement(name = "description", required = true)
     public String getDescription() {
         return description;
     }

@@ -2,7 +2,6 @@ package de.dsheng.linturtle.domain.service.port;
 
 import com.typesafe.config.Config;
 import de.dsheng.linturtle.domain.model.BpmnViolationSource;
-import de.dsheng.linturtle.domain.model.ViolationSet;
 
 import java.io.IOException;
 import java.util.Collection;

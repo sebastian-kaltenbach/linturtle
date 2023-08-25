@@ -2,9 +2,6 @@ package de.dsheng.linturtle.domain.service;
 
 import de.dsheng.linturtle.domain.model.BpmnViolationSource;
 import de.dsheng.linturtle.domain.model.CheckerViolationSource;
-import de.dsheng.linturtle.domain.model.Violation;
-import de.dsheng.linturtle.domain.model.ViolationSet;
-import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.checker.BaseChecker;
 import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TProcess;
 import de.dsheng.linturtle.domain.service.port.BpmnValidating;
@@ -14,9 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class BpmnValidator implements BpmnValidating {
 
