@@ -4,6 +4,7 @@ import de.dsheng.linturtle.application.utils.AttributeUtils;
 import de.dsheng.linturtle.application.utils.BpmnExtractor;
 import de.dsheng.linturtle.domain.model.Violation;
 import de.dsheng.linturtle.domain.model.ViolationSource;
+import de.dsheng.linturtle.domain.model.annotation.ElementConvention;
 import de.dsheng.linturtle.domain.model.annotation.Operation;
 import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.entity.Element;
@@ -13,6 +14,7 @@ import org.apache.maven.plugin.logging.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Pattern;
@@ -31,20 +33,20 @@ public class TaskOnlyHasSingleFlowsChecker extends BaseChecker {
         final Collection<Violation> violationCollection = new ArrayList<>();
         AtomicInteger testCount = new AtomicInteger();
 
-        rule.elementConventions().forEach(elementConvention -> {
-            log.info(String.format("Check convention with name %s.", elementConvention.name()));
-            var targetElements = BpmnExtractor.extractBpmnElementByTargetElement(process, Element.valueOf(elementConvention.name().toUpperCase()));
-            testCount.updateAndGet(v -> v + targetElements.size());
+        log.info(String.format("Check convention with name %s.", Element.TASK));
+        var targetElements = BpmnExtractor.extractBpmnElementByTargetElement(process, Element.TASK);
+        testCount.updateAndGet(v -> v + targetElements.size());
+        var operation = new Operation("check", "-");
+        var elementConvention = new ElementConvention("Task", "Check if Task only has single incoming and outgoing flows.", List.of(operation));
 
-            targetElements.stream().map(targetElement -> (TTask) targetElement).forEach(task -> {
-                log.info(String.format("Target element found with id %s and name %s.", task.getId(), task.getName()));
-                var operation = new Operation("check", "-");
-                var result = task.getIncoming().size() > 1 || task.getOutgoing().size() > 1;
-                log.info(String.format("Operation of type [%s] with value [%s] provided result [%s].", operation.type(), operation.value(), result));
-                if(result) {
-                    violationCollection.add(new Violation(rule.name(), elementConvention, operation, task.getId()));
-                }
-            });
+        targetElements.stream().map(targetElement -> (TTask) targetElement).forEach(task -> {
+            log.info(String.format("Target element found with id %s and name %s.", task.getId(), task.getName()));
+
+            var result = task.getIncoming().size() > 1 || task.getOutgoing().size() > 1;
+            log.info(String.format("Operation of type [%s] with value [%s] provided result [%s].", operation.type(), operation.value(), result));
+            if(result) {
+                violationCollection.add(new Violation(rule.name(), elementConvention, operation, task.getId()));
+            }
         });
         return new ViolationSource(testCount.get(), violationCollection);
     }

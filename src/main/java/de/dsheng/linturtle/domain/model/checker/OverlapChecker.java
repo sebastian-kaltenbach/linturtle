@@ -4,6 +4,7 @@ import de.dsheng.linturtle.application.utils.AttributeUtils;
 import de.dsheng.linturtle.application.utils.BpmnExtractor;
 import de.dsheng.linturtle.domain.model.Violation;
 import de.dsheng.linturtle.domain.model.ViolationSource;
+import de.dsheng.linturtle.domain.model.annotation.ElementConvention;
 import de.dsheng.linturtle.domain.model.annotation.Operation;
 import de.dsheng.linturtle.domain.model.annotation.Rule;
 import de.dsheng.linturtle.domain.model.entity.Element;
@@ -12,10 +13,7 @@ import de.dsheng.linturtle.domain.model.omg.spec.bpmn._20100524.model.TSequenceF
 import org.apache.maven.plugin.logging.Log;
 import org.javatuples.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -33,28 +31,28 @@ public class OverlapChecker extends BaseChecker {
         final Collection<Violation> violationCollection = new ArrayList<>();
         AtomicInteger testCount = new AtomicInteger();
 
-        rule.elementConventions().forEach(elementConvention -> {
-            log.info("Check convention with name SequenceFlow.");
-            final Collection<Pair<String, Pair<String, String>>> sequenceFlowCollection = new ArrayList<>();
-            var targetElements = BpmnExtractor.extractBpmnElementByTargetElement(process, Element.SEQUENCEFLOW);
-            testCount.updateAndGet(v -> v + targetElements.size());
+        var operation = new Operation("check", "-");
+        var elementConvention = new ElementConvention("Element", "Check if Element contains redundant sequence flows.", List.of(operation));
 
-            targetElements.stream().map(flowElement -> (TSequenceFlow) flowElement).forEach(sequenceFlow -> {
-                log.info(String.format("Target element found with id %s and name %s.", sequenceFlow.getId(), sequenceFlow.getName()));
-                Pair<String, String> refPair = new Pair<>(sequenceFlow.getSourceRef().toString(), sequenceFlow.getTargetRef().toString());
-                sequenceFlowCollection.add(new Pair<String, Pair<String, String>>(sequenceFlow.getId(), refPair));
-            });
+        log.info("Check convention with name SequenceFlow.");
+        final Collection<Pair<String, Pair<String, String>>> sequenceFlowCollection = new ArrayList<>();
+        var targetElements = BpmnExtractor.extractBpmnElementByTargetElement(process, Element.SEQUENCEFLOW);
+        testCount.updateAndGet(v -> v + targetElements.size());
 
-            sequenceFlowCollection.forEach(sequenceFlow -> {
-                sequenceFlowCollection.forEach(sequenceFlowDummy -> {
-                    var result = tupleValuesAreEqual(sequenceFlow, sequenceFlowDummy);
-                    if(result) {
-                        var operation = new Operation("check", "-");
-                        violationCollection.add(new Violation(rule.name(), elementConvention, operation, sequenceFlow.getValue0()));
-                    }
-                });
+        targetElements.stream().map(flowElement -> (TSequenceFlow) flowElement).forEach(sequenceFlow -> {
+            log.info(String.format("Target element found with id %s and name %s.", sequenceFlow.getId(), sequenceFlow.getName()));
+            Pair<String, String> refPair = new Pair<>(sequenceFlow.getSourceRef().toString(), sequenceFlow.getTargetRef().toString());
+            sequenceFlowCollection.add(new Pair<String, Pair<String, String>>(sequenceFlow.getId(), refPair));
+        });
+        sequenceFlowCollection.forEach(sequenceFlow -> {
+            sequenceFlowCollection.forEach(sequenceFlowDummy -> {
+                var result = tupleValuesAreEqual(sequenceFlow, sequenceFlowDummy);
+                if(result) {
+                    violationCollection.add(new Violation(rule.name(), elementConvention, operation, sequenceFlow.getValue0()));
+                }
             });
         });
+
         return new ViolationSource(testCount.get(), violationCollection);
     }
 

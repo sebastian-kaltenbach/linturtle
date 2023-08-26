@@ -1,4 +1,4 @@
-package de.dsheng.linturtle.domain.mapping;
+package de.dsheng.linturtle.domain.service.mapping;
 
 import de.dsheng.linturtle.domain.model.annotation.ElementConvention;
 import de.dsheng.linturtle.domain.model.annotation.Operation;
