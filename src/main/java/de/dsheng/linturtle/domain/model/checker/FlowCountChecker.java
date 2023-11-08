@@ -1,6 +1,5 @@
 package de.dsheng.linturtle.domain.model.checker;
 
-import de.dsheng.linturtle.application.utils.AttributeUtils;
 import de.dsheng.linturtle.application.utils.BpmnExtractor;
 import de.dsheng.linturtle.domain.model.Violation;
 import de.dsheng.linturtle.domain.model.ViolationSource;
@@ -16,14 +15,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Pattern;
 
-public class TaskOnlyHasSingleFlowsChecker extends BaseChecker {
+/**
+ * Checker for number of incoming and outgoing flows of elements
+ */
+public class FlowCountChecker extends BaseChecker {
 
     private Log log;
 
-    public TaskOnlyHasSingleFlowsChecker(Rule rule, Log log) {
+    public FlowCountChecker(Rule rule, Log log) {
         super(rule);
         this.log = log;
     }

@@ -115,7 +115,6 @@
             <artifactId>javatuples</artifactId>
             <version>1.2</version>
         </dependency>
-
     <!-- Test Dependencies -->
     <dependency>
         <groupId>org.assertj</groupId>
@@ -129,6 +128,13 @@
         <version>5.9.2</version>
         <scope>test</scope>
     </dependency>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-componentdsl</artifactId>
